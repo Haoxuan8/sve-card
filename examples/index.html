@@ -5,12 +5,18 @@
     <title>Test</title>
 </head>
 <body>
-
+    <canvas id="test" width="500" height="500"></canvas>
 </body>
 <script src="./index.js"></script>
 <script>
     const {Card} = SVECard;
-    const card = new Card;
-    card.test();
+    const canvas = document.getElementById("test");
+    const card = new Card({
+        data: {
+            desc: "阿斯蒂",
+        },
+        canvas,
+    });
+    card.draw();
 </script>
 </html>

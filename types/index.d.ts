@@ -6,6 +6,7 @@ interface CardData {
     craft: string;
     attack?: number;
     defend?: number;
+    desc?: string;
 }
 
 declare class Card {

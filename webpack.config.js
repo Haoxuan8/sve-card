@@ -7,6 +7,7 @@ module.exports = {
     entry: ["./src/index.js"],
     output: {
         path: isProduction ? `${__dirname}/dist` : `${__dirname}/examples`,
+        assetModuleFilename: "asset/[contenthash][ext][query]",
         filename: "index.js",
         library: {
             name: "SVECard",
@@ -28,6 +29,18 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: ["babel-loader"],
+            },
+            {
+                test: /\.(jpe?g|png|gif|ico|ttf)$/i,
+                type: "asset",
+            },
+            {
+                test: /\.scss$/i,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "sass-loader",
+                ],
             },
         ],
     },

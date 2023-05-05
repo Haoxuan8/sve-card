@@ -1,25 +1,21 @@
 import AssetManager from "./AssetManager";
 import CardDrawer from "./CardDrawer";
+import getConfig from "./getConfig";
 
 export default class Card {
     constructor({
         data,
         canvas,
-        size,
     } = {}) {
+        console.assert(canvas != null, "canvas element is null.");
         this.data = data;
         this.canvas = canvas;
-        this.assetManager = new AssetManager(data, {
-            onEachStepLoad: this.draw,
-        });
-        this.cardDrawer = new CardDrawer(data, canvas, this.assetManager);
+        this.config = getConfig(this.canvas);
+        this.assetManager = new AssetManager(data, this.config);
+        this.cardDrawer = new CardDrawer(data, canvas, this.config, this.assetManager);
     }
     draw = () => {
         this.cardDrawer.draw();
-    };
-
-    render = async () => {
-        await this.assetManager.loadAll();
     };
 
     test = () => {
