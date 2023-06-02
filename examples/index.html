@@ -5,7 +5,7 @@
     <title>Test</title>
 </head>
 <body>
-    <canvas id="test" width="500" height="500"></canvas>
+    <canvas id="test" width="1000" height="1000"></canvas>
 </body>
 <script src="./index.js"></script>
 <script>
@@ -13,7 +13,11 @@
     const canvas = document.getElementById("test");
     const card = new Card({
         data: {
-            desc: "阿斯蒂",
+            desc: "進化コスト1：これは進化する。\n"
+                + " ファンファーレ自分の墓場の狩人・カードが3枚以上なら、相手の場のフォロワー1体を選ぶ。それをアミュレットにする。それは「起動コスト2：これを墓場に置く」を持つ。",
+            craft: "Dragon",
+            cardType: "Follower",
+            imageSrc: "https://svgdb.me/assets/sleeves/sleeve_3004038.png"
         },
         canvas,
     });

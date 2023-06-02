@@ -1,5 +1,6 @@
-import Frame from "./asset/image/default_card_cover.png";
-import loadImage from "./util/loadImage";
+import loadImageUtil from "./util/loadImage";
+import getFrame from "./util/getFrame";
+import DescBackgroundPng from "./asset/image/desc_background.png";
 
 const defaultOptions = {
     onLoadAll: () => {},
@@ -8,10 +9,11 @@ const defaultOptions = {
 
 const fontPathMap = {
     cn: import("./asset/font/cn.ttf"),
+    ja: import("./asset/font/ja.ttf"),
 };
 
 export default class AssetManager {
-    constructor(data, options = {}) {
+    constructor(data, config, options = {}) {
         options = {
             ...defaultOptions,
             ...options,
@@ -23,17 +25,30 @@ export default class AssetManager {
         this.loadingMap = {};
     }
 
+    loadImage = (url) => {
+        return loadImageUtil(url, {onLoad: this.onEachStepLoad});
+    };
+
 
     // load image frame
-    loadFrame = ({onLoad}) => {
-        return loadImage(Frame, {onLoad});
+    loadFrame = () => {
+        const frameUrl = getFrame(this.data);
+        if (frameUrl == null) {
+            console.error("无法获取 frame, 请检查 craft, cardType, rare 是否正确");
+        } else {
+            return this.loadImage(frameUrl);
+        }
     };
 
-    loadCardImage = async () => {
-        return loadImage(this.data.imageSrc);
+    loadCardImage = () => {
+        return this.loadImage(this.data.imageSrc);
     };
 
-    loadFont = async (name, {onLoad}) => {
+    loadDescBackground = () => {
+        return this.loadImage(DescBackgroundPng);
+    };
+
+    loadFont = async (name) => {
         const loadingKey = `font-loading-${name}`;
         if (!document.fonts.check(`12px ${name}`) && !this.loadingMap[loadingKey]) {
             if (fontPathMap[name]) {
@@ -45,7 +60,7 @@ export default class AssetManager {
                 await font.load();
                 document.fonts.add(font);
                 this.loadingMap[loadingKey] = false;
-                onLoad?.();
+                this.onEachStepLoad?.();
             }
         }
     };
