@@ -1,4 +1,4 @@
-import splitText from "./util/splitText";
+import splitText, {measureIconWidth, textIconMap} from "./util/splitText";
 import {forEach} from "lodash";
 
 
@@ -11,9 +11,16 @@ export default class CardDrawer {
         this.assetManager = assetManager;
     }
 
+    drawImage = (image, ...position) => {
+        if (image) {
+            this.canvasContext.drawImage(image, ...position);
+        } else {
+        }
+    };
+
     drawFrame = () => {
         const frame = this.assetManager.loadFrame();
-        this.canvasContext.drawImage(frame, ...this.config.frame.position);
+        this.drawImage(frame, ...this.config.frame.position);
     };
 
     drawCardImage = () => {
@@ -35,31 +42,72 @@ export default class CardDrawer {
         this.canvasContext.quadraticCurveTo(x, y, x + radius, y);
         this.canvasContext.closePath();
         this.canvasContext.clip();
-        this.canvasContext.drawImage(image,x, y, width, height);
+        this.drawImage(image,x, y, width, height);
         this.canvasContext.restore();
     };
 
     drawDesc = () => {
         this.assetManager.loadFont(this.config.desc.fontFamily);
+        this.canvasContext.save();
         this.canvasContext.fillStyle = this.config.desc.color;
-        this.canvasContext.font = `bold ${this.config.desc.fontSize}px ${this.config.desc.fontFamily}`;
-        const measureTextWidth = (text) => this.canvasContext.measureText(text).width;
+        this.canvasContext.font = `${this.config.desc.fontSize}px ${this.config.desc.fontFamily}`;
+        const ctxMeasureTextWidth = (text) => this.canvasContext.measureText(text).width;
         this.canvasContext.textBaseline = "top";
-        const {list, scale} = splitText(this.data.desc, this.config.desc.position[2], this.config.desc.maxLine, measureTextWidth);
-        forEach(list, (text, i) => {
-            const maxWidth = measureTextWidth(text) * scale;
-            this.canvasContext.fillText(text, this.config.desc.position[0], this.config.desc.position[1] + i * this.config.desc.lineHeight, maxWidth);
+        const iconOptions = {iconHeight: this.config.desc.iconHeight, iconPaddingX: this.config.desc.iconPaddingX};
+        const {list, scale} = splitText(this.data.desc, this.config.desc.position[2],
+            this.config.desc.maxLine, ctxMeasureTextWidth, iconOptions);
+        forEach(list, (textArr, i) => {
+            let currentText = "";
+            let left = this.config.desc.position[0];
+            let top = this.config.desc.position[1] + i * this.config.desc.lineHeight;
+            forEach(textArr, (it) => {
+                const flashText = () => {
+                    if (currentText !== "") {
+                        const maxWidth = ctxMeasureTextWidth(currentText) * scale;
+                        this.canvasContext.fillText(currentText, left, top, maxWidth);
+                        currentText = "";
+                        left += maxWidth;
+                    }
+                };
+
+                const drawIcon = (item) => {
+                    const iconItem = textIconMap[item.text];
+                    const icon = this.assetManager.loadImage(iconItem.src);
+                    left += this.config.desc.iconPaddingX;
+                    const maxWidth = measureIconWidth(item, this.config.desc.iconHeight) * scale;
+                    this.drawImage(icon, left, top + this.config.desc.iconTopOffset, maxWidth, this.config.desc.iconHeight);
+                    left += maxWidth;
+                    left += this.config.desc.iconPaddingX;
+                };
+
+                if (it.type === "char") {
+                    currentText += it.text;
+                } else if (it.type === "icon") {
+                    flashText();
+                    drawIcon(it);
+                }
+                flashText();
+            });
         });
+        this.canvasContext.restore();
     };
 
     drawDescBackground = () => {
         const image = this.assetManager.loadDescBackground();
-        console.log(this.config.descBackground.position);
-        this.canvasContext.drawImage(image, ...this.config.descBackground.position);
+        this.drawImage(image, ...this.config.descBackground.position);
     };
 
-    drawAttackAndDefend = () => {
-
+    drawAttackDefenseCost = () => {
+        this.assetManager.loadFont("number");
+        this.canvasContext.save();
+        if (Number.isInteger(this.data.attack)) {
+            this.canvasContext.fillStyle = this.config.attack.color;
+            this.canvasContext.font = `${this.config.attack.fontSize}px ${this.config.attack.fontFamily}`;
+            this.canvasContext.textBaseline = "alphabetic";
+            this.canvasContext.textAlign = "center";
+            this.canvasContext.fillText(`${this.data.attack}`, ...this.config.attack.position);
+        }
+        this.canvasContext.restore();
     };
 
     drawName = () => {
@@ -70,7 +118,7 @@ export default class CardDrawer {
         this.drawCardImage();
         this.drawDescBackground();
         this.drawFrame();
-        this.drawAttackAndDefend();
+        this.drawAttackDefenseCost();
         this.drawDesc();
     };
 }

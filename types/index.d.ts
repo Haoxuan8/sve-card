@@ -10,7 +10,8 @@ interface CardData {
     craft: Craft;
     rare: Rare;
     attack?: number;
-    defend?: number;
+    defense?: number;
+    cost?: number;
     desc?: string;
 }
 

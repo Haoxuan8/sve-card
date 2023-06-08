@@ -2,10 +2,14 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,viewport-fit=cover">
     <title>Test</title>
 </head>
 <body>
-    <canvas id="test" width="1000" height="1000"></canvas>
+    <canvas id="test" style="height: 500px;"></canvas>
+    <button id="btn">refresh</button>
+<p style="font-family: number;">0123456789</p>
+<p>0123456789</p>
 </body>
 <script src="./index.js"></script>
 <script>
@@ -13,14 +17,24 @@
     const canvas = document.getElementById("test");
     const card = new Card({
         data: {
-            desc: "進化コスト1：これは進化する。\n"
-                + " ファンファーレ自分の墓場の狩人・カードが3枚以上なら、相手の場のフォロワー1体を選ぶ。それをアミュレットにする。それは「起動コスト2：これを墓場に置く」を持つ。",
+            desc: "/quick/start/act1：これは進化する。\n"
+                + "/fanfare自分の墓場の狩人・カードが3枚以上なら、相手の場のフォロワー1体を選ぶ。それをアミュレットにする。それは「起動コスト2：これを墓場に置く」を持つ。",
             craft: "Dragon",
             cardType: "Follower",
-            imageSrc: "https://svgdb.me/assets/sleeves/sleeve_3004038.png"
+            imageSrc: "https://svgdb.me/assets/sleeves/sleeve_3004038.png",
+            attack: 9,
+            defend: 9,
+            cost: 9,
         },
+        height: 2000,
         canvas,
     });
     card.draw();
+
+    function refresh() {
+        card.draw();
+    }
+
+    document.getElementById("btn").addEventListener("click", (event) => refresh());
 </script>
 </html>

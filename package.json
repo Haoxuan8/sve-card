@@ -37,6 +37,7 @@
         "webpack-dev-server": "^4.13.1"
     },
     "dependencies": {
+        "fontfaceobserver": "^2.3.0",
         "lodash": "^4.17.21"
     }
 }
