@@ -1,6 +1,6 @@
 import AssetManager from "./AssetManager";
 import CardDrawer from "./CardDrawer";
-import getConfig from "./getConfig";
+import {getNormalConfig} from "./config/normalConfig";
 
 export default class Card {
     constructor({
@@ -13,8 +13,9 @@ export default class Card {
         this.data = data;
         this.canvas = canvas;
         this.setCanvasSize(height, width);
-        this.config = getConfig(this.canvas);
-        this.assetManager = new AssetManager(data, this.config, {onEachStepLoad: this.draw});
+        this.config = {};
+        this.config.normal = getNormalConfig(this.canvas);
+        this.assetManager = new AssetManager(data, {onEachStepLoad: this.draw});
         this.cardDrawer = new CardDrawer(data, canvas, this.config, this.assetManager);
     }
 

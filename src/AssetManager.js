@@ -16,7 +16,7 @@ const defaultOptions = {
 // };
 
 export default class AssetManager {
-    constructor(data, config, options = {}) {
+    constructor(data, options = {}) {
         options = {
             ...defaultOptions,
             ...options,

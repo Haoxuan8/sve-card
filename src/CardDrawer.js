@@ -6,7 +6,7 @@ export default class CardDrawer {
     constructor(data, canvas, config, assetManager) {
         this.data = data;
         this.canvas = canvas;
-        this.config = config;
+        this.allConfig = config;
         this.canvasContext = canvas.getContext("2d");
         this.assetManager = assetManager;
     }
@@ -99,15 +99,25 @@ export default class CardDrawer {
 
     drawAttackDefenseCost = () => {
         this.assetManager.loadFont("number");
-        this.canvasContext.save();
-        if (Number.isInteger(this.data.attack)) {
-            this.canvasContext.fillStyle = this.config.attack.color;
-            this.canvasContext.font = `${this.config.attack.fontSize}px ${this.config.attack.fontFamily}`;
-            this.canvasContext.textBaseline = "alphabetic";
-            this.canvasContext.textAlign = "center";
-            this.canvasContext.fillText(`${this.data.attack}`, ...this.config.attack.position);
-        }
-        this.canvasContext.restore();
+
+        const drawNumber = (number, config) => {
+            if (Number.isInteger(number)) {
+                this.canvasContext.save();
+                this.canvasContext.font = `${config.fontWeight ?? ""} ${config.fontSize}px ${config.fontFamily}`;
+                this.canvasContext.textBaseline = "alphabetic";
+                this.canvasContext.textAlign = "center";
+                this.canvasContext.shadowColor = "black";
+                this.canvasContext.shadowBlur = config.shadowBlur;
+                this.canvasContext.lineWidth = config.shadowLine;
+                this.canvasContext.strokeText(`${number}`, ...config.position);
+                this.canvasContext.fillStyle = config.color;
+                this.canvasContext.fillText(`${number}`, ...config.position);
+                this.canvasContext.restore();
+            }
+        };
+        drawNumber(this.data.attack, this.config.attack);
+        drawNumber(this.data.defense, this.config.defense);
+        drawNumber(this.data.cost, this.config.cost);
     };
 
     drawName = () => {
@@ -115,10 +125,14 @@ export default class CardDrawer {
     };
 
     draw = () => {
+        if (this.data.rare !== "UR") {
+            this.config = this.allConfig.normal;
+        }
         this.drawCardImage();
         this.drawDescBackground();
         this.drawFrame();
         this.drawAttackDefenseCost();
         this.drawDesc();
+        this.drawName();
     };
 }
