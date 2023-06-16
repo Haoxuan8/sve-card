@@ -1,14 +1,14 @@
 
 type Craft = "Dragon" | "Forest" | "Heaven" | "Neutral" | "Nightmare" | "Rune" | "Sword";
 type CardType = "Follower" | "FollowerEvo" | "Spell" | "Amulet" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken";
-type Rare = "BR" | "SR" | "GR" | "LG" | "SL" | "UR";
+type Rarity = "BR" | "SR" | "GR" | "LG" | "UR";
 
 interface CardData {
     name: string;
     imageSrc: string;
     cardType: CardType;
     craft: Craft;
-    rare: Rare;
+    rarity: Rarity;
     attack?: number;
     defense?: number;
     cost?: number;

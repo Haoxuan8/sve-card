@@ -1,12 +1,14 @@
 import splitText, {measureIconWidth, textIconMap} from "./util/splitText";
 import {forEach} from "lodash";
+import {getIsNoStatus, isToken} from "./util/cardTypeUtil";
 
+const DEFAULT_COPYRIGHT = "©Cygames,Inc.";
 
 export default class CardDrawer {
     constructor(data, canvas, config, assetManager) {
         this.data = data;
         this.canvas = canvas;
-        this.allConfig = config;
+        this.config = config;
         this.canvasContext = canvas.getContext("2d");
         this.assetManager = assetManager;
     }
@@ -15,6 +17,30 @@ export default class CardDrawer {
         if (image) {
             this.canvasContext.drawImage(image, ...position);
         } else {
+        }
+    };
+
+    drawCoverImage = (image, ...position) => {
+        const [left, top, width, height] = position;
+        if (image) {
+            let containerRatio = height / width;
+            let w = image.naturalWidth;
+            let h = image.naturalHeight;
+            let imgRatio = h / w;
+
+            if (imgRatio > containerRatio) {
+                h = w * containerRatio;
+            } else {
+                w = h / containerRatio;
+            }
+            let s = {
+                width: w,
+                height: h,
+                offsetX: (image.naturalWidth - w) * .5,
+                offsetY: (image.naturalHeight - h) * .5,
+            };
+
+            this.canvasContext.drawImage(image, s.offsetX, s.offsetY, s.width, s.height, ...position);
         }
     };
 
@@ -42,7 +68,7 @@ export default class CardDrawer {
         this.canvasContext.quadraticCurveTo(x, y, x + radius, y);
         this.canvasContext.closePath();
         this.canvasContext.clip();
-        this.drawImage(image,x, y, width, height);
+        this.drawCoverImage(image,x, y, width, height);
         this.canvasContext.restore();
     };
 
@@ -98,13 +124,12 @@ export default class CardDrawer {
     };
 
     drawAttackDefenseCost = () => {
-        this.assetManager.loadFont("number");
-
+        const isNoStatus = getIsNoStatus(this.data.cardType);
         const drawNumber = (number, config) => {
             if (Number.isInteger(number)) {
+                this.assetManager.loadFont(config.fontFamily);
                 this.canvasContext.save();
-                this.canvasContext.font = `${config.fontWeight ?? ""} ${config.fontSize}px ${config.fontFamily}`;
-                this.canvasContext.textBaseline = "alphabetic";
+                this.canvasContext.font = `${config.fontSize}px ${config.fontFamily}`;
                 this.canvasContext.textAlign = "center";
                 this.canvasContext.shadowColor = "black";
                 this.canvasContext.shadowBlur = config.shadowBlur;
@@ -115,24 +140,71 @@ export default class CardDrawer {
                 this.canvasContext.restore();
             }
         };
-        drawNumber(this.data.attack, this.config.attack);
-        drawNumber(this.data.defense, this.config.defense);
+
+        !isNoStatus && drawNumber(this.data.attack, this.config.attack);
+        !isNoStatus && drawNumber(this.data.defense, this.config.defense);
         drawNumber(this.data.cost, this.config.cost);
     };
 
-    drawName = () => {
+    drawText = (text, config, setContext) => {
+        if (text != null) {
+            this.assetManager.loadFont(config.fontFamily);
+            this.canvasContext.save();
+            this.canvasContext.fillStyle = config.color;
+            this.canvasContext.font = `${config.fontSize}px ${config.fontFamily}`;
+            setContext?.();
+            this.canvasContext.fillText(text, ...config.position);
+            this.canvasContext.restore();
+        }
+    };
 
+    drawName = () => {
+        this.drawText(this.data.name, this.config.name, () => {
+            this.canvasContext.textAlign = "center";
+        });
+    };
+
+    drawRace = () => {
+        const [left, top, width] = this.config.race.position;
+        let offset = 0;
+        if (getIsNoStatus(this.data.cardType)) offset += this.config.race.noStatusOffset;
+        if (isToken(this.data.cardType)) offset += this.config.race.tokenOffset;
+        this.drawText(this.data.race, {
+            ...this.config.race,
+            position: [left + offset, top, width],
+        });
+    };
+
+    drawRarity = () => {
+        if (isToken(this.data.cardType)) {}
+        else {
+            const image = this.assetManager.loadRarityImage(this.data.rarity);
+            const [left, top, width, height] = this.config.rarity.position;
+            const isNoStatus = getIsNoStatus(this.data.cardType);
+            this.drawImage(image, left + (isNoStatus ? this.config.rarity.noStatusOffset : 0), top, width, height);
+        }
+    };
+
+    drawFooter = () => {
+        const cardNoConfig = this.config.cardNo;
+        const copyrightConfig = this.config.copyright;
+        this.drawText(this.data.cardNo, {...cardNoConfig, color: isToken(this.data.cardType) ? cardNoConfig.tokenColor : cardNoConfig.color});
+        this.drawText(this.data.copyright ?? DEFAULT_COPYRIGHT,
+            {...copyrightConfig, color: isToken(this.data.cardType) ? copyrightConfig.tokenColor : copyrightConfig.color},
+            () => {
+            this.canvasContext.textAlign = "right";
+        });
     };
 
     draw = () => {
-        if (this.data.rare !== "UR") {
-            this.config = this.allConfig.normal;
-        }
         this.drawCardImage();
         this.drawDescBackground();
         this.drawFrame();
         this.drawAttackDefenseCost();
         this.drawDesc();
         this.drawName();
+        this.drawRace();
+        this.drawRarity();
+        this.drawFooter();
     };
 }

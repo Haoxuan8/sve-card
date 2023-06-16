@@ -8,8 +8,7 @@
 <body>
     <canvas id="test" style="height: 500px;"></canvas>
     <button id="btn">refresh</button>
-<p style="font-family: number;">0123456789</p>
-<p>0123456789</p>
+    <button id="download">download</button>
 </body>
 <script src="./index.js"></script>
 <script>
@@ -17,14 +16,16 @@
     const canvas = document.getElementById("test");
     const card = new Card({
         data: {
-            desc: "/cost1/quick/start/act1：これは進化する。\n"
-                + "/fanfare自分の墓場の狩人・カードが3枚以上なら、相手の場のフォロワー1体を選ぶ。それをアミュレットにする。それは「起動コスト2：これを墓場に置く」を持つ。",
-            craft: "Dragon",
-            cardType: "Follower",
+            desc: "/quick\n"
+                + "お互いのリーダーに1ダメージ。\n"
+                + "お互いの場にフォレストバット1体を出す。",
+            craft: "Nightmare",
+            cardType: "Spell",
             imageSrc: "https://svgdb.me/assets/fullart/1086340100.png",
-            attack: 0,
-            defense: 0,
-            cost: 9,
+            cost: 0,
+            rarity: "BR",
+            name: "眷属への贈り物",
+            cardNo: "TE01-001 2023",
         },
         height: 2000,
         canvas,
@@ -35,6 +36,11 @@
         card.draw();
     }
 
+    function download() {
+        card.download();
+    }
+
     document.getElementById("btn").addEventListener("click", (event) => refresh());
+    document.getElementById("download").addEventListener("click", (event) => download());
 </script>
 </html>
