@@ -7,7 +7,7 @@ module.exports = {
     entry: ["./src/index.js"],
     output: {
         path: isProduction ? `${__dirname}/dist` : `${__dirname}/examples`,
-        assetModuleFilename: "asset/[contenthash][ext][query]",
+        assetModuleFilename: "sve-card-asset/[contenthash][ext][query]",
         filename: "index.js",
         library: {
             name: "SVECard",

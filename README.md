@@ -1,6 +1,6 @@
 # sve-card
 
-DIY Shadowverse EVOLVE in browser.
+DIY Shadowverse EVOLVE card in browser.
 
 ## Usage
 

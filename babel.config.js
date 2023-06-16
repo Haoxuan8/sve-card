@@ -7,7 +7,6 @@ module.exports = function (api) {
                 "@babel/preset-env",
                 {
                     useBuiltIns: false,
-                    corejs: 3,
                     targets: {
                         chrome: "69",
                         safari: "11",
