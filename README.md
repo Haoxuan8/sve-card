@@ -2,6 +2,10 @@
 
 DIY Shadowverse EVOLVE card in browser.
 
+## Example
+
+[gh-pages](https://haoxuan8.github.io/sve-card/)
+
 ## Usage
 
 
