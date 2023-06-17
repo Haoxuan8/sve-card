@@ -4,16 +4,15 @@ const isProduction = nodeEnv === "production";
 
 module.exports = {
     mode: nodeEnv,
-    entry: ["./src/index.js"],
+    entry: "./src/index.js",
     output: {
         path: isProduction ? `${__dirname}/dist` : `${__dirname}/examples`,
         assetModuleFilename: "sve-card-asset/[contenthash][ext][query]",
-        filename: "index.js",
+        filename: "svecard.min.js",
         library: {
             name: "SVECard",
             type: "umd",
         },
-        globalObject: "this",
     },
     optimization: {
         minimize: true,

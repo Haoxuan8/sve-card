@@ -1,6 +1,4 @@
 module.exports = function (api) {
-    api.cache(true);
-
     return {
         presets: [
             [
@@ -11,6 +9,7 @@ module.exports = function (api) {
                         chrome: "69",
                         safari: "11",
                     },
+                    modules: api.env("es") ? false : "auto",
                 },
             ],
         ],

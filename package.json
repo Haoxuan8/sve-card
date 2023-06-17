@@ -2,11 +2,12 @@
     "name": "sve-card",
     "version": "0.0.1",
     "description": "",
-    "main": "dist/index.js",
+    "main": "es/index.js",
     "types": "types/index.d.ts",
     "scripts": {
         "dev": "cross-env NODE_ENV=development webpack serve",
-        "build": "cross-env NODE_ENV=production webpack --progress"
+        "build": "cross-env NODE_ENV=production webpack --progress",
+        "build-es": "node ./scripts/build.js"
     },
     "repository": {
         "type": "git",
@@ -25,6 +26,7 @@
         "@babel/preset-env": "^7.20.2",
         "babel-loader": "^9.1.2",
         "copy-webpack-plugin": "^11.0.0",
+        "core-js": "^3.31.0",
         "cross-env": "^7.0.3",
         "css-loader": "^6.7.3",
         "eslint": "^8.37.0",

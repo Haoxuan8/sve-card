@@ -1,5 +1,7 @@
 import Card from "./Card";
 
-export {
+export {Card};
+
+export default {
     Card,
 };

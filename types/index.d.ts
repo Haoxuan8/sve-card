@@ -19,7 +19,10 @@ declare class Card {
     constructor(params: {
         data: CardData,
         canvas: HTMLCanvasElement,
+        height: number,
     });
+
+    draw();
 }
 
 declare namespace SVECard {
