@@ -7,3 +7,7 @@ export const getIsNoStatus = (cardType) => {
 export const isToken = (cardType) => {
     return ["AmuletToken", "FollowerToken", "SpellToken"].includes(cardType);
 };
+
+export const isEvo = (cardType) => {
+    return ["FollowerEvo"].includes(cardType);
+};

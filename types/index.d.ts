@@ -23,6 +23,9 @@ declare class Card {
     });
 
     draw();
+
+    setData(data: Partial<CardData>);
+    setSize(size: number[]);
 }
 
 declare namespace SVECard {

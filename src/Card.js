@@ -1,6 +1,7 @@
 import AssetManager from "./AssetManager";
 import CardDrawer from "./CardDrawer";
 import {getConfig} from "./config/config";
+import {isArray, assign} from "lodash";
 
 export default class Card {
     constructor({
@@ -24,6 +25,18 @@ export default class Card {
         else {
             const ratio = 459 / 642;
             this.canvas.width = ratio * height;
+        }
+    };
+
+    setData = (data, options) => {
+        assign(this.data, data);
+        this.draw();
+    };
+
+    setSize = (size) => {
+        if (isArray(size)) {
+            this.setCanvasSize(size[0], size[1]);
+            this.draw();
         }
     };
 

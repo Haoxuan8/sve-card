@@ -30,8 +30,9 @@ const defaultConfig = {
         color: "#FFF",
         fontSize: 11,
         position: [160, 600, 80], // // 以从者模板的位置为准
-        noStatusOffset: -120,
-        tokenOffset: 210,
+        noStatusOffset: -40,
+        tokenOffset: 40,
+        evoOffset: 40,
     },
     rarity: {
         position: [323, 586, 55, 19], // 以从者模板的位置为准，当为法术时会 left 会加上 offset
@@ -123,6 +124,9 @@ export const getConfig = (canvas, c) => {
         race: {
             fontFamily: config.textFontFamily,
             ...config.race,
+            noStatusOffset: config.race.noStatusOffset * scale,
+            tokenOffset: config.race.tokenOffset * scale,
+            evoOffset: config.race.evoOffset * scale,
             fontSize: Math.round(config.race.fontSize * scale),
             position: getPosition(config.race.position, scale, left, top),
         },

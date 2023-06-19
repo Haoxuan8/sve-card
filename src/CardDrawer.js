@@ -1,6 +1,6 @@
 import splitText, {measureIconWidth, textIconMap} from "./util/splitText";
 import {forEach} from "lodash";
-import {getIsNoStatus, isToken} from "./util/cardTypeUtil";
+import {getIsNoStatus, isEvo, isToken} from "./util/cardTypeUtil";
 
 const DEFAULT_COPYRIGHT = "©Cygames,Inc.";
 
@@ -126,16 +126,17 @@ export default class CardDrawer {
     drawAttackDefenseCost = () => {
         const isNoStatus = getIsNoStatus(this.data.cardType);
         const drawNumber = (number, config) => {
-            if (Number.isInteger(number)) {
+            if (number != null) {
                 this.assetManager.loadFont(config.fontFamily);
                 this.canvasContext.save();
-                this.canvasContext.font = `${config.fontSize}px ${config.fontFamily}`;
+                this.canvasContext.font = `${config.fontWeight ?? ""} ${config.fontSize}px ${config.fontFamily}`;
                 this.canvasContext.textAlign = "center";
                 this.canvasContext.shadowColor = "black";
                 this.canvasContext.shadowBlur = config.shadowBlur;
                 this.canvasContext.lineWidth = config.shadowLine;
                 this.canvasContext.strokeText(`${number}`, ...config.position);
                 this.canvasContext.fillStyle = config.color;
+                this.canvasContext.shadowBlur = 0;
                 this.canvasContext.fillText(`${number}`, ...config.position);
                 this.canvasContext.restore();
             }
@@ -143,7 +144,7 @@ export default class CardDrawer {
 
         !isNoStatus && drawNumber(this.data.attack, this.config.attack);
         !isNoStatus && drawNumber(this.data.defense, this.config.defense);
-        drawNumber(this.data.cost, this.config.cost);
+        !isEvo(this.data.cardType) && drawNumber(this.data.cost, this.config.cost);
     };
 
     drawText = (text, config, setContext) => {
@@ -169,6 +170,7 @@ export default class CardDrawer {
         let offset = 0;
         if (getIsNoStatus(this.data.cardType)) offset += this.config.race.noStatusOffset;
         if (isToken(this.data.cardType)) offset += this.config.race.tokenOffset;
+        if (isEvo(this.data.cardType)) offset += this.config.race.evoOffset;
         this.drawText(this.data.race, {
             ...this.config.race,
             position: [left + offset, top, width],
