@@ -16,7 +16,7 @@ export default class Card {
         this.setCanvasSize(height, width);
         this.config = getConfig(this.canvas);
         this.assetManager = new AssetManager(data, {onEachStepLoad: this.draw});
-        this.cardDrawer = new CardDrawer(data, canvas, this.config, this.assetManager);
+        this.cardDrawer = new CardDrawer(data, this.canvas, this.config, this.assetManager);
     }
 
     setCanvasSize = (height, width) => {
@@ -36,6 +36,8 @@ export default class Card {
     setSize = (size) => {
         if (isArray(size)) {
             this.setCanvasSize(size[0], size[1]);
+            const newConfig = getConfig(this.canvas);
+            assign(this.config, newConfig);
             this.draw();
         }
     };

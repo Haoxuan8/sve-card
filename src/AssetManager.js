@@ -1,7 +1,7 @@
 import loadImageUtil from "./util/loadImage";
 import getFrame from "./util/getFrame";
 import DescBackgroundPng from "./asset/image/desc_background.png";
-import "./asset/font/index.scss";
+import "./asset/font/index.css";
 import FontFaceObserver from "fontfaceobserver";
 import BRPng from "./asset/image/rarity/BR.png";
 import GRPng from "./asset/image/rarity/GR.png";

@@ -5,7 +5,7 @@ const defaultConfig = {
     size: [459, 642],
     cardImage: {
         position: [0, 0, 459, 642],
-        radius: 28, // 图片铺满卡片，需要圆角防止溢出卡牌 TODO: 调整
+        radius: 30, // 图片铺满卡片，需要圆角防止溢出卡牌 TODO: 调整
     },
     textFontFamily: "sve-card-ja",
     desc: {
@@ -31,8 +31,8 @@ const defaultConfig = {
         fontSize: 11,
         position: [160, 600, 80], // // 以从者模板的位置为准
         noStatusOffset: -40,
-        tokenOffset: 40,
-        evoOffset: 40,
+        tokenOffset: 70,
+        evoOffset: 70,
     },
     rarity: {
         position: [323, 586, 55, 19], // 以从者模板的位置为准，当为法术时会 left 会加上 offset

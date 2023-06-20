@@ -12,7 +12,6 @@
 </body>
 <script src="./svecard.min.js"></script>
 <script>
-    console.log(SVECard);
     const {Card} = SVECard;
     const canvas = document.getElementById("test");
     const card = new Card({
@@ -21,10 +20,13 @@
                 + "お互いのリーダーに1ダメージ。\n"
                 + "お互いの場にフォレストバット1体を出す。",
             craft: "Nightmare",
-            cardType: "Spell",
+            cardType: "Follower",
             imageSrc: "https://svgdb.me/assets/fullart/1086340100.png",
-            cost: 0,
+            cost: 6,
+            attack: 6,
+            defense: 6,
             rarity: "BR",
+            race: "眷属",
             name: "眷属への贈り物",
             cardNo: "TE01-001 2023",
         },

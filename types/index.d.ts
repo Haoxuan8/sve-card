@@ -13,6 +13,8 @@ interface CardData {
     defense?: number;
     cost?: number;
     desc?: string;
+    cardNo?: string;
+    copyright?: string;
 }
 
 declare class Card {
