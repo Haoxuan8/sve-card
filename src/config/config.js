@@ -61,12 +61,14 @@ const defaultConfig = {
         shadowLine: 2,
     },
     cardNo: {
+        URColor: "#FFF",
         color: "#FFF",
         tokenColor: "#000",
         fontSize: 8,
         position: [26, 632, 100],
     },
     copyright: {
+        URColor: "#FFF",
         color: "#FFF",
         tokenColor: "#000",
         fontSize: 8,

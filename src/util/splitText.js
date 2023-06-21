@@ -22,6 +22,7 @@ import FanfarePng from "../asset/image/desc/fanfare.png";
 import LastwordPng from "../asset/image/desc/lastword.png";
 import AttackPng from "../asset/image/desc/attack.png";
 import DefensePng from "../asset/image/desc/defense.png";
+import EatPng from "../asset/image/desc/eat.png";
 import Cost0Png from "../asset/image/desc/cost0.png";
 import Cost1Png from "../asset/image/desc/cost1.png";
 import Cost2Png from "../asset/image/desc/cost2.png";
@@ -72,6 +73,11 @@ export const textIconMap = {
     },
     "/defense": {
         src: DefensePng,
+        height: 184,
+        width: 187,
+    },
+    "/eat": {
+        src: EatPng,
         height: 184,
         width: 187,
     },

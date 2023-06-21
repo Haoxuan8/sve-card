@@ -7,12 +7,14 @@ import BRPng from "./asset/image/rarity/BR.png";
 import GRPng from "./asset/image/rarity/GR.png";
 import SRPng from "./asset/image/rarity/SR.png";
 import LGPng from "./asset/image/rarity/LG.png";
+import URPng from "./asset/image/rarity/UR.png";
 
 const rarityImageMap = {
     BR: BRPng,
     GR: GRPng,
     SR: SRPng,
     LG: LGPng,
+    UR: URPng,
 };
 
 const defaultOptions = {

@@ -71,6 +71,7 @@ Configure the `rules` how to handle `.png`, `.ttf` and `.css` resources.
 | /lastword  |   谢幕曲   |
 | /attack    |   攻击力   |
 | /defense   |   体力    |
+| /eat |   吃饭    |
 | /cost{0-9} | 花费{0-9} |  
 | /costx|  花费10   |
 

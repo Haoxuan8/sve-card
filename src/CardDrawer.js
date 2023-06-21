@@ -190,9 +190,15 @@ export default class CardDrawer {
     drawFooter = () => {
         const cardNoConfig = this.config.cardNo;
         const copyrightConfig = this.config.copyright;
-        this.drawText(this.data.cardNo, {...cardNoConfig, color: isToken(this.data.cardType) ? cardNoConfig.tokenColor : cardNoConfig.color});
+        const getColor = (config) => {
+            if (isToken(this.data.cardType)) return config.tokenColor;
+            else if (this.data.rarity === "UR") return config.URColor;
+            else return config.color;
+        };
+
+        this.drawText(this.data.cardNo, {...cardNoConfig, color: getColor(cardNoConfig)});
         this.drawText(this.data.copyright ?? DEFAULT_COPYRIGHT,
-            {...copyrightConfig, color: isToken(this.data.cardType) ? copyrightConfig.tokenColor : copyrightConfig.color},
+            {...copyrightConfig, color: getColor(copyrightConfig)},
             () => {
             this.canvasContext.textAlign = "right";
         });

@@ -28,6 +28,7 @@ declare class Card {
 
     setData(data: Partial<CardData>);
     setSize(size: number[]);
+    setConfig(config: object);
 }
 
 declare namespace SVECard {
