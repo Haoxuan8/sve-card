@@ -5,7 +5,7 @@ const defaultConfig = {
     size: [459, 642],
     cardImage: {
         position: [0, 0, 459, 642],
-        radius: 30, // 图片铺满卡片，需要圆角防止溢出卡牌 TODO: 调整
+        radius: 34, // 图片铺满卡片，需要圆角防止溢出卡牌 TODO: 调整
     },
     textFontFamily: "sve-card-ja",
     desc: {
