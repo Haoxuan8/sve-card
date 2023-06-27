@@ -43,9 +43,9 @@ yarn build
     });
     card.draw();
 </script>
+```
 
 Please move `sve-card-asset` to your static directory, ensure `./sve-card-asset/***.png` can be accessed.
-```
 
 ### ES Module
 

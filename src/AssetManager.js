@@ -1,6 +1,7 @@
 import loadImageUtil from "./util/loadImage";
 import getFrame from "./util/getFrame";
 import DescBackgroundPng from "./asset/image/desc_background.png";
+import URDescBackgroundPng from "./asset/image/UR_desc_background.png";
 import "./asset/font/index.css";
 import FontFaceObserver from "fontfaceobserver";
 import BRPng from "./asset/image/rarity/BR.png";
@@ -60,8 +61,8 @@ export default class AssetManager {
         return this.loadImage(this.data.imageSrc, {cors: true});
     };
 
-    loadDescBackground = () => {
-        return this.loadImage(DescBackgroundPng);
+    loadDescBackground = (UR) => {
+        return this.loadImage(UR ? URDescBackgroundPng : DescBackgroundPng);
     };
 
     loadFont = async (name) => {

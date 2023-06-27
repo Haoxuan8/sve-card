@@ -1,6 +1,6 @@
 import splitText, {measureIconWidth, textIconMap} from "./util/splitText";
-import {forEach} from "lodash";
-import {getIsNoStatus, isEvo, isToken} from "./util/cardTypeUtil";
+import {forEach, size} from "lodash";
+import {getIsNoStatus, isEvo, isToken, isUR} from "./util/cardTypeUtil";
 
 const DEFAULT_COPYRIGHT = "©Cygames,Inc.";
 
@@ -72,24 +72,43 @@ export default class CardDrawer {
         this.canvasContext.restore();
     };
 
-    drawDesc = () => {
+    ctxMeasureTextWidth = (text) => this.canvasContext.measureText(text).width;
+
+    getDescLines = (maxWidth, maxLine) => {
         this.assetManager.loadFont(this.config.desc.fontFamily);
         this.canvasContext.save();
         this.canvasContext.fillStyle = this.config.desc.color;
         this.canvasContext.font = `${this.config.desc.fontSize}px ${this.config.desc.fontFamily}`;
-        const ctxMeasureTextWidth = (text) => this.canvasContext.measureText(text).width;
         this.canvasContext.textBaseline = "top";
         const iconOptions = {iconHeight: this.config.desc.iconHeight, iconPaddingX: this.config.desc.iconPaddingX};
-        const {list, scale} = splitText(this.data.desc, this.config.desc.position[2],
-            this.config.desc.maxLine, ctxMeasureTextWidth, iconOptions);
+        const result = splitText(this.data.desc, maxWidth,
+            maxLine, this.ctxMeasureTextWidth, iconOptions);
+        this.canvasContext.restore();
+        return result;
+    };
+
+    drawDesc = () => {
+        this.assetManager.loadFont(this.config.desc.fontFamily);
+        const {list, scale} = this.getDescLines(this.config.desc.position[2], this.config.desc.maxLine);
+        this.canvasContext.save();
+        this.canvasContext.fillStyle = this.config.desc.color;
+        this.canvasContext.font = `${this.config.desc.fontSize}px ${this.config.desc.fontFamily}`;
+        this.canvasContext.textBaseline = "top";
+        const position = [...(isUR(this.data) ? this.config.desc.URPosition : this.config.desc.position)];
+        if (isUR(this.data)) {
+            const height = this.config.desc.lineHeight * size(list);
+            position[0] += this.config.descBackground.URPaddingX;
+            position[1] = position[1] - height - this.config.descBackground.URPaddingY;
+            position[2] -= 2 * this.config.descBackground.URPaddingX;
+        }
         forEach(list, (textArr, i) => {
             let currentText = "";
-            let left = this.config.desc.position[0];
-            let top = this.config.desc.position[1] + i * this.config.desc.lineHeight;
+            let left = position[0];
+            let top = position[1] + i * this.config.desc.lineHeight;
             forEach(textArr, (it) => {
                 const flashText = () => {
                     if (currentText !== "") {
-                        const maxWidth = ctxMeasureTextWidth(currentText) * scale;
+                        const maxWidth = this.ctxMeasureTextWidth(currentText) * scale;
                         this.canvasContext.fillText(currentText, left, top, maxWidth);
                         currentText = "";
                         left += maxWidth;
@@ -119,12 +138,19 @@ export default class CardDrawer {
     };
 
     drawDescBackground = () => {
-        const image = this.assetManager.loadDescBackground();
-        this.drawImage(image, ...this.config.descBackground.position);
+        const image = this.assetManager.loadDescBackground(isUR(this.data));
+        const position =[...(isUR(this.data) ? this.config.descBackground.URPosition : this.config.descBackground.position)];
+        if (isUR(this.data)) {
+            const lines = size(this.getDescLines(position[2], this.config.desc.URMaxLine).list);
+            const height = this.config.descBackground.URLineHeight * lines + 2 * this.config.descBackground.URPaddingY;
+            position[3] = height;
+            position[1] -= height;
+        }
+        this.drawImage(image, ...position);
     };
 
     drawAttackDefenseCost = () => {
-        const isNoStatus = getIsNoStatus(this.data.cardType);
+        const isNoStatus = getIsNoStatus(this.data);
         const drawNumber = (number, config) => {
             if (number != null) {
                 this.assetManager.loadFont(config.fontFamily);
@@ -144,7 +170,7 @@ export default class CardDrawer {
 
         !isNoStatus && drawNumber(this.data.attack, this.config.attack);
         !isNoStatus && drawNumber(this.data.defense, this.config.defense);
-        !isEvo(this.data.cardType) && drawNumber(this.data.cost, this.config.cost);
+        !isEvo(this.data) && drawNumber(this.data.cost, this.config.cost);
     };
 
     drawText = (text, config, setContext) => {
@@ -168,9 +194,9 @@ export default class CardDrawer {
     drawRace = () => {
         const [left, top, width] = this.config.race.position;
         let offset = 0;
-        if (getIsNoStatus(this.data.cardType)) offset += this.config.race.noStatusOffset;
-        if (isToken(this.data.cardType)) offset += this.config.race.tokenOffset;
-        if (isEvo(this.data.cardType)) offset += this.config.race.evoOffset;
+        if (getIsNoStatus(this.data)) offset += this.config.race.noStatusOffset;
+        if (isToken(this.data)) offset += this.config.race.tokenOffset;
+        if (isEvo(this.data)) offset += this.config.race.evoOffset;
         this.drawText(this.data.race, {
             ...this.config.race,
             position: [left + offset, top, width],
@@ -178,11 +204,11 @@ export default class CardDrawer {
     };
 
     drawRarity = () => {
-        if (isToken(this.data.cardType)) {}
+        if (isToken(this.data)) {}
         else {
             const image = this.assetManager.loadRarityImage(this.data.rarity);
             const [left, top, width, height] = this.config.rarity.position;
-            const isNoStatus = getIsNoStatus(this.data.cardType);
+            const isNoStatus = getIsNoStatus(this.data);
             this.drawImage(image, left + (isNoStatus ? this.config.rarity.noStatusOffset : 0), top, width, height);
         }
     };
@@ -191,8 +217,8 @@ export default class CardDrawer {
         const cardNoConfig = this.config.cardNo;
         const copyrightConfig = this.config.copyright;
         const getColor = (config) => {
-            if (isToken(this.data.cardType)) return config.tokenColor;
-            else if (this.data.rarity === "UR") return config.URColor;
+            if (isToken(this.data)) return config.tokenColor;
+            else if (isUR(this.data)) return config.URColor;
             else return config.color;
         };
 

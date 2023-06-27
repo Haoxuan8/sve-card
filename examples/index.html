@@ -17,7 +17,7 @@
     const card = new Card({
         data: {
             desc: "/quick\n"
-                + "/evo/cost2お互いのリーダーに1ダメージ。\n"
+                + "/evo/cost2:お互いのリーダーに1ダメージ。\n"
                 + "お互いの場にフォレストバット1体を出す。",
             craft: "Nightmare",
             cardType: "Follower",
@@ -25,13 +25,16 @@
             cost: 6,
             attack: 6,
             defense: 6,
-            rarity: "BR",
+            rarity: "UR",
             race: "眷属",
             name: "眷属への贈り物",
             cardNo: "TE01-001 2023",
         },
         height: 2000,
         canvas,
+        config: {
+            textFontFamily: "sve-card-cn",
+        },
     });
     card.draw();
 

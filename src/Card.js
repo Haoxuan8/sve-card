@@ -9,12 +9,13 @@ export default class Card {
         canvas,
         height = 642 * 2,
         width,
+        config = {},
     } = {}) {
         console.assert(canvas != null, "canvas element is null.");
         this.data = data;
         this.canvas = canvas;
         this.setCanvasSize(height, width);
-        this.config = getConfig(this.canvas);
+        this.config = getConfig(this.canvas, config);
         this.assetManager = new AssetManager(data, {onEachStepLoad: this.draw});
         this.cardDrawer = new CardDrawer(data, this.canvas, this.config, this.assetManager);
     }

@@ -12,6 +12,7 @@ const defaultConfig = {
         color: "#FFF",
         fontSize: 14,
         maxLine: 6,
+        URMaxLine: 8,
         lineHeight: 18,
         iconPaddingX: 0,
         iconHeight: 15,
@@ -20,6 +21,9 @@ const defaultConfig = {
     },
     descBackground: {
         position: [0, 388, 459, 254],
+        URPosition: [0, 526, 459],
+        URPaddingY: 6,
+        URPaddingX: 32,
     },
     name: {
         color: "#FFF",
@@ -77,7 +81,7 @@ const defaultConfig = {
 };
 
 export const getConfig = (canvas, c) => {
-    const config = mergeDeep(c, defaultConfig);
+    const config = mergeDeep(defaultConfig, c);
     const _sizeRate = config.size[1] / config.size[0]; // height / width
 
     const clientWidth = canvas.width;
@@ -113,9 +117,14 @@ export const getConfig = (canvas, c) => {
             iconPaddingX: Math.round(config.desc.iconPaddingX * scale),
             iconHeight: Math.round(config.desc.iconHeight * scale),
             iconTopOffset: Math.round(config.desc.iconTopOffset * scale),
+            URPosition: getPosition(config.descBackground.URPosition, scale, left, top),
         },
         descBackground: {
             position: getPosition(config.descBackground.position, scale, left, top),
+            URPosition: getPosition(config.descBackground.URPosition, scale, left, top),
+            URPaddingY: config.descBackground.URPaddingY * scale,
+            URPaddingX: config.descBackground.URPaddingX * scale,
+            URLineHeight: config.desc.lineHeight * scale,
         },
         name: {
             fontFamily: config.textFontFamily,
