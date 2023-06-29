@@ -8,6 +8,7 @@ const defaultConfig = {
         radius: 34, // 图片铺满卡片，需要圆角防止溢出卡牌 TODO: 调整
     },
     textFontFamily: "sve-card-ja",
+    footerFontFamily: "sve-card-ja",
     desc: {
         color: "#FFF",
         fontSize: 14,
@@ -171,13 +172,13 @@ export const getConfig = (canvas, c) => {
             shadowLine: config.defense.shadowLine * scale,
         },
         cardNo: {
-            fontFamily: config.textFontFamily,
+            fontFamily: config.footerFontFamily,
             ...config.cardNo,
             fontSize: Math.round(config.cardNo.fontSize * scale),
             position: getPosition(config.cardNo.position, scale, left, top),
         },
         copyright: {
-            fontFamily: config.textFontFamily,
+            fontFamily: config.footerFontFamily,
             ...config.copyright,
             fontSize: Math.round(config.copyright.fontSize * scale),
             position: getPosition(config.copyright.position, scale, left, top),

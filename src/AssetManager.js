@@ -70,8 +70,10 @@ export default class AssetManager {
         if (this.loadingMap[loadingKey]) return;
         this.loadingMap[loadingKey] = true;
         const font = new FontFaceObserver(name);
-        await font.load();
-        this.onEachStepLoad?.();
+        try {
+            await font.load();
+            this.onEachStepLoad?.();
+        } catch (e) {}
         // if (!document.fonts.check(`12px ${name}`) && !this.loadingMap[loadingKey]) {
         //     if (fontPathMap[name]) {
         //         this.loadingMap[loadingKey] = true;

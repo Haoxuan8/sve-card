@@ -44,7 +44,7 @@ export default class Card {
     };
 
     setConfig = (config) => {
-        assign(this.config, config);
+        assign(this.config, getConfig(this.canvas, config));
         this.draw();
     };
 
