@@ -103,7 +103,7 @@ import ForestURPng from "../asset/image/forest/forest_UR.png";
 import ForestAmuletURPng from "../asset/image/forest/forest_amulet_UR.png";
 import ForestEvoURPng from "../asset/image/forest/forest_evo_UR.png";
 import ForestSpellURPng from "../asset/image/forest/forest_spell_UR.png";
-import mergeDeep from "./mergeDeep";
+import {cloneDeep, assign} from "lodash";
 
 const frameMap = {
     Dragon: {
@@ -287,7 +287,8 @@ const defaultOptions = {
 };
 
 const getFrame = (data, _options = {}) => {
-    const options = mergeDeep(_options, defaultOptions);
+    const options = cloneDeep(defaultOptions);
+    assign(options, _options);
     const craft = frameMap[data.craft];
     const isLG = data.rarity === "LG";
     const isUR = data.rarity === "UR";

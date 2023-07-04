@@ -1,4 +1,4 @@
-import mergeDeep from "../util/mergeDeep";
+import {cloneDeep, assign} from "lodash";
 import getPosition from "../util/getPosition";
 
 const defaultConfig = {
@@ -82,7 +82,8 @@ const defaultConfig = {
 };
 
 export const getConfig = (canvas, c) => {
-    const config = mergeDeep(defaultConfig, c);
+    const config = cloneDeep(defaultConfig);
+    assign(config, c);
     const _sizeRate = config.size[1] / config.size[0]; // height / width
 
     const clientWidth = canvas.width;
