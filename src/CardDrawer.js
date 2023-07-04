@@ -89,7 +89,7 @@ export default class CardDrawer {
 
     drawDesc = () => {
         this.assetManager.loadFont(this.config.desc.fontFamily);
-        const {list, scale} = this.getDescLines(this.config.desc.position[2], this.config.desc.maxLine);
+        const {list, scale} = this.getDescLines(this.config.desc.position[2], isUR(this.data) ? this.config.desc.URMaxLine : this.config.desc.maxLine);
         this.canvasContext.save();
         this.canvasContext.fillStyle = this.config.desc.color;
         this.canvasContext.font = `${this.config.desc.fontSize}px ${this.config.desc.fontFamily}`;
@@ -141,7 +141,7 @@ export default class CardDrawer {
         const image = this.assetManager.loadDescBackground(isUR(this.data));
         const position =[...(isUR(this.data) ? this.config.descBackground.URPosition : this.config.descBackground.position)];
         if (isUR(this.data)) {
-            const lines = size(this.getDescLines(position[2], this.config.desc.URMaxLine).list);
+            const lines = size(this.getDescLines(this.config.desc.position[2], this.config.desc.URMaxLine).list);
             const height = this.config.descBackground.URLineHeight * lines + 2 * this.config.descBackground.URPaddingY;
             position[3] = height;
             position[1] -= height;
