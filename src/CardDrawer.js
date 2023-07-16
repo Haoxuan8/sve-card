@@ -1,6 +1,7 @@
 import splitText, {measureIconWidth, textIconMap} from "./util/splitText";
-import {forEach, size} from "lodash";
+import {compact, forEach, map, size, split, sumBy} from "lodash";
 import {getIsNoStatus, isEvo, isToken, isUR} from "./util/cardTypeUtil";
+import getNumberPosition, { getNumberSprite } from "./util/getNumberPosition";
 
 const DEFAULT_COPYRIGHT = "©Cygames,Inc.";
 
@@ -151,26 +152,53 @@ export default class CardDrawer {
 
     drawAttackDefenseCost = () => {
         const isNoStatus = getIsNoStatus(this.data);
-        const drawNumber = (number, config) => {
-            if (number != null) {
-                this.assetManager.loadFont(config.fontFamily);
-                this.canvasContext.save();
-                this.canvasContext.font = `${config.fontWeight ?? ""} ${config.fontSize}px ${config.fontFamily}`;
-                this.canvasContext.textAlign = "center";
-                this.canvasContext.shadowColor = "black";
-                this.canvasContext.shadowBlur = config.shadowBlur;
-                this.canvasContext.lineWidth = config.shadowLine;
-                this.canvasContext.strokeText(`${number}`, ...config.position);
-                this.canvasContext.fillStyle = config.color;
-                this.canvasContext.shadowBlur = 0;
-                this.canvasContext.fillText(`${number}`, ...config.position);
-                this.canvasContext.restore();
+        const image = this.assetManager.loadImage(getNumberSprite(isUR(this.data)));
+        const drawNumber = (number, config, isCost) => {
+            if (number != null && image) {
+                const numbers = split(number, "");
+                const numberPositions = map(numbers, n => getNumberPosition(n, {isUR: isUR(this.data), isCost}));
+                if (compact(numberPositions).length > 0) {
+                    let numberSize = map(numberPositions, position => {
+                        const height = config.fontSize;
+                        const s = height / position[3];
+                        return [position[2] * s, height];
+                    });
+                    let width = sumBy(numberSize, it => it[0]);
+                    if (width > config.position[2]) {
+                        const s = width / config.position[2];
+                        numberSize = map(numberSize, size => ([size[0] / s, size[1]]));
+                        width = sumBy(numberSize, it => it[0]);
+                    }
+
+                    const left = config.position[0] - width / 2;
+                    const top = config.position[1] - config.fontSize / 2;
+                    let leftOffset = 0;
+                    forEach(numbers, (n, index) => {
+                        this.drawImage(image,
+                            ...numberPositions[index],
+                            left + leftOffset, top, ...numberSize[index],);
+                        leftOffset += numberSize[index][0];
+                    })
+                }
+        
+                // this.assetManager.loadFont(config.fontFamily);
+                // this.canvasContext.save();
+                // this.canvasContext.font = `${config.fontWeight ?? ""} ${config.fontSize}px ${config.fontFamily}`;
+                // this.canvasContext.textAlign = "center";
+                // this.canvasContext.shadowColor = "black";
+                // this.canvasContext.shadowBlur = config.shadowBlur;
+                // this.canvasContext.lineWidth = config.shadowLine;
+                // this.canvasContext.strokeText(`${number}`, ...config.position);
+                // this.canvasContext.fillStyle = config.color;
+                // this.canvasContext.shadowBlur = 0;
+                // this.canvasContext.fillText(`${number}`, ...config.position);
+                // this.canvasContext.restore();
             }
         };
 
         !isNoStatus && drawNumber(this.data.attack, this.config.attack);
         !isNoStatus && drawNumber(this.data.defense, this.config.defense);
-        !isEvo(this.data) && drawNumber(this.data.cost, this.config.cost);
+        !isEvo(this.data) && drawNumber(this.data.cost, this.config.cost, true);
     };
 
     drawText = (text, config, setContext) => {

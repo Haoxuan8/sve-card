@@ -84,3 +84,7 @@ yarn dev
 ```
 
 modify `examples/index.html` to see result.
+
+## Thanks
+
+- [noteRE]() provides card resources.
