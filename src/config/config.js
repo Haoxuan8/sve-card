@@ -45,7 +45,7 @@ const defaultConfig = {
     },
     cost: {
         color: "#FFF",
-        fontSize: 58,
+        fontSize: 52,
         position: [54, 58, 64],
         shadowBlur: 6,
         shadowLine: 4,

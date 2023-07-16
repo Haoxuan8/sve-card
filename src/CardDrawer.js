@@ -224,7 +224,7 @@ export default class CardDrawer {
         let offset = 0;
         if (getIsNoStatus(this.data)) offset += this.config.race.noStatusOffset;
         if (isToken(this.data)) offset += this.config.race.tokenOffset;
-        if (isEvo(this.data)) offset += this.config.race.evoOffset;
+        if (isEvo(this.data) && isUR(this.data)) offset += this.config.race.evoOffset;
         this.drawText(this.data.race, {
             ...this.config.race,
             position: [left + offset, top, width],
