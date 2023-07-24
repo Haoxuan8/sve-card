@@ -43,25 +43,24 @@ const defaultConfig = {
         position: [323, 586, 55, 19], // 以从者模板的位置为准，当为法术时会 left 会加上 offset
         noStatusOffset: 40,
     },
-    numberFontFamily: "sve-card-number", // cost、attack、defense 字体 TODO: 替换字体
     cost: {
         color: "#FFF",
-        fontSize: 56,
-        position: [54, 74, 44],
+        fontSize: 52,
+        position: [54, 58, 64],
         shadowBlur: 6,
         shadowLine: 4,
     },
     attack: {
         color: "#FFF",
-        fontSize: 46,
-        position: [45, 585, 44],
+        fontSize: 38,
+        position: [45, 572, 44],
         shadowBlur: 2,
         shadowLine: 2,
     },
     defense: {
         color: "#FFF",
-        fontSize: 46,
-        position: [414, 585, 44],
+        fontSize: 38,
+        position: [414, 572, 44],
         shadowBlur: 2,
         shadowLine: 2,
     },
@@ -149,7 +148,6 @@ export const getConfig = (canvas, c) => {
             noStatusOffset: config.rarity.noStatusOffset * scale,
         },
         cost: {
-            fontFamily: config.numberFontFamily,
             ...config.cost,
             fontSize: Math.round(config.cost.fontSize * scale),
             position: getPosition(config.cost.position, scale, left, top),
@@ -157,7 +155,6 @@ export const getConfig = (canvas, c) => {
             shadowLine: config.cost.shadowLine * scale,
         },
         attack: {
-            fontFamily: config.numberFontFamily,
             ...config.attack,
             fontSize: Math.round(config.attack.fontSize * scale),
             position: getPosition(config.attack.position, scale, left, top),
@@ -165,7 +162,6 @@ export const getConfig = (canvas, c) => {
             shadowLine: config.attack.shadowLine * scale,
         },
         defense: {
-            fontFamily: config.numberFontFamily,
             ...config.defense,
             fontSize: Math.round(config.defense.fontSize * scale),
             position: getPosition(config.defense.position, scale, left, top),
