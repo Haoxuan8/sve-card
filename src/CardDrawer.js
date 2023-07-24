@@ -1,6 +1,6 @@
 import splitText, {measureIconWidth, textIconMap} from "./util/splitText";
 import {compact, forEach, map, size, split, sumBy} from "lodash";
-import {getIsNoStatus, isEvo, isLG, isToken, isUR} from "./util/cardTypeUtil";
+import {getIsNoStatus, isEvo, isLG, isLeader, isToken, isUR} from "./util/cardTypeUtil";
 import getNumberPosition, {getNumberSprite} from "./util/getNumberPosition";
 
 const DEFAULT_COPYRIGHT = "©Cygames,Inc.";
@@ -222,11 +222,14 @@ export default class CardDrawer {
 
     drawName = () => {
         const config = {};
-        if (isUR(this.data) || isLG(this.data)) {
+        if (isUR(this.data) || isLG(this.data) || isLeader(this.data)) {
             config.color = this.config.name.LGColor;
             config.shadowBlur = this.config.name.LGShadowBlur;
             config.shadowLine = this.config.name.LGShadowLine;
             config.shadowColor = this.config.name.LGShadowColor;
+        }
+        if (isLeader(this.data)) {
+            config.position = this.config.name.leaderPosition;
         }
         this.drawText(this.data.name, {...this.config.name, ...config}, () => {
             this.canvasContext.textAlign = "center";
@@ -278,13 +281,13 @@ export default class CardDrawer {
 
     draw = () => {
         this.drawCardImage();
-        this.drawDescBackground();
+        if (!isLeader(this.data)) this.drawDescBackground();
         this.drawFrame();
-        this.drawAttackDefenseCost();
-        this.drawDesc();
+        if (!isLeader(this.data)) this.drawAttackDefenseCost();
+        if (!isLeader(this.data)) this.drawDesc();
         this.drawName();
-        this.drawRace();
-        this.drawRarity();
+        if (!isLeader(this.data)) this.drawRace();
+        if (!isLeader(this.data)) this.drawRarity();
         this.drawFooter();
     };
 }

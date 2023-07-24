@@ -19,3 +19,7 @@ export const isUR = (card) => {
 export const isLG = (card) => {
     return card.rarity === "LG";
 };
+
+export const isLeader = (card) => {
+    return card.cardType === "Leader";
+};

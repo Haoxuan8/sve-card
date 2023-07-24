@@ -103,10 +103,17 @@ import ForestURPng from "../asset/image/forest/forest_UR.png";
 import ForestAmuletURPng from "../asset/image/forest/forest_amulet_UR.png";
 import ForestEvoURPng from "../asset/image/forest/forest_evo_UR.png";
 import ForestSpellURPng from "../asset/image/forest/forest_spell_UR.png";
+import ForestLeaderPng from "../asset/image/leader/forest.png";
+import HeavenLeaderPng from "../asset/image/leader/heaven.png";
+import DragonLeaderPng from "../asset/image/leader/dragon.png";
+import SwordLeaderPng from "../asset/image/leader/sword.png";
+import NightmareLeaderPng from "../asset/image/leader/nightmare.png";
+import RuneLeaderPng from "../asset/image/leader/rune.png";
 import {cloneDeep, assign} from "lodash";
 
 const frameMap = {
     Dragon: {
+        Leader: DragonLeaderPng,
         Follower: {
             normal: DragonPng,
             LG: DragonLGPng,
@@ -132,6 +139,7 @@ const frameMap = {
         FollowerToken: DragonTokenPng,
     },
     Forest: {
+        Leader: ForestLeaderPng,
         Follower: {
             normal: ForestPng,
             LG: ForestLGPng,
@@ -157,6 +165,7 @@ const frameMap = {
         FollowerToken: ForestTokenPng,
     },
     Heaven: {
+        Leader: HeavenLeaderPng,
         Follower: {
             normal: HeavenPng,
             LG: HeavenLGPng,
@@ -182,6 +191,7 @@ const frameMap = {
         FollowerToken: HeavenTokenPng,
     },
     Neutral: {
+        Leader: DragonLeaderPng,
         Follower: {
             normal: NeutralPng,
             LG: NeutralLGPng,
@@ -207,6 +217,7 @@ const frameMap = {
         FollowerToken: NeutralTokenPng,
     },
     Nightmare: {
+        Leader: NightmareLeaderPng,
         Follower: {
             normal: NightmarePng,
             LG: NightmareLGPng,
@@ -232,6 +243,7 @@ const frameMap = {
         FollowerToken: NightmareTokenPng,
     },
     Rune: {
+        Leader: RuneLeaderPng,
         Follower: {
             normal: RunePng,
             LG: RuneLGPng,
@@ -257,6 +269,7 @@ const frameMap = {
         FollowerToken: RuneTokenPng,
     },
     Sword: {
+        Leader: SwordLeaderPng,
         Follower: {
             normal: SwordPng,
             LG: SwordLGPng,
@@ -293,7 +306,7 @@ const getFrame = (data, _options = {}) => {
     const isLG = data.rarity === "LG";
     const isUR = data.rarity === "UR";
     if (data.cardType === "Leader") {
-
+        return craft[data.cardType];
     } else {
         if (["AmuletToken", "SpellToken", "FollowerToken"].includes(data.cardType)) {
             return craft[data.cardType];

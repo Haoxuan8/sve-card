@@ -34,6 +34,7 @@ const defaultConfig = {
         LGShadowLine: 4, // 文字 stoke line width
         fontSize: 22,
         position: [229, 564, 240],
+        leaderPosition: [229, 590, 360],
     },
     race: {
         color: "#FFF",
@@ -130,6 +131,7 @@ export const getConfig = (canvas, c) => {
             ...config.name,
             fontSize: Math.round(config.name.fontSize * scale),
             position: getPosition(config.name.position, scale, left, top),
+            leaderPosition: getPosition(config.name.leaderPosition, scale, left, top),
         },
         race: {
             fontFamily: config.textFontFamily,
