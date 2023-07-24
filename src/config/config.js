@@ -12,7 +12,7 @@ const defaultConfig = {
     desc: {
         color: "#FFF",
         fontSize: 14,
-        maxLine: 6,
+        maxLine: 7,
         URMaxLine: 8,
         lineHeight: 18,
         iconPaddingX: 0,

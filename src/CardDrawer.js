@@ -1,5 +1,5 @@
-import splitText, {measureIconWidth, textIconMap} from "./util/splitText";
-import {compact, forEach, map, size, split, sumBy} from "lodash";
+import splitText, {measureIconWidth, textIconMap, measureTextWidth} from "./util/splitText";
+import {compact, forEach, map, size, split, sumBy, min} from "lodash";
 import {getIsNoStatus, isEvo, isLG, isLeader, isToken, isUR} from "./util/cardTypeUtil";
 import getNumberPosition, {getNumberSprite} from "./util/getNumberPosition";
 
@@ -90,7 +90,7 @@ export default class CardDrawer {
 
     drawDesc = () => {
         this.assetManager.loadFont(this.config.desc.fontFamily);
-        const {list, scale} = this.getDescLines(this.config.desc.position[2], isUR(this.data) ? this.config.desc.URMaxLine : this.config.desc.maxLine);
+        const {list} = this.getDescLines(this.config.desc.position[2], isUR(this.data) ? this.config.desc.URMaxLine : this.config.desc.maxLine);
         this.canvasContext.save();
         this.canvasContext.fillStyle = this.config.desc.color;
         this.canvasContext.font = `${this.config.desc.fontSize}px ${this.config.desc.fontFamily}`;
@@ -102,10 +102,13 @@ export default class CardDrawer {
             position[1] = position[1] - height - this.config.descBackground.URPaddingY;
             position[2] -= 2 * this.config.descBackground.URPaddingX;
         }
+
         forEach(list, (textArr, i) => {
             let currentText = "";
             let left = position[0];
             let top = position[1] + i * this.config.desc.lineHeight;
+            const scale = min([position[2] / measureTextWidth(textArr, this.ctxMeasureTextWidth,
+                 {iconHeight: this.config.desc.iconHeight, iconPaddingX: this.config.desc.iconPaddingX}), 1]);
             forEach(textArr, (it) => {
                 const flashText = () => {
                     if (currentText !== "") {

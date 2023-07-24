@@ -88,6 +88,7 @@ modify `examples/index.html` to see result.
 ## TODO
 
 - [ ] replace`【`, `】`to image
+- [ ] update example page
 
 ## Thanks
 
