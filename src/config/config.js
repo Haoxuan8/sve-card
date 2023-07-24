@@ -5,10 +5,10 @@ const defaultConfig = {
     size: [459, 642],
     cardImage: {
         position: [0, 0, 459, 642],
-        radius: 34, // 图片铺满卡片，需要圆角防止溢出卡牌 TODO: 调整
+        radius: 34,
     },
     textFontFamily: "sve-card-ja",
-    footerFontFamily: "sve-card-ja",
+    footerFontFamily: "sans-serif",
     desc: {
         color: "#FFF",
         fontSize: 14,
@@ -28,13 +28,17 @@ const defaultConfig = {
     },
     name: {
         color: "#FFF",
-        fontSize: 20,
-        position: [229, 564, 220],
+        LGColor: "#FFE700", // LG、UR名称颜色
+        LGShadowBlur: 2,
+        LGShadowColor: "#000A42",
+        LGShadowLine: 4, // 文字 stoke line width
+        fontSize: 22,
+        position: [229, 564, 240],
     },
     race: {
         color: "#FFF",
         fontSize: 11,
-        position: [160, 600, 80], // // 以从者模板的位置为准
+        position: [160, 600, 80], // 以从者模板的位置为准
         noStatusOffset: -40,
         tokenOffset: 70,
         evoOffset: 70,
@@ -47,22 +51,16 @@ const defaultConfig = {
         color: "#FFF",
         fontSize: 52,
         position: [54, 58, 64],
-        shadowBlur: 6,
-        shadowLine: 4,
     },
     attack: {
         color: "#FFF",
-        fontSize: 38,
+        fontSize: 36,
         position: [45, 572, 44],
-        shadowBlur: 2,
-        shadowLine: 2,
     },
     defense: {
         color: "#FFF",
-        fontSize: 38,
+        fontSize: 36,
         position: [414, 572, 44],
-        shadowBlur: 2,
-        shadowLine: 2,
     },
     cardNo: {
         URColor: "#FFF",

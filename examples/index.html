@@ -16,25 +16,21 @@
     const canvas = document.getElementById("test");
     const card = new Card({
         data: {
-            desc: "/quick\n"
-                + "/evo/cost2:お互いのリーダーに1ダメージ。\n"
-                + "お互いの場にフォレストバット1体を出す。",
+            desc: `【疾走】【必殺】
+【進化時】自分のデッキの上4枚を見る。その中から、元のコスト4以下の狩人・フォロワー1枚を場に出してよい。残りを好きな順にデッキの下に置く。`,
             craft: "Nightmare",
             cardType: "Follower",
             imageSrc: "https://svgdb.me/assets/fullart/1086340100.png",
-            cost: 33,
-            attack: 33,
-            defense: 33,
-            rarity: "UR",
+            cost: 0,
+            attack: 1,
+            defense: 1,
+            rarity: "LG",
             race: "眷属",
             name: "眷属への贈り物",
             cardNo: "TE01-001 2023",
         },
         height: 2000,
         canvas,
-        config: {
-            textFontFamily: "sve-card-cn",
-        },
     });
     card.draw();
 

@@ -15,3 +15,7 @@ export const isEvo = (card) => {
 export const isUR = (card) => {
     return card.rarity === "UR";
 };
+
+export const isLG = (card) => {
+    return card.rarity === "LG";
+};

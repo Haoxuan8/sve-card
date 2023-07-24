@@ -1,7 +1,7 @@
 import splitText, {measureIconWidth, textIconMap} from "./util/splitText";
 import {compact, forEach, map, size, split, sumBy} from "lodash";
-import {getIsNoStatus, isEvo, isToken, isUR} from "./util/cardTypeUtil";
-import getNumberPosition, { getNumberSprite } from "./util/getNumberPosition";
+import {getIsNoStatus, isEvo, isLG, isToken, isUR} from "./util/cardTypeUtil";
+import getNumberPosition, {getNumberSprite} from "./util/getNumberPosition";
 
 const DEFAULT_COPYRIGHT = "©Cygames,Inc.";
 
@@ -178,7 +178,7 @@ export default class CardDrawer {
                             ...numberPositions[index],
                             left + leftOffset, top, ...numberSize[index],);
                         leftOffset += numberSize[index][0];
-                    })
+                    });
                 }
         
                 // this.assetManager.loadFont(config.fontFamily);
@@ -205,16 +205,30 @@ export default class CardDrawer {
         if (text != null) {
             this.assetManager.loadFont(config.fontFamily);
             this.canvasContext.save();
-            this.canvasContext.fillStyle = config.color;
             this.canvasContext.font = `${config.fontSize}px ${config.fontFamily}`;
             setContext?.();
+            if (config.shadowLine) {
+                this.canvasContext.shadowColor = config.shadowColor ?? "black";
+                this.canvasContext.shadowBlur = config.shadowBlur ?? 0;
+                this.canvasContext.lineWidth = config.shadowLine;
+                this.canvasContext.strokeText(text, ...config.position);
+            }
+
+            this.canvasContext.fillStyle = config.color;
             this.canvasContext.fillText(text, ...config.position);
             this.canvasContext.restore();
         }
     };
 
     drawName = () => {
-        this.drawText(this.data.name, this.config.name, () => {
+        const config = {};
+        if (isUR(this.data) || isLG(this.data)) {
+            config.color = this.config.name.LGColor;
+            config.shadowBlur = this.config.name.LGShadowBlur;
+            config.shadowLine = this.config.name.LGShadowLine;
+            config.shadowColor = this.config.name.LGShadowColor;
+        }
+        this.drawText(this.data.name, {...this.config.name, ...config}, () => {
             this.canvasContext.textAlign = "center";
         });
     };
