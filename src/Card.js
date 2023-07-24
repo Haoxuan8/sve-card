@@ -1,7 +1,7 @@
 import AssetManager from "./AssetManager";
 import CardDrawer from "./CardDrawer";
 import {getConfig} from "./config/config";
-import {isArray, assign} from "lodash";
+import {isArray, assign, some, has} from "lodash";
 
 export default class Card {
     constructor({
@@ -30,6 +30,10 @@ export default class Card {
     };
 
     setData = (data, options) => {
+        // 这些属性更改时清空下画布
+        if (some(["cardType", "rarity", "craft"], k => has(data, k))) {
+            this.cardDrawer.clearCanvas();
+        }
         assign(this.data, data);
         this.draw();
     };

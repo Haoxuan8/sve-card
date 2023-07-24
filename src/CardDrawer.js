@@ -230,6 +230,10 @@ export default class CardDrawer {
         });
     };
 
+    clearCanvas = () => {
+        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    };
+
     draw = () => {
         this.drawCardImage();
         this.drawDescBackground();
