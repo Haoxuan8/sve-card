@@ -1,5 +1,5 @@
 
-type Craft = "Dragon" | "Forest" | "Heaven" | "Neutral" | "Nightmare" | "Rune" | "Sword";
+type Craft = "Dragon" | "Forest" | "Heaven" | "Neutral" | "Abyss" | "Rune" | "Sword";
 type CardType = "Follower" | "FollowerEvo" | "Spell" | "Amulet" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken";
 type Rarity = "BR" | "SR" | "GR" | "LG" | "UR";
 

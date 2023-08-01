@@ -13,21 +13,21 @@ import DragonURPng from "../asset/image/dragon/dragon_UR.png";
 import DragonAmuletURPng from "../asset/image/dragon/dragon_amulet_UR.png";
 import DragonEvoURPng from "../asset/image/dragon/dragon_evo_UR.png";
 import DragonSpellURPng from "../asset/image/dragon/dragon_spell_UR.png";
-import NightmarePng from "../asset/image/nightmare/nightmare.png";
-import NightmareEvoPng from "../asset/image/nightmare/nightmare_evo.png";
-import NightmareLGPng from "../asset/image/nightmare/nightmare_LG.png";
-import NightmareEvoLGPng from "../asset/image/nightmare/nightmare_evo_LG.png";
-import NightmareTokenPng from "../asset/image/nightmare/nightmare_token.png";
-import NightmareSpellTokenPng from "../asset/image/nightmare/nightmare_spell_token.png";
-import NightmareAmuletTokenPng from "../asset/image/nightmare/nightmare_amulet_token.png";
-import NightmareSpellPng from "../asset/image/nightmare/nightmare_spell.png";
-import NightmareSpellLGPng from "../asset/image/nightmare/nightmare_spell_LG.png";
-import NightmareAmuletPng from "../asset/image/nightmare/nightmare_amulet.png";
-import NightmareAmuletLGPng from "../asset/image/dragon/dragon_amulet_LG.png";
-import NightmareURPng from "../asset/image/nightmare/nightmare_UR.png";
-import NightmareAmuletURPng from "../asset/image/nightmare/nightmare_amulet_UR.png";
-import NightmareEvoURPng from "../asset/image/nightmare/nightmare_evo_UR.png";
-import NightmareSpellURPng from "../asset/image/nightmare/nightmare_spell_UR.png";
+import AbyssPng from "../asset/image/abyss/abyss.png";
+import AbyssEvoPng from "../asset/image/abyss/abyss_evo.png";
+import AbyssLGPng from "../asset/image/abyss/abyss_LG.png";
+import AbyssEvoLGPng from "../asset/image/abyss/abyss_evo_LG.png";
+import AbyssTokenPng from "../asset/image/abyss/abyss_token.png";
+import AbyssSpellTokenPng from "../asset/image/abyss/abyss_spell_token.png";
+import AbyssAmuletTokenPng from "../asset/image/abyss/abyss_amulet_token.png";
+import AbyssSpellPng from "../asset/image/abyss/abyss_spell.png";
+import AbyssSpellLGPng from "../asset/image/abyss/abyss_spell_LG.png";
+import AbyssAmuletPng from "../asset/image/abyss/abyss_amulet.png";
+import AbyssAmuletLGPng from "../asset/image/dragon/dragon_amulet_LG.png";
+import AbyssURPng from "../asset/image/abyss/abyss_UR.png";
+import AbyssAmuletURPng from "../asset/image/abyss/abyss_amulet_UR.png";
+import AbyssEvoURPng from "../asset/image/abyss/abyss_evo_UR.png";
+import AbyssSpellURPng from "../asset/image/abyss/abyss_spell_UR.png";
 import RunePng from "../asset/image/rune/rune.png";
 import RuneEvoPng from "../asset/image/rune/rune_evo.png";
 import RuneLGPng from "../asset/image/rune/rune_LG.png";
@@ -107,7 +107,7 @@ import ForestLeaderPng from "../asset/image/leader/forest.png";
 import HeavenLeaderPng from "../asset/image/leader/heaven.png";
 import DragonLeaderPng from "../asset/image/leader/dragon.png";
 import SwordLeaderPng from "../asset/image/leader/sword.png";
-import NightmareLeaderPng from "../asset/image/leader/nightmare.png";
+import AbyssLeaderPng from "../asset/image/leader/abyss.png";
 import RuneLeaderPng from "../asset/image/leader/rune.png";
 import {cloneDeep, assign} from "lodash";
 
@@ -216,31 +216,31 @@ const frameMap = {
         SpellToken: NeutralSpellTokenPng,
         FollowerToken: NeutralTokenPng,
     },
-    Nightmare: {
-        Leader: NightmareLeaderPng,
+    Abyss: {
+        Leader: AbyssLeaderPng,
         Follower: {
-            normal: NightmarePng,
-            LG: NightmareLGPng,
-            UR: NightmareURPng,
+            normal: AbyssPng,
+            LG: AbyssLGPng,
+            UR: AbyssURPng,
         },
         FollowerEvo: {
-            normal: NightmareEvoPng,
-            LG: NightmareEvoLGPng,
-            UR: NightmareEvoURPng,
+            normal: AbyssEvoPng,
+            LG: AbyssEvoLGPng,
+            UR: AbyssEvoURPng,
         },
         Spell: {
-            normal: NightmareSpellPng,
-            LG: NightmareSpellLGPng,
-            UR: NightmareSpellURPng,
+            normal: AbyssSpellPng,
+            LG: AbyssSpellLGPng,
+            UR: AbyssSpellURPng,
         },
         Amulet: {
-            normal: NightmareAmuletPng,
-            LG: NightmareAmuletLGPng,
-            UR: NightmareAmuletURPng,
+            normal: AbyssAmuletPng,
+            LG: AbyssAmuletLGPng,
+            UR: AbyssAmuletURPng,
         },
-        AmuletToken: NightmareAmuletTokenPng,
-        SpellToken: NightmareSpellTokenPng,
-        FollowerToken: NightmareTokenPng,
+        AmuletToken: AbyssAmuletTokenPng,
+        SpellToken: AbyssSpellTokenPng,
+        FollowerToken: AbyssTokenPng,
     },
     Rune: {
         Leader: RuneLeaderPng,

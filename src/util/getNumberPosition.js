@@ -1,4 +1,4 @@
-import { assign, clone } from "lodash";
+import {assign, clone} from "lodash";
 import NormalPng from "../asset/image/number/normal.png";
 import URPng from "../asset/image/number/UR.png";
 
@@ -13,7 +13,7 @@ const UR_postion = {
   7: [989, 0, 137, 210],
   8: [1126, 0, 146, 210],
   9: [1272, 0, 134, 210],
-}
+};
 
 const normal_cost_position = {
   0: [0, 0, 174, 234],
@@ -38,13 +38,13 @@ const normal_status_position = {
   6: [2587, 0, 137, 210],
   7: [2724, 0, 137, 210],
   8: [2861, 0, 146, 210],
-  9: [3007, 0, 134, 210]
-}
+  9: [3007, 0, 134, 210],
+};
 
 const defaultOptions = {
   isUR: false,
   isCost: false,
-}
+};
 
 const getNumberPosition = (number, _options = {}) => {
   const options = clone(defaultOptions);
@@ -55,10 +55,10 @@ const getNumberPosition = (number, _options = {}) => {
   } else {
     return isCost ? normal_cost_position[number] : normal_status_position[number];
   }
-}
+};
 
 export const getNumberSprite = (isUR) => {
   return isUR ? URPng : NormalPng;
-}
+};
 
 export default getNumberPosition;

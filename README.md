@@ -27,7 +27,7 @@ yarn build
             desc: "/quick\n"
                 + "お互いのリーダーに1ダメージ。\n"
                 + "お互いの場にフォレストバット1体を出す。",
-            craft: "Nightmare",
+            craft: "Abyss",
             cardType: "Follower",
             imageSrc: "https://svgdb.me/assets/fullart/1086340100.png",
             cost: 6,
@@ -75,6 +75,13 @@ Configure the `rules` how to handle `.png`, `.ttf` and `.css` resources.
 | /evo |   进化    |
 | /cost{0-9} | 花费{0-9} |  
 | /costx|  花费10   |
+| /forest | 妖精 |
+| /sword | 皇家 |
+| /heaven | 主教 |
+| /rune | 巫师 |
+| /dragon | 龙族 |
+| /abyss | 梦魇 |
+| /neutral | 中立 |
 
 ## Development
 

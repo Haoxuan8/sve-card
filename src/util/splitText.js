@@ -35,6 +35,14 @@ import Cost7Png from "../asset/image/desc/cost7.png";
 import Cost8Png from "../asset/image/desc/cost8.png";
 import Cost9Png from "../asset/image/desc/cost9.png";
 import CostXPng from "../asset/image/desc/costx.png";
+import ForestPng from "../asset/image/desc/forest.png";
+import SwordPng from "../asset/image/desc/sword.png";
+import RunePng from "../asset/image/desc/rune.png";
+import AbyssPng from "../asset/image/desc/abyss.png";
+import DragonPng from "../asset/image/desc/dragon.png";
+import HeavenPng from "../asset/image/desc/heaven.png";
+import NeutralPng from "../asset/image/desc/neutral.png";
+import PortalPng from "../asset/image/desc/portal.png";
 
 const isPunctuation = (char) => {
     const punctuationMap = ["。", "，", "：", "【", "】", "「", "」"];
@@ -139,6 +147,46 @@ export const textIconMap = {
     },
     "/costx": {
         src: CostXPng,
+        height: 184,
+        width: 187,
+    },
+    "/forest": {
+        src: ForestPng,
+        height: 184,
+        width: 187,
+    },
+    "/sword": {
+        src: SwordPng,
+        height: 184,
+        width: 187,
+    },
+    "/heaven": {
+        src: HeavenPng,
+        height: 184,
+        width: 187,
+    },
+    "/rune": {
+        src: RunePng,
+        height: 184,
+        width: 187,
+    },
+    "/dragon": {
+        src: DragonPng,
+        height: 184,
+        width: 187,
+    },
+    "/abyss": {
+        src: AbyssPng,
+        height: 184,
+        width: 187,
+    },
+    "/neutral": {
+        src: NeutralPng,
+        height: 184,
+        width: 187,
+    },
+    "/portal": {
+        src: PortalPng,
         height: 184,
         width: 187,
     },
