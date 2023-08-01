@@ -1,9 +1,11 @@
 import AssetManager from "./AssetManager";
 import CardDrawer from "./CardDrawer";
-import {getConfig} from "./config/config";
+import defaultConfig, {getConfig} from "./config/config";
 import {isArray, assign, some, has} from "lodash";
 
 export default class Card {
+    static defaultConfig = defaultConfig;
+
     constructor({
         data,
         canvas,

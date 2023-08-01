@@ -1,7 +1,9 @@
 import Card from "./Card";
+import pkg from "../package.json";
 
-export {Card};
+const version = pkg.version;
 
-export default {
+export {
     Card,
+    version,
 };

@@ -2,80 +2,93 @@ import {cloneDeep, assign} from "lodash";
 import getPosition from "../util/getPosition";
 
 const defaultConfig = {
-    size: [459, 642],
+    size: [459, 642], // 尺寸大小 width x height，位置大小以此尺寸计算
+    // 卡图
     cardImage: {
-        position: [0, 0, 459, 642],
-        radius: 34,
+        position: [0, 0, 459, 642], // 位置 left, top, width, height
+        radius: 34, // 圆角半径
     },
-    textFontFamily: "sve-card-ja",
-    footerFontFamily: "sans-serif",
+    textFontFamily: "sve-card-ja", // 字体
+    footerFontFamily: "sans-serif", // 底部脚注字体
+    // 卡牌描述
     desc: {
         color: "#FFF",
         fontSize: 14,
-        maxLine: 7,
-        URMaxLine: 8,
-        lineHeight: 18,
-        iconPaddingX: 0,
-        iconHeight: 15,
-        iconTopOffset: -1,
-        position: [28, 396, 394, 139],
+        maxLine: 7, // 普通稀有度最大行数
+        URMaxLine: 8, // UR稀有度最大行数
+        lineHeight: 18, // 行高
+        iconPaddingX: 0, // 图标x轴间距
+        iconHeight: 15, // 图标大小
+        iconTopOffset: -1, // 图标y轴上方偏移
+        position: [28, 396, 394, 139], // left, top, width, height
     },
+    // 卡牌描述背景
     descBackground: {
         position: [0, 388, 459, 254],
-        URPosition: [0, 526, 459],
-        URPaddingY: 6,
-        URPaddingX: 32,
+        URPosition: [0, 526, 459], // UR稀有度 left, top, width
+        URPaddingY: 6, // UR稀有度Y轴 padding
+        URPaddingX: 32, // UR稀有度X轴 padding
     },
+    // 名称
     name: {
         color: "#FFF",
         LGColor: "#FFE700", // LG、UR名称颜色
-        LGShadowBlur: 2,
-        LGShadowColor: "#000A42",
-        LGShadowLine: 4, // 文字 stoke line width
+        LGShadowBlur: 2, // LG、UR名称阴影模糊大小
+        LGShadowColor: "#000A42", // LG、UR名称阴影颜色
+        LGShadowLine: 4, // // LG、UR名称阴影尺寸
         fontSize: 22,
         position: [229, 564, 240],
         leaderPosition: [229, 590, 360],
     },
+    // 卡牌类型
     race: {
         color: "#FFF",
         fontSize: 11,
-        position: [160, 600, 80], // 以从者模板的位置为准
-        noStatusOffset: -40,
-        tokenOffset: 70,
-        evoOffset: 70,
+        position: [160, 600, 80], // left, top, width
+        noStatusOffset: -40, // 没有攻击力、血量时的x轴偏移
+        tokenOffset: 70, // 有token标志时的x轴偏移
+        evoOffset: 70, // 有进化标志时的x轴偏移
     },
+    // 稀有度
     rarity: {
-        position: [323, 586, 55, 19], // 以从者模板的位置为准，当为法术时会 left 会加上 offset
-        noStatusOffset: 40,
+        position: [323, 586, 55, 19],
+        noStatusOffset: 40, // 没有攻击力、血量时的x轴偏移
     },
+    // 花费
     cost: {
         color: "#FFF",
         fontSize: 52,
         position: [54, 58, 64],
     },
+    // 攻击力
     attack: {
         color: "#FFF",
         fontSize: 36,
         position: [45, 572, 44],
     },
+    // 血量
     defense: {
         color: "#FFF",
         fontSize: 36,
         position: [414, 572, 44],
     },
+    // 卡牌编号
     cardNo: {
         URColor: "#FFF",
         color: "#FFF",
         tokenColor: "#000",
         fontSize: 8,
         position: [26, 632, 100],
+        // fontFamily
     },
+    // 版权
     copyright: {
         URColor: "#FFF",
         color: "#FFF",
         tokenColor: "#000",
         fontSize: 8,
         position: [436, 632, 100],
+        // fontFamily
     },
 };
 

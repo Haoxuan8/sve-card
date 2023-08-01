@@ -1,3 +1,4 @@
+import defaultConfig from "../src/config/config";
 
 type Craft = "Dragon" | "Forest" | "Heaven" | "Neutral" | "Abyss" | "Rune" | "Sword";
 type CardType = "Follower" | "FollowerEvo" | "Spell" | "Amulet" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken";
@@ -18,6 +19,8 @@ interface CardData {
 }
 
 declare class Card {
+    static defaultConfig: object;
+
     constructor(params: {
         data: CardData,
         canvas: HTMLCanvasElement,
@@ -31,9 +34,13 @@ declare class Card {
     setConfig(config: object);
 }
 
+declare const version: string;
+declare const defaultConfig: object;
+
 declare namespace SVECard {
     export {
         Card,
+        version,
     }
 }
 
