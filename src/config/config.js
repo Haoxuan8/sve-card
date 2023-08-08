@@ -44,7 +44,7 @@ const defaultConfig = {
     race: {
         color: "#FFF",
         fontSize: 11,
-        position: [160, 600, 80], // left, top, width
+        position: [160, 600, 100], // left, top, width
         noStatusOffset: -40, // 没有攻击力、血量时的x轴偏移
         tokenOffset: 70, // 有token标志时的x轴偏移
         evoOffset: 70, // 有进化标志时的x轴偏移
@@ -78,7 +78,7 @@ const defaultConfig = {
         color: "#FFF",
         tokenColor: "#000",
         fontSize: 8,
-        position: [26, 632, 100],
+        position: [26, 632, 220],
         // fontFamily
     },
     // 版权
@@ -87,7 +87,7 @@ const defaultConfig = {
         color: "#FFF",
         tokenColor: "#000",
         fontSize: 8,
-        position: [436, 632, 100],
+        position: [436, 632, 220],
         // fontFamily
     },
 };
