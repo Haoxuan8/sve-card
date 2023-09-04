@@ -205,13 +205,13 @@ export const textIconMap = {
 const iconKeys = keys(textIconMap);
 
 // {type, text,}[]
-const formatText = (line) => {
+const formatText = (line, handlePunctuation) => {
     const result = [];
     let currentChar = "";
     let isSlashStart = false;
 
     const formatChar = (c) => {
-        if (isPunctuation(c)) {
+        if (handlePunctuation && isPunctuation(c)) {
             return {type: "punctuation", text: c, position: isLeftPunctuation(c) ? "left" : "right"};
         } else {
             return {type: "char", text: c};
@@ -283,7 +283,10 @@ const splitText = (text, width, maxLine, ctxMeasureTextWidth, options) => {
     const removed = remove(list, (t, i) => i >= maxLine);
     if (removed.length) list[maxLine - 1] = list[maxLine - 1] + join(removed, "");
 
-    list = map(list, t => formatText(t));
+    const onePunctuationWidth = ctxMeasureTextWidth("。");
+    const oneTextWidth = ctxMeasureTextWidth("一");
+
+    list = map(list, t => formatText(t, onePunctuationWidth === oneTextWidth));
 
     const getCurrentLines = (scale) => {
         return reduce(list, (lines, t) => {
