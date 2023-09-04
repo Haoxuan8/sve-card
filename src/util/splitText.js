@@ -44,9 +44,20 @@ import HeavenPng from "../asset/image/desc/heaven.png";
 import NeutralPng from "../asset/image/desc/neutral.png";
 import PortalPng from "../asset/image/desc/portal.png";
 
+const leftPunctutationMap = ["。", "，", "：", "】", "」"];
+const rightPunctutationMap = ["【", "「"];
+const punctuationMap = [...leftPunctutationMap, ...rightPunctutationMap];
+
 const isPunctuation = (char) => {
-    const punctuationMap = ["。", "，", "：", "【", "】", "「", "」"];
     return punctuationMap.includes(char);
+};
+
+const isLeftPunctuation = (char) => {
+    return leftPunctutationMap.includes(char);
+};
+
+const isRightPunctuation = (char) => {
+    return rightPunctutationMap.includes(char);
 };
 
 export const textIconMap = {
@@ -199,10 +210,18 @@ const formatText = (line) => {
     let currentChar = "";
     let isSlashStart = false;
 
+    const formatChar = (c) => {
+        if (isPunctuation(c)) {
+            return {type: "punctuation", text: c, position: isLeftPunctuation(c) ? "left" : "right"};
+        } else {
+            return {type: "char", text: c};
+        }
+    };
+
     const flashCurrentChar = () => {
         if (currentChar !== "") {
             forEach(currentChar, c => {
-                result.push({type: "char", text: c});
+                result.push(formatChar(c));
             });
             currentChar = "";
         }
@@ -221,7 +240,7 @@ const formatText = (line) => {
                     currentChar = "";
                 }
             } else {
-                result.push({type: "char", text: char});
+                result.push(formatChar(char));
             }
         }
     });
@@ -246,13 +265,17 @@ export const measureTextWidth = (formattedText, ctxMeasureTextWidth, options) =>
         (arr) => join(arr, ""),
     ])(formattedText);
 
+    const onePunctuationWidth = ctxMeasureTextWidth("。");
+    const allPunctuation = filter(formattedText, it => it.type === "punctuation");
+    const allPunctuationWidth = ceil(onePunctuationWidth * size(allPunctuation) / 2);
+
     const allIcon = filter(formattedText, it => it.type === "icon");
     const allIconWidth = flow([
         (arr) => map(arr, it => measureIconWidth(it, iconHeight)),
         sum,
     ])(allIcon);
 
-    return ctxMeasureTextWidth(allText) + allIconWidth + size(allIcon) * iconPaddingX * 2;
+    return ctxMeasureTextWidth(allText) + allIconWidth + size(allIcon) * iconPaddingX * 2 + allPunctuationWidth;
 };
 
 const splitText = (text, width, maxLine, ctxMeasureTextWidth, options) => {

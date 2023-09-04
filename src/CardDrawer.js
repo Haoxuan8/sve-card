@@ -129,11 +129,21 @@ export default class CardDrawer {
                     left += this.config.desc.iconPaddingX;
                 };
 
+                const drawPunctuation = (item) => {
+                    const width = this.ctxMeasureTextWidth(item.text) / 2;
+                    const isRight = item.position === "right";
+                    this.canvasContext.fillText(item.text, left - (isRight ? width : 0), top);
+                    left += width;
+                };
+
                 if (it.type === "char") {
                     currentText += it.text;
                 } else if (it.type === "icon") {
                     flashText();
                     drawIcon(it);
+                } else if (it.type === "punctuation") {
+                    flashText();
+                    drawPunctuation(it);
                 }
                 flashText();
             });

@@ -62,26 +62,26 @@ Configure the `rules` how to handle `.png`, `.ttf` and `.css` resources.
 
 ### Data Description Icon
 
-| Code       |   中文    |
-|------------|:-------:|
-| /act       |   横置    |
-| /quick     |   快速    |
-| /start     |   起动    |
-| /fanfare   |   入场曲   |
-| /lastword  |   谢幕曲   |
-| /attack    |   攻击力   |
-| /defense   |   体力    |
-| /eat |   吃饭    |
-| /evo |   进化    |
-| /cost{0-9} | 花费{0-9} |  
-| /costx|  花费10   |
-| /forest | 妖精 |
-| /sword | 皇家 |
-| /heaven | 主教 |
-| /rune | 巫师 |
-| /dragon | 龙族 |
-| /abyss | 梦魇 |
-| /neutral | 中立 |
+| Code       | 日本語　|   中文    |
+|------------|:-------:|:-------:|
+| /act       | アクト |   横置    |
+| /quick     | クイック |   快速    |
+| /start     | 起動 |   起动    |
+| /fanfare   | ファンファーレ |  入场曲   |
+| /lastword  | ラストワード |   谢幕曲   |
+| /attack    | 攻撃力 |  攻击力   |
+| /defense   | 体力 |  体力    |
+| /eat | 食事 |  吃饭    |
+| /evo | 進化 |  进化    |
+| /cost{0-9} | コスト{0-9} | 花费{0-9} |  
+| /costx| コスト10 |  花费10   |
+| /forest | エルフ | 妖精 |
+| /sword | ロイヤル | 皇家 |
+| /heaven | ビショップ | 主教 |
+| /rune | ウィッチ | 巫师 |
+| /dragon | ドラゴン | 龙族 |
+| /abyss | ナイトメア | 梦魇 |
+| /neutral | ニュートラル | 中立 |
 
 ## Development
 
