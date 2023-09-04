@@ -94,7 +94,7 @@ modify `examples/index.html` to see result.
 
 ## TODO
 
-- [ ] replace`【`, `】`to image
+- [x] ~~replace`【`, `】`to image~~ render with half width
 - [ ] update example page
 
 ## Thanks
