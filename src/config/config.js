@@ -122,6 +122,7 @@ export const getConfig = (canvas, c) => {
     const scale = h / config.size[1];
 
     return {
+        ...config,
         frame: {
             position: [left, top, Math.round(w), Math.round(h)],
         },

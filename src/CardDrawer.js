@@ -102,7 +102,7 @@ export default class CardDrawer {
         this.canvasContext.textBaseline = "top";
         const iconOptions = {iconHeight: this.config.desc.iconHeight, iconPaddingX: this.config.desc.iconPaddingX};
         const result = splitText(this.data.desc, maxWidth,
-            maxLine, this.ctxMeasureTextWidth, iconOptions);
+            maxLine, this.config.desc.fontFamily, this.ctxMeasureTextWidth, iconOptions);
         this.canvasContext.restore();
         return result;
     };
@@ -151,7 +151,8 @@ export default class CardDrawer {
                 const drawPunctuation = (item) => {
                     const width = this.ctxMeasureTextWidth(item.text) / 2;
                     const isRight = item.position === "right";
-                    this.canvasContext.fillText(item.text, left - (isRight ? width : 0), top);
+                    const isLeft = item.position === "left";
+                    this.canvasContext.fillText(item.text, left - (isRight ? width : isLeft ? 0 : (width / 2)), top);
                     left += width;
                 };
 

@@ -44,20 +44,43 @@ import HeavenPng from "../asset/image/desc/heaven.png";
 import NeutralPng from "../asset/image/desc/neutral.png";
 import PortalPng from "../asset/image/desc/portal.png";
 
-const leftPunctutationMap = ["。", "，", "】", "」"];
-const rightPunctutationMap = ["【", "「"];
-const punctuationMap = [...leftPunctutationMap, ...rightPunctutationMap];
+const defalutLeftPunctutations = ["。", "，", "：", "、", "】", "」"];
+const defaultRightPunctutations = ["【", "「"];
 
-const isPunctuation = (char) => {
-    return punctuationMap.includes(char);
+const fontFamilyPunctutationMap = {
+    "sve-card-ja": {
+        left: ["。", "，", "、", "】", "」"],
+        right: ["【", "「"],
+        center: ["："],
+    },
 };
 
-const isLeftPunctuation = (char) => {
-    return leftPunctutationMap.includes(char);
+
+const isPunctuation = (char, fontFamily) => {
+    const map = fontFamilyPunctutationMap[fontFamily] ?? {};
+    const left = map.left ?? defalutLeftPunctutations;
+    const right = map.right ?? defaultRightPunctutations;
+    const center = map.center ?? [];
+    const puctutations = [...left, ...right, ...center];
+    return puctutations.includes(char);
 };
 
-const isRightPunctuation = (char) => {
-    return rightPunctutationMap.includes(char);
+const isLeftPunctuation = (char, fontFamily) => {
+    const map = fontFamilyPunctutationMap[fontFamily] ?? {};
+    const left = map.left ?? defalutLeftPunctutations;
+    return left.includes(char);
+};
+
+const isRightPunctuation = (char, fontFamily) => {
+    const map = fontFamilyPunctutationMap[fontFamily] ?? {};
+    const right = map.right ?? defaultRightPunctutations;
+    return right.includes(char);
+};
+
+const isCenterPunctuation = (char, fontFamily) => {
+    const map = fontFamilyPunctutationMap[fontFamily] ?? {};
+    const center = map.center ?? [];
+    return center.includes(char);
 };
 
 export const textIconMap = {
@@ -205,14 +228,21 @@ export const textIconMap = {
 const iconKeys = keys(textIconMap);
 
 // {type, text,}[]
-const formatText = (line, handlePunctuation) => {
+const formatText = (line, fontFamily, handlePunctuation) => {
     const result = [];
     let currentChar = "";
     let isSlashStart = false;
 
     const formatChar = (c) => {
-        if (handlePunctuation && isPunctuation(c)) {
-            return {type: "punctuation", text: c, position: isLeftPunctuation(c) ? "left" : "right"};
+        if (handlePunctuation && isPunctuation(c, fontFamily)) {
+            return {
+                type: "punctuation",
+                text: c,
+                position:
+                isLeftPunctuation(c, fontFamily)
+                ? "left"
+                : isRightPunctuation(c, fontFamily) ? "right" : "center",
+            };
         } else {
             return {type: "char", text: c};
         }
@@ -278,7 +308,7 @@ export const measureTextWidth = (formattedText, ctxMeasureTextWidth, options) =>
     return ctxMeasureTextWidth(allText) + allIconWidth + size(allIcon) * iconPaddingX * 2 + allPunctuationWidth;
 };
 
-const splitText = (text, width, maxLine, ctxMeasureTextWidth, options) => {
+const splitText = (text, width, maxLine, fontFamily, ctxMeasureTextWidth, options) => {
     let list = split(text, "\n");
     const removed = remove(list, (t, i) => i >= maxLine);
     if (removed.length) list[maxLine - 1] = list[maxLine - 1] + join(removed, "");
@@ -286,7 +316,7 @@ const splitText = (text, width, maxLine, ctxMeasureTextWidth, options) => {
     const onePunctuationWidth = ctxMeasureTextWidth("。");
     const oneTextWidth = ctxMeasureTextWidth("一");
 
-    list = map(list, t => formatText(t, onePunctuationWidth === oneTextWidth));
+    list = map(list, t => formatText(t, fontFamily, onePunctuationWidth === oneTextWidth));
 
     const getCurrentLines = (scale) => {
         return reduce(list, (lines, t) => {
