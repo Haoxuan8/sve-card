@@ -20,7 +20,15 @@ const defaultConfig = {
         iconPaddingX: 0, // 图标x轴间距
         iconHeight: 15, // 图标大小
         iconTopOffset: -1, // 图标y轴上方偏移
-        position: [28, 396, 394, 139], // left, top, width, height
+        position: [28, 396, 394], // left, top, width, height
+    },
+    // 台词 UR没有
+    speech: {
+        color: "#FFF",
+        fontSize: 14,
+        maxLine: 4, // 台词最大行数，卡牌描述渲染时最大行数会减去台词实际行数
+        position: [28, 394],
+        italic: true,
     },
     // 卡牌描述背景
     descBackground: {
@@ -131,6 +139,12 @@ export const getConfig = (canvas, c) => {
             iconHeight: Math.round(config.desc.iconHeight * scale),
             iconTopOffset: Math.round(config.desc.iconTopOffset * scale),
             URPosition: getPosition(config.descBackground.URPosition, scale, left, top),
+        },
+        speech: {
+            ...config.speech,
+            color: "#FFF",
+            fontSize: Math.round(config.speech.fontSize * scale),
+            position: getPosition(config.speech.position, scale, left, top),
         },
         descBackground: {
             position: getPosition(config.descBackground.position, scale, left, top),

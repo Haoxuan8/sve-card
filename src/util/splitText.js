@@ -44,7 +44,7 @@ import HeavenPng from "../asset/image/desc/heaven.png";
 import NeutralPng from "../asset/image/desc/neutral.png";
 import PortalPng from "../asset/image/desc/portal.png";
 
-const leftPunctutationMap = ["。", "，", "：", "】", "」"];
+const leftPunctutationMap = ["。", "，", "】", "」"];
 const rightPunctutationMap = ["【", "「"];
 const punctuationMap = [...leftPunctutationMap, ...rightPunctutationMap];
 

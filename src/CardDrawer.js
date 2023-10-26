@@ -1,6 +1,6 @@
 import splitText, {measureIconWidth, textIconMap, measureTextWidth} from "./util/splitText";
 import {compact, forEach, map, size, split, sumBy, min} from "lodash";
-import {getIsNoStatus, isEvo, isLG, isLeader, isToken, isUR} from "./util/cardTypeUtil";
+import {isNoStatus, isEvo, isLG, isLeader, isToken, isUR} from "./util/cardTypeUtil";
 import getNumberPosition, {getNumberSprite} from "./util/getNumberPosition";
 
 const DEFAULT_COPYRIGHT = "©Cygames,Inc.";
@@ -12,6 +12,25 @@ export default class CardDrawer {
         this.config = config;
         this.canvasContext = canvas.getContext("2d");
         this.assetManager = assetManager;
+    }
+
+    get isUR() {
+        return isUR(this.data);
+    }
+    get isLeader() {
+        return isLeader(this.data);
+    }
+    get isEvo() {
+        return isEvo(this.data);
+    }
+    get isLG() {
+        return isLG(this.data);
+    }
+    get isToken() {
+        return isToken(this.data);
+    }
+    get isNoStatus() {
+        return isNoStatus(this.data);
     }
 
     drawImage = (image, ...position) => {
@@ -90,13 +109,13 @@ export default class CardDrawer {
 
     drawDesc = () => {
         this.assetManager.loadFont(this.config.desc.fontFamily);
-        const {list} = this.getDescLines(this.config.desc.position[2], isUR(this.data) ? this.config.desc.URMaxLine : this.config.desc.maxLine);
+        const {list} = this.getDescLines(this.config.desc.position[2], this.isUR ? this.config.desc.URMaxLine : this.config.desc.maxLine);
         this.canvasContext.save();
         this.canvasContext.fillStyle = this.config.desc.color;
         this.canvasContext.font = `${this.config.desc.fontSize}px ${this.config.desc.fontFamily}`;
         this.canvasContext.textBaseline = "top";
-        const position = [...(isUR(this.data) ? this.config.desc.URPosition : this.config.desc.position)];
-        if (isUR(this.data)) {
+        const position = [...(this.isUR ? this.config.desc.URPosition : this.config.desc.position)];
+        if (this.isUR) {
             const height = this.config.desc.lineHeight * size(list);
             position[0] += this.config.descBackground.URPaddingX;
             position[1] = position[1] - height - this.config.descBackground.URPaddingY;
@@ -152,9 +171,9 @@ export default class CardDrawer {
     };
 
     drawDescBackground = () => {
-        const image = this.assetManager.loadDescBackground(isUR(this.data));
-        const position =[...(isUR(this.data) ? this.config.descBackground.URPosition : this.config.descBackground.position)];
-        if (isUR(this.data)) {
+        const image = this.assetManager.loadDescBackground(this.isUR);
+        const position =[...(this.isUR ? this.config.descBackground.URPosition : this.config.descBackground.position)];
+        if (this.isUR) {
             const lines = size(this.getDescLines(this.config.desc.position[2], this.config.desc.URMaxLine).list);
             const height = this.config.descBackground.URLineHeight * lines + 2 * this.config.descBackground.URPaddingY;
             position[3] = height;
@@ -164,12 +183,11 @@ export default class CardDrawer {
     };
 
     drawAttackDefenseCost = () => {
-        const isNoStatus = getIsNoStatus(this.data);
-        const image = this.assetManager.loadImage(getNumberSprite(isUR(this.data)));
+        const image = this.assetManager.loadImage(getNumberSprite(this.isUR));
         const drawNumber = (number, config, isCost) => {
             if (number != null && image) {
                 const numbers = split(number, "");
-                const numberPositions = map(numbers, n => getNumberPosition(n, {isUR: isUR(this.data), isCost}));
+                const numberPositions = map(numbers, n => getNumberPosition(n, {isUR: this.isUR, isCost}));
                 if (compact(numberPositions).length > 0) {
                     let numberSize = map(numberPositions, position => {
                         const height = config.fontSize;
@@ -209,9 +227,9 @@ export default class CardDrawer {
             }
         };
 
-        !isNoStatus && drawNumber(this.data.attack, this.config.attack);
-        !isNoStatus && drawNumber(this.data.defense, this.config.defense);
-        !isEvo(this.data) && drawNumber(this.data.cost, this.config.cost, true);
+        !this.isNoStatus && drawNumber(this.data.attack, this.config.attack);
+        !this.isNoStatus && drawNumber(this.data.defense, this.config.defense);
+        !this.isEvo && drawNumber(this.data.cost, this.config.cost, true);
     };
 
     drawText = (text, config, setContext) => {
@@ -235,13 +253,13 @@ export default class CardDrawer {
 
     drawName = () => {
         const config = {};
-        if (isUR(this.data) || isLG(this.data) || isLeader(this.data)) {
+        if (this.isUR || this.isLG || this.isLeader) {
             config.color = this.config.name.LGColor;
             config.shadowBlur = this.config.name.LGShadowBlur;
             config.shadowLine = this.config.name.LGShadowLine;
             config.shadowColor = this.config.name.LGShadowColor;
         }
-        if (isLeader(this.data)) {
+        if (this.isLeader) {
             config.position = this.config.name.leaderPosition;
         }
         this.drawText(this.data.name, {...this.config.name, ...config}, () => {
@@ -252,9 +270,9 @@ export default class CardDrawer {
     drawRace = () => {
         const [left, top, width] = this.config.race.position;
         let offset = 0;
-        if (getIsNoStatus(this.data)) offset += this.config.race.noStatusOffset;
-        if (isToken(this.data)) offset += this.config.race.tokenOffset;
-        if (isEvo(this.data) && isUR(this.data)) offset += this.config.race.evoOffset;
+        if (this.isNoStatus) offset += this.config.race.noStatusOffset;
+        if (this.isToken) offset += this.config.race.tokenOffset;
+        if (this.isEvo && this.isUR) offset += this.config.race.evoOffset;
         this.drawText(this.data.race, {
             ...this.config.race,
             position: [left + offset, top, width],
@@ -262,12 +280,11 @@ export default class CardDrawer {
     };
 
     drawRarity = () => {
-        if (isToken(this.data)) {}
+        if (this.isToken) {}
         else {
             const image = this.assetManager.loadRarityImage(this.data.rarity);
             const [left, top, width, height] = this.config.rarity.position;
-            const isNoStatus = getIsNoStatus(this.data);
-            this.drawImage(image, left + (isNoStatus ? this.config.rarity.noStatusOffset : 0), top, width, height);
+            this.drawImage(image, left + (this.isNoStatus ? this.config.rarity.noStatusOffset : 0), top, width, height);
         }
     };
 
@@ -275,8 +292,8 @@ export default class CardDrawer {
         const cardNoConfig = this.config.cardNo;
         const copyrightConfig = this.config.copyright;
         const getColor = (config) => {
-            if (isToken(this.data)) return config.tokenColor;
-            else if (isUR(this.data)) return config.URColor;
+            if (this.isToken) return config.tokenColor;
+            else if (this.isUR) return config.URColor;
             else return config.color;
         };
 
@@ -288,19 +305,24 @@ export default class CardDrawer {
         });
     };
 
+    drawSpeech = () => {
+        
+    };
+
     clearCanvas = () => {
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
     draw = () => {
         this.drawCardImage();
-        if (!isLeader(this.data)) this.drawDescBackground();
+        if (!this.isLeader) this.drawDescBackground();
         this.drawFrame();
-        if (!isLeader(this.data)) this.drawAttackDefenseCost();
-        if (!isLeader(this.data)) this.drawDesc();
+        if (!this.isLeader) this.drawAttackDefenseCost();
+        if (!this.isLeader) this.drawDesc();
+        if (!this.isLeader && !this.isUR) this.drawSpeech();
         this.drawName();
-        if (!isLeader(this.data)) this.drawRace();
-        if (!isLeader(this.data)) this.drawRarity();
+        if (!this.isLeader) this.drawRace();
+        if (!this.isLeader) this.drawRarity();
         this.drawFooter();
     };
 }

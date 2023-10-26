@@ -1,6 +1,6 @@
 
 // 无攻击与防御
-export const getIsNoStatus = (card) => {
+export const isNoStatus = (card) => {
     return ["Spell", "Amulet", "SpellToken", "AmuletToken"].includes(card.cardType);
 };
 
