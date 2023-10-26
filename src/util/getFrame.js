@@ -109,7 +109,7 @@ import DragonLeaderPng from "../asset/image/leader/dragon.png";
 import SwordLeaderPng from "../asset/image/leader/sword.png";
 import AbyssLeaderPng from "../asset/image/leader/abyss.png";
 import RuneLeaderPng from "../asset/image/leader/rune.png";
-import {cloneDeep, assign} from "lodash";
+import {defaultsDeep} from "lodash";
 
 const frameMap = {
     Dragon: {
@@ -299,9 +299,9 @@ const frameMap = {
 const defaultOptions = {
 };
 
-const getFrame = (data, _options = {}) => {
-    const options = cloneDeep(defaultOptions);
-    assign(options, _options);
+const getFrame = (data, options = {}) => {
+    defaultsDeep(options, defaultOptions);
+    
     const craft = frameMap[data.craft];
     const isLG = data.rarity === "LG";
     const isUR = data.rarity === "UR";

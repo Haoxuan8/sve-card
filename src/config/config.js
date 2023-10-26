@@ -1,4 +1,4 @@
-import {cloneDeep, assign} from "lodash";
+import {cloneDeep, defaultsDeep} from "lodash";
 import getPosition from "../util/getPosition";
 
 const defaultConfig = {
@@ -14,21 +14,27 @@ const defaultConfig = {
     desc: {
         color: "#FFF",
         fontSize: 14,
-        maxLine: 7, // 普通稀有度最大行数
+        maxLine: 7, // 普通稀有度最大行数。包含speech行数
         URMaxLine: 8, // UR稀有度最大行数
         lineHeight: 18, // 行高
         iconPaddingX: 0, // 图标x轴间距
         iconHeight: 15, // 图标大小
         iconTopOffset: -1, // 图标y轴上方偏移
         position: [28, 396, 394], // left, top, width, height
+        textBaseline: "top",
     },
     // 台词 UR没有
     speech: {
         color: "#FFF",
-        fontSize: 14,
-        maxLine: 4, // 台词最大行数，卡牌描述渲染时最大行数会减去台词实际行数
-        position: [28, 394],
-        italic: true,
+        fontSize: 13,
+        maxLine: 3, // 台词最大行数，卡牌描述渲染时最大行数会减去台词实际行数
+        position: [28, 513, 394],
+        lineHeight: 16, // 行高
+        iconPaddingX: 0, // 图标x轴间距
+        iconHeight: 15, // 图标大小
+        iconTopOffset: -1, // 图标y轴上方偏移
+        italic: true, // 是否斜体
+        textBaseline: "bottom",
     },
     // 卡牌描述背景
     descBackground: {
@@ -86,7 +92,9 @@ const defaultConfig = {
         color: "#FFF",
         tokenColor: "#000",
         fontSize: 8,
-        position: [26, 632, 220],
+        maxLine: 2, // 支持多行
+        lineHeight: 8,
+        position: [26, 632, 180],
         // fontFamily
     },
     // 版权
@@ -95,14 +103,14 @@ const defaultConfig = {
         color: "#FFF",
         tokenColor: "#000",
         fontSize: 8,
-        position: [436, 632, 220],
+        position: [436, 632, 170],
         // fontFamily
     },
 };
 
-export const getConfig = (canvas, c) => {
-    const config = cloneDeep(defaultConfig);
-    assign(config, c);
+export const getConfig = (canvas, c = {}) => {
+    const config = cloneDeep(c);
+    defaultsDeep(config, defaultConfig);
     const _sizeRate = config.size[1] / config.size[0]; // height / width
 
     const clientWidth = canvas.width;
@@ -142,10 +150,15 @@ export const getConfig = (canvas, c) => {
             URPosition: getPosition(config.descBackground.URPosition, scale, left, top),
         },
         speech: {
+            fontFamily: config.textFontFamily,
             ...config.speech,
             color: "#FFF",
             fontSize: Math.round(config.speech.fontSize * scale),
             position: getPosition(config.speech.position, scale, left, top),
+            lineHeight: Math.round(config.speech.lineHeight * scale),
+            iconPaddingX: Math.round(config.speech.iconPaddingX * scale),
+            iconHeight: Math.round(config.speech.iconHeight * scale),
+            iconTopOffset: Math.round(config.speech.iconTopOffset * scale),
         },
         descBackground: {
             position: getPosition(config.descBackground.position, scale, left, top),
@@ -201,6 +214,7 @@ export const getConfig = (canvas, c) => {
             ...config.cardNo,
             fontSize: Math.round(config.cardNo.fontSize * scale),
             position: getPosition(config.cardNo.position, scale, left, top),
+            lineHeight: Math.round(config.cardNo.lineHeight * scale),
         },
         copyright: {
             fontFamily: config.footerFontFamily,

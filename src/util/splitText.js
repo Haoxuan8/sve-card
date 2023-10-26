@@ -44,13 +44,13 @@ import HeavenPng from "../asset/image/desc/heaven.png";
 import NeutralPng from "../asset/image/desc/neutral.png";
 import PortalPng from "../asset/image/desc/portal.png";
 
-const defalutLeftPunctutations = ["。", "，", "：", "、", "】", "」"];
-const defaultRightPunctutations = ["【", "「"];
+const defalutLeftPunctutations = ["。", "，", "：", "』", "、", "】", "」"];
+const defaultRightPunctutations = ["【", "『", "「"];
 
 const fontFamilyPunctutationMap = {
     "sve-card-ja": {
-        left: ["。", "，", "、", "】", "」"],
-        right: ["【", "「"],
+        left: ["。", "，", "、", "』", "】", "」"],
+        right: ["【", "『", "「"],
         center: ["："],
     },
 };
@@ -338,7 +338,7 @@ const splitText = (text, width, maxLine, fontFamily, ctxMeasureTextWidth, option
             if (
                 isEmpty(currentLine)
                 && currentRes.length > 0
-                && isPunctuation(word.text)
+                && isPunctuation(word.text, fontFamily)
             ) {
                 currentRes[currentRes.length - 1].push(word);
             } else {
@@ -349,7 +349,7 @@ const splitText = (text, width, maxLine, fontFamily, ctxMeasureTextWidth, option
                 }
             }
         });
-        if (currentLine) {
+        if (!isEmpty(currentLine)) {
             currentRes.push(currentLine);
         }
         return currentRes;

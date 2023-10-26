@@ -1,5 +1,5 @@
 import splitText, {measureIconWidth, textIconMap, measureTextWidth} from "./util/splitText";
-import {compact, forEach, map, size, split, sumBy, min} from "lodash";
+import {compact, forEach, map, size, split, sumBy, min, isEmpty, remove, join} from "lodash";
 import {isNoStatus, isEvo, isLG, isLeader, isToken, isUR} from "./util/cardTypeUtil";
 import getNumberPosition, {getNumberSprite} from "./util/getNumberPosition";
 
@@ -94,88 +94,106 @@ export default class CardDrawer {
 
     ctxMeasureTextWidth = (text) => this.canvasContext.measureText(text).width;
 
-    getDescLines = (maxWidth, maxLine) => {
-        this.assetManager.loadFont(this.config.desc.fontFamily);
+    getDescLines = (text, maxWidth, maxLine, config) => {
+        this.assetManager.loadFont(config.fontFamily);
         this.canvasContext.save();
-        this.canvasContext.fillStyle = this.config.desc.color;
-        this.canvasContext.font = `${this.config.desc.fontSize}px ${this.config.desc.fontFamily}`;
-        this.canvasContext.textBaseline = "top";
-        const iconOptions = {iconHeight: this.config.desc.iconHeight, iconPaddingX: this.config.desc.iconPaddingX};
-        const result = splitText(this.data.desc, maxWidth,
-            maxLine, this.config.desc.fontFamily, this.ctxMeasureTextWidth, iconOptions);
+        this.canvasContext.fillStyle = config.color;
+        this.canvasContext.font = `${config.fontSize}px ${config.fontFamily}`;
+        this.canvasContext.textBaseline = config.textBaseline;
+        const iconOptions = {iconHeight: config.iconHeight, iconPaddingX: config.iconPaddingX};
+        const result = splitText(text, maxWidth,
+            maxLine, config.fontFamily, this.ctxMeasureTextWidth, iconOptions);
         this.canvasContext.restore();
         return result;
     };
 
     drawDesc = () => {
-        this.assetManager.loadFont(this.config.desc.fontFamily);
-        const {list} = this.getDescLines(this.config.desc.position[2], this.isUR ? this.config.desc.URMaxLine : this.config.desc.maxLine);
-        this.canvasContext.save();
-        this.canvasContext.fillStyle = this.config.desc.color;
-        this.canvasContext.font = `${this.config.desc.fontSize}px ${this.config.desc.fontFamily}`;
-        this.canvasContext.textBaseline = "top";
-        const position = [...(this.isUR ? this.config.desc.URPosition : this.config.desc.position)];
+        let speechList;
+        if (!isEmpty(this.data.speech) && !this.isUR && !this.isLeader) {
+            const result = this.getDescLines(this.data.speech,
+                this.config.speech.position[2], this.config.speech.maxLine,
+                this.config.speech);
+            speechList = result.list;
+        }
+        const {list} = this.getDescLines(this.data.desc,
+            this.config.desc.position[2],
+            this.isUR ? this.config.desc.URMaxLine : this.config.desc.maxLine - size(speechList),
+            this.config.desc);
+
+        const drawTextList = (textList, position, config) => {
+            this.canvasContext.save();
+            this.canvasContext.fillStyle = config.color;
+            this.canvasContext.font = `${config.italic ? "italic " : ""}${config.fontSize}px ${config.fontFamily}`;
+            this.canvasContext.textBaseline = config.textBaseline;
+            forEach(textList, (textArr, i) => {
+                let currentText = "";
+                let left = position[0];
+                let top = position[1] + i * config.lineHeight;
+                const scale = min([position[2] / measureTextWidth(textArr, this.ctxMeasureTextWidth,
+                     {iconHeight: config.iconHeight, iconPaddingX: config.iconPaddingX}), 1]);
+                forEach(textArr, (it) => {
+                    const flashText = () => {
+                        if (currentText !== "") {
+                            const maxWidth = this.ctxMeasureTextWidth(currentText) * scale;
+                            this.canvasContext.fillText(currentText, left, top, maxWidth);
+                            currentText = "";
+                            left += maxWidth;
+                        }
+                    };
+    
+                    const drawIcon = (item) => {
+                        const iconItem = textIconMap[item.text];
+                        const icon = this.assetManager.loadImage(iconItem.src);
+                        left += config.iconPaddingX;
+                        const maxWidth = measureIconWidth(item, config.iconHeight) * scale;
+                        this.drawImage(icon, left, top + config.iconTopOffset, maxWidth, config.iconHeight);
+                        left += maxWidth;
+                        left += config.iconPaddingX;
+                    };
+    
+                    const drawPunctuation = (item) => {
+                        const width = this.ctxMeasureTextWidth(item.text) / 2;
+                        const isRight = item.position === "right";
+                        const isLeft = item.position === "left";
+                        this.canvasContext.fillText(item.text, left - (isRight ? width : isLeft ? 0 : (width / 2)), top);
+                        left += width;
+                    };
+    
+                    if (it.type === "char") {
+                        currentText += it.text;
+                    } else if (it.type === "icon") {
+                        flashText();
+                        drawIcon(it);
+                    } else if (it.type === "punctuation") {
+                        flashText();
+                        drawPunctuation(it);
+                    }
+                    flashText();
+                });
+            });
+            this.canvasContext.restore();
+        };
+
+        const descPosition = [...(this.isUR ? this.config.desc.URPosition : this.config.desc.position)];
         if (this.isUR) {
             const height = this.config.desc.lineHeight * size(list);
-            position[0] += this.config.descBackground.URPaddingX;
-            position[1] = position[1] - height - this.config.descBackground.URPaddingY;
-            position[2] -= 2 * this.config.descBackground.URPaddingX;
+            descPosition[0] += this.config.descBackground.URPaddingX;
+            descPosition[1] = descPosition[1] - height - this.config.descBackground.URPaddingY;
+            descPosition[2] -= 2 * this.config.descBackground.URPaddingX;
         }
+        drawTextList(list, descPosition, this.config.desc);
 
-        forEach(list, (textArr, i) => {
-            let currentText = "";
-            let left = position[0];
-            let top = position[1] + i * this.config.desc.lineHeight;
-            const scale = min([position[2] / measureTextWidth(textArr, this.ctxMeasureTextWidth,
-                 {iconHeight: this.config.desc.iconHeight, iconPaddingX: this.config.desc.iconPaddingX}), 1]);
-            forEach(textArr, (it) => {
-                const flashText = () => {
-                    if (currentText !== "") {
-                        const maxWidth = this.ctxMeasureTextWidth(currentText) * scale;
-                        this.canvasContext.fillText(currentText, left, top, maxWidth);
-                        currentText = "";
-                        left += maxWidth;
-                    }
-                };
-
-                const drawIcon = (item) => {
-                    const iconItem = textIconMap[item.text];
-                    const icon = this.assetManager.loadImage(iconItem.src);
-                    left += this.config.desc.iconPaddingX;
-                    const maxWidth = measureIconWidth(item, this.config.desc.iconHeight) * scale;
-                    this.drawImage(icon, left, top + this.config.desc.iconTopOffset, maxWidth, this.config.desc.iconHeight);
-                    left += maxWidth;
-                    left += this.config.desc.iconPaddingX;
-                };
-
-                const drawPunctuation = (item) => {
-                    const width = this.ctxMeasureTextWidth(item.text) / 2;
-                    const isRight = item.position === "right";
-                    const isLeft = item.position === "left";
-                    this.canvasContext.fillText(item.text, left - (isRight ? width : isLeft ? 0 : (width / 2)), top);
-                    left += width;
-                };
-
-                if (it.type === "char") {
-                    currentText += it.text;
-                } else if (it.type === "icon") {
-                    flashText();
-                    drawIcon(it);
-                } else if (it.type === "punctuation") {
-                    flashText();
-                    drawPunctuation(it);
-                }
-                flashText();
-            });
-        });
-        this.canvasContext.restore();
+        const speechPosition = [...this.config.speech.position];
+        speechPosition[1] -= this.config.speech.lineHeight * (size(speechList) - 1);
+        drawTextList(speechList, speechPosition, this.config.speech);
     };
 
     drawDescBackground = () => {
         const image = this.assetManager.loadDescBackground(this.isUR);
         const position =[...(this.isUR ? this.config.descBackground.URPosition : this.config.descBackground.position)];
         if (this.isUR) {
-            const lines = size(this.getDescLines(this.config.desc.position[2], this.config.desc.URMaxLine).list);
+            const lines = size(this.getDescLines(this.data.desc,
+                this.config.desc.position[2], this.config.desc.URMaxLine, this.config.desc).list);
             const height = this.config.descBackground.URLineHeight * lines + 2 * this.config.descBackground.URPaddingY;
             position[3] = height;
             position[1] -= height;
@@ -294,11 +312,18 @@ export default class CardDrawer {
         const copyrightConfig = this.config.copyright;
         const getColor = (config) => {
             if (this.isToken) return config.tokenColor;
-            else if (this.isUR) return config.URColor;
+            else if (this.isUR || this.isLeader) return config.URColor;
             else return config.color;
         };
+        const cardNoLines = split(this.data.cardNo, "\n");
+        const removed = remove(cardNoLines, (t, i) => i >= this.config.cardNo.maxLine);
+        if (removed.length) cardNoLines[this.config.cardNo.maxLine - 1] = cardNoLines[this.config.cardNo.maxLine - 1] + join(removed, "");
 
-        this.drawText(this.data.cardNo, {...cardNoConfig, color: getColor(cardNoConfig)});
+        forEach(cardNoLines, (line, i) => {
+            const position = [...cardNoConfig.position];
+            position[1] -= (size(cardNoLines) - i - 1) * cardNoConfig.lineHeight;
+            this.drawText(line, {...cardNoConfig, position, color: getColor(cardNoConfig)});
+        });
         this.drawText(this.data.copyright ?? DEFAULT_COPYRIGHT,
             {...copyrightConfig, color: getColor(copyrightConfig)},
             () => {

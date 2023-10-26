@@ -1,4 +1,4 @@
-import {assign, clone} from "lodash";
+import {defaultsDeep} from "lodash";
 import NormalPng from "../asset/image/number/normal.png";
 import URPng from "../asset/image/number/UR.png";
 
@@ -46,9 +46,8 @@ const defaultOptions = {
   isCost: false,
 };
 
-const getNumberPosition = (number, _options = {}) => {
-  const options = clone(defaultOptions);
-  assign(options, _options);
+const getNumberPosition = (number, options = {}) => {
+  defaultsDeep(options, defaultOptions);
   const {isUR, isCost} = options;
   if (isUR) {
     return UR_postion[number];
