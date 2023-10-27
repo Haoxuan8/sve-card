@@ -7,6 +7,7 @@ const hashCode = s => s.split("").reduce((a,b) => (((a << 5) - a) + b.charCodeAt
 class Annotator {
     kuroshiro = null;
     previousDictPath = null;
+    inited = false;
 
     constructor(config) {
         this.config = config;
@@ -15,15 +16,18 @@ class Annotator {
     initKuroshiro = async () => {
         const path = this.config.kuroshiro.dictPath;
         if (this.kuroshiro == null && this.previousDictPath !== path) {
+            this.inited = false;
             this.kuroshiro = new Kuroshiro();
             this.previousDictPath = path;
             await this.kuroshiro.init(new KuromojiAnalyzer({dictPath: path}));
+            this.inited = true;
         }
     };
 
     annotateAsync = async (text) => {
         if (window && window.DOMParser) {
             await this.initKuroshiro();
+            if (!this.inited) return text;
             const result = await this.kuroshiro.convert(text, {mode: "furigana", to: "hiragana"});
             const parser = new window.DOMParser();
             const doc = parser.parseFromString(result, "text/html");
