@@ -53,6 +53,8 @@ const defaultConfig = {
         fontSize: 22,
         position: [229, 564, 240],
         leaderPosition: [229, 590, 360],
+        annotation: true, // 注音，仅在日文字体生效
+        annotationFontSize: 10, // 注音字体大小
     },
     // 卡牌类型
     race: {
@@ -105,6 +107,10 @@ const defaultConfig = {
         fontSize: 8,
         position: [436, 632, 170],
         // fontFamily
+    },
+
+    kuroshiro: {
+        dictPath: "", // 注音词典路径
     },
 };
 
@@ -171,6 +177,7 @@ export const getConfig = (canvas, c = {}) => {
             fontFamily: config.textFontFamily,
             ...config.name,
             fontSize: Math.round(config.name.fontSize * scale),
+            annotationFontSize: Math.round(config.name.annotationFontSize * scale),
             position: getPosition(config.name.position, scale, left, top),
             leaderPosition: getPosition(config.name.leaderPosition, scale, left, top),
         },

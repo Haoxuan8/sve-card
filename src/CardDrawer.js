@@ -2,6 +2,7 @@ import splitText, {measureIconWidth, textIconMap, measureTextWidth} from "./util
 import {compact, forEach, map, size, split, sumBy, min, isEmpty, remove, join} from "lodash";
 import {isNoStatus, isEvo, isLG, isLeader, isToken, isUR} from "./util/cardTypeUtil";
 import getNumberPosition, {getNumberSprite} from "./util/getNumberPosition";
+import Annotator from "./Annotator";
 
 const DEFAULT_COPYRIGHT = "©Cygames,Inc.";
 
@@ -12,6 +13,7 @@ export default class CardDrawer {
         this.config = config;
         this.canvasContext = canvas.getContext("2d");
         this.assetManager = assetManager;
+        this.annotator = new Annotator(config);
     }
 
     get isUR() {
@@ -270,6 +272,18 @@ export default class CardDrawer {
         }
     };
 
+    mesuareText = (text, config) => {
+        if (text != null) {
+            this.assetManager.loadFont(config.fontFamily);
+            this.canvasContext.save();
+            this.canvasContext.font = `${config.fontSize}px ${config.fontFamily}`;
+            const width = this.ctxMeasureTextWidth(text);
+            this.canvasContext.restore();
+            return width;
+        }
+        return 0;
+    };
+
     drawName = () => {
         const config = {};
         if (this.isUR || this.isLG || this.isLeader) {
@@ -281,9 +295,42 @@ export default class CardDrawer {
         if (this.isLeader) {
             config.position = this.config.name.leaderPosition;
         }
-        this.drawText(this.data.name, {...this.config.name, ...config}, () => {
-            this.canvasContext.textAlign = "center";
-        });
+
+        let needAnnotation = false;
+        const nameConfig = {...this.config.name, ...config};
+        const nameOriginalWidth = this.mesuareText(this.data.name, nameConfig);
+        const maxWidth = nameConfig.position[2];
+        const widthOverMax = nameOriginalWidth > maxWidth;
+        const nameWidth = min([nameOriginalWidth, maxWidth]);
+        nameConfig.position = [...nameConfig.position];
+        nameConfig.position[0] -= nameWidth / 2;
+        if (this.config.name.fontFamily === "sve-card-ja"
+        && this.config.name.annotation && !isEmpty(this.config.kuroshiro.dictPath)) {
+            const result = this.annotator.annotate(this.data.name, this.draw);
+            if (typeof result === "object") {
+                needAnnotation = true;
+                forEach(result, (node) => {
+                    const originalWidth = this.mesuareText(node.text, nameConfig);
+                    const width = widthOverMax ? originalWidth / nameOriginalWidth * nameWidth : originalWidth;
+                    if (node.type === "RUBY") {
+                        const position = [...nameConfig.position];
+                        position[0] += width / 2;
+                        position[1] -= nameConfig.fontSize;
+                        position[2] = width;
+                        this.drawText(node.annotation,
+                            {...nameConfig, position, fontSize: nameConfig.annotationFontSize},
+                            () => this.canvasContext.textAlign = "center");
+                    }
+                    const position = [...nameConfig.position];
+                    position[2] = width;
+                    this.drawText(node.text, {...nameConfig, position});
+                    nameConfig.position[0] += width;
+                });
+            }
+        }
+        if (!needAnnotation) {
+            this.drawText(this.data.name, nameConfig);
+        }
     };
 
     drawRace = () => {

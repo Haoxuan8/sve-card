@@ -1,4 +1,5 @@
 const TerserPlugin = require("terser-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const nodeEnv = process.env.NODE_ENV;
 const isProduction = nodeEnv === "production";
 
@@ -12,6 +13,18 @@ module.exports = {
         library: {
             name: "SVECard",
             type: "umd",
+        },
+    },
+    plugins: [
+        !isProduction && new CopyPlugin({
+            patterns: [
+              {from: `${__dirname}/node_modules/kuromoji/dict`, to: `${__dirname}/examples/kuromoji/dict`},
+            ],
+          }),
+    ].filter(Boolean),
+    resolve: {
+        fallback: {
+            "path": require.resolve("path-browserify"),
         },
     },
     optimization: {
