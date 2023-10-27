@@ -315,7 +315,7 @@ export default class CardDrawer {
                     if (node.type === "RUBY") {
                         const position = [...nameConfig.position];
                         position[0] += width / 2;
-                        position[1] -= nameConfig.fontSize;
+                        position[1] += nameConfig.annotationYOffset;
                         position[2] = width;
                         this.drawText(node.annotation,
                             {...nameConfig, position, fontSize: nameConfig.annotationFontSize},
