@@ -85,6 +85,7 @@ export default class AssetManager {
             src: url('`+ url + `');
         }`;
         css.appendChild(document.createTextNode(data));
+        document.head.appendChild(css);
         const font = new FontFaceObserver(name);
         try {
             await font.load();
