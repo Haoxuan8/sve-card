@@ -1,7 +1,7 @@
 {
     "name": "sve-card",
-    "version": "0.0.1",
-    "description": "",
+    "version": "1.0.0",
+    "description": "DIY Shadowverse EVOLVE card.",
     "main": "dist/svecard.min.js",
     "types": "types/index.d.ts",
     "scripts": {
@@ -33,13 +33,13 @@
         "style-loader": "^3.3.2",
         "webpack": "^5.78.0",
         "webpack-cli": "^5.0.1",
-        "webpack-dev-server": "^4.13.1"
-    },
-    "dependencies": {
+        "webpack-dev-server": "^4.13.1",
         "fontfaceobserver": "^2.3.0",
         "kuroshiro": "^1.2.0",
         "kuroshiro-analyzer-kuromoji": "^1.1.0",
         "lodash": "^4.17.21",
         "path-browserify": "^1.0.1"
+    },
+    "dependencies": {
     }
 }

@@ -1,5 +1,9 @@
 # sve-card
 
+<a href="https://www.npmjs.com/package/sve-card">
+  <img src="https://img.shields.io/npm/v/sve-card"/>
+</a>
+
 DIY Shadowverse EVOLVE card in browser.
 
 ## Example
@@ -8,57 +12,54 @@ DIY Shadowverse EVOLVE card in browser.
 
 ## Usage
 
-`git clone` this project.
-
-### UMD
-
 ```bash
-yarn
-yarn build
+yarn add sve-card
+# or
+npm install sve-card
 ```
+
+### ES module
+
+```javascript
+import {Card} from "./sve-card"; // SVECard project path
+const canvas = document.getElementById("canvas");
+const card = new Card({
+    data: {
+        desc: "/quick\n"
+            + "お互いのリーダーに1ダメージ。\n"
+            + "お互いの場にフォレストバット1体を出す。",
+        craft: "Abyss",
+        cardType: "Follower",
+        imageSrc: "https://svgdb.me/assets/fullart/1086340100.png",
+        cost: 6,
+        attack: 6,
+        defense: 6,
+        rarity: "BR",
+        race: "眷属",
+        name: "眷属への贈り物",
+        cardNo: "TE01-001 2023",
+    },
+    height: 2000,
+    canvas,
+    config: {
+        assetPath: "./asset",
+    }
+});
+card.draw();
+```
+
+Please copy `asset` to your static directory, ensure `./asset/image/***.png` can be accessed. If you want to custom the asset path, please change `config.assetPath`.
+
+In order to provide ruby annotations for japanese, this project import [`kuroshiro`](https://github.com/hexenq/kuroshiro) library. Copy [dict files](https://github.com/takuyaa/kuromoji.js/tree/master/dict) and Change `config.kuroshiro.dictPath` to use this feature.
+
+### Browser
 
 ```html
 <script src="./svecard.min.js"></script>
 <script>
     const {Card} = SVECard;
-    const canvas = document.getElementById("canvas");
-    const card = new Card({
-        data: {
-            desc: "/quick\n"
-                + "お互いのリーダーに1ダメージ。\n"
-                + "お互いの場にフォレストバット1体を出す。",
-            craft: "Abyss",
-            cardType: "Follower",
-            imageSrc: "https://svgdb.me/assets/fullart/1086340100.png",
-            cost: 6,
-            attack: 6,
-            defense: 6,
-            rarity: "BR",
-            race: "眷属",
-            name: "眷属への贈り物",
-            cardNo: "TE01-001 2023",
-        },
-        height: 2000,
-        canvas,
-    });
-    card.draw();
 </script>
 ```
-
-Please move `sve-card-asset` to your static directory, ensure `./sve-card-asset/***.png` can be accessed.
-
-### ES Module
-
-```bash
-yarn
-yarn build-es
-```
-
-```javascript
-import {Card} from "./sve-card"; // SVECard project path
-```
-
-Configure the `rules` how to handle `.png`, `.ttf` and `.css` resources.
 
 ### Data Description Icon
 
@@ -95,7 +96,9 @@ modify `examples/index.html` to see result.
 ## TODO
 
 - [x] ~~replace`【`, `】`to image~~ render with half width
-- [ ] update example page
+- [ ] change name color
+- [ ] find new font
+- [ ] add token description area
 
 ## Thanks
 
