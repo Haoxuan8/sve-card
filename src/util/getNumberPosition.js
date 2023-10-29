@@ -1,6 +1,4 @@
 import {defaultsDeep} from "lodash";
-import NormalPng from "../asset/image/number/normal.png";
-import URPng from "../asset/image/number/UR.png";
 
 const UR_postion = {
   0: [0, 0, 142, 210],
@@ -54,10 +52,6 @@ const getNumberPosition = (number, options = {}) => {
   } else {
     return isCost ? normal_cost_position[number] : normal_status_position[number];
   }
-};
-
-export const getNumberSprite = (isUR) => {
-  return isUR ? URPng : NormalPng;
 };
 
 export default getNumberPosition;

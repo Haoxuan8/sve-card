@@ -19,7 +19,7 @@ export default class Card {
         this.setCanvasSize(height, width);
         this.originalConfig = config;
         this.config = getConfig(this.canvas, config);
-        this.assetManager = new AssetManager(data, {onEachStepLoad: this.draw});
+        this.assetManager = new AssetManager(data, this.config, {onEachStepLoad: this.draw});
         this.cardDrawer = new CardDrawer(data, this.canvas, this.config, this.assetManager);
     }
 

@@ -15,34 +15,6 @@ import {
     sum,
     size,
 } from "lodash";
-import ActPng from "../asset/image/desc/act.png";
-import QuickPng from "../asset/image/desc/quick.png";
-import StartPng from "../asset/image/desc/start.png";
-import FanfarePng from "../asset/image/desc/fanfare.png";
-import LastwordPng from "../asset/image/desc/lastword.png";
-import AttackPng from "../asset/image/desc/attack.png";
-import DefensePng from "../asset/image/desc/defense.png";
-import EatPng from "../asset/image/desc/eat.png";
-import EvoPng from "../asset/image/desc/evo.png";
-import Cost0Png from "../asset/image/desc/cost0.png";
-import Cost1Png from "../asset/image/desc/cost1.png";
-import Cost2Png from "../asset/image/desc/cost2.png";
-import Cost3Png from "../asset/image/desc/cost3.png";
-import Cost4Png from "../asset/image/desc/cost4.png";
-import Cost5Png from "../asset/image/desc/cost5.png";
-import Cost6Png from "../asset/image/desc/cost6.png";
-import Cost7Png from "../asset/image/desc/cost7.png";
-import Cost8Png from "../asset/image/desc/cost8.png";
-import Cost9Png from "../asset/image/desc/cost9.png";
-import CostXPng from "../asset/image/desc/costx.png";
-import ForestPng from "../asset/image/desc/forest.png";
-import SwordPng from "../asset/image/desc/sword.png";
-import RunePng from "../asset/image/desc/rune.png";
-import AbyssPng from "../asset/image/desc/abyss.png";
-import DragonPng from "../asset/image/desc/dragon.png";
-import HeavenPng from "../asset/image/desc/heaven.png";
-import NeutralPng from "../asset/image/desc/neutral.png";
-import PortalPng from "../asset/image/desc/portal.png";
 
 const defalutLeftPunctutations = ["。", "，", "：", "』", "、", "】", "」"];
 const defaultRightPunctutations = ["【", "『", "「"];
@@ -85,142 +57,142 @@ const isCenterPunctuation = (char, fontFamily) => {
 
 export const textIconMap = {
     "/act": {
-        src: ActPng,
+        src: "image/desc/act.png",
         height: 184,
         width: 187,
     },
     "/quick": {
-        src: QuickPng,
+        src: "image/desc/quick.png",
         height: 88,
         width: 214,
     },
     "/start": {
-        src: StartPng,
+        src: "image/desc/start.png",
         height: 184,
         width: 187,
     },
     "/fanfare": {
-        src: FanfarePng,
+        src: "image/desc/fanfare.png",
         height: 184,
         width: 187,
     },
     "/lastword": {
-        src: LastwordPng,
+        src: "image/desc/lastword.png",
         height: 184,
         width: 187,
     },
     "/attack": {
-        src: AttackPng,
+        src: "image/desc/attack.png",
         height: 184,
         width: 187,
     },
     "/defense": {
-        src: DefensePng,
+        src: "image/desc/defense.png",
         height: 184,
         width: 187,
     },
     "/eat": {
-        src: EatPng,
+        src: "image/desc/eat.png",
         height: 184,
         width: 187,
     },
     "/evo": {
-        src: EvoPng,
+        src: "image/desc/evo.png",
         height: 184,
         width: 187,
     },
     "/cost0": {
-        src: Cost0Png,
+        src: "image/desc/cost0.png",
         height: 184,
         width: 187,
     },
     "/cost1": {
-        src: Cost1Png,
+        src: "image/desc/cost1.png",
         height: 184,
         width: 187,
     },
     "/cost2": {
-        src: Cost2Png,
+        src: "image/desc/cost2.png",
         height: 184,
         width: 187,
     },
     "/cost3": {
-        src: Cost3Png,
+        src: "image/desc/cost3.png",
         height: 184,
         width: 187,
     },
     "/cost4": {
-        src: Cost4Png,
+        src: "image/desc/cost4.png",
         height: 184,
         width: 187,
     },
     "/cost5": {
-        src: Cost5Png,
+        src: "image/desc/cost5.png",
         height: 184,
         width: 187,
     },
     "/cost6": {
-        src: Cost6Png,
+        src: "image/desc/cost6.png",
         height: 184,
         width: 187,
     },
     "/cost7": {
-        src: Cost7Png,
+        src: "image/desc/cost7.png",
         height: 184,
         width: 187,
     },
     "/cost8": {
-        src: Cost8Png,
+        src: "image/desc/cost8.png",
         height: 184,
         width: 187,
     },
     "/cost9": {
-        src: Cost9Png,
+        src: "image/desc/cost9.png",
         height: 184,
         width: 187,
     },
     "/costx": {
-        src: CostXPng,
+        src: "image/desc/costx.png",
         height: 184,
         width: 187,
     },
     "/forest": {
-        src: ForestPng,
+        src: "image/desc/forest.png",
         height: 184,
         width: 187,
     },
     "/sword": {
-        src: SwordPng,
+        src: "image/desc/sword.png",
         height: 184,
         width: 187,
     },
     "/heaven": {
-        src: HeavenPng,
+        src: "image/desc/heaven.png",
         height: 184,
         width: 187,
     },
     "/rune": {
-        src: RunePng,
+        src: "image/desc/rune.png",
         height: 184,
         width: 187,
     },
     "/dragon": {
-        src: DragonPng,
+        src: "image/desc/dragon.png",
         height: 184,
         width: 187,
     },
     "/abyss": {
-        src: AbyssPng,
+        src: "image/desc/abyss.png",
         height: 184,
         width: 187,
     },
     "/neutral": {
-        src: NeutralPng,
+        src: "image/desc/neutral.png",
         height: 184,
         width: 187,
     },
     "/portal": {
-        src: PortalPng,
+        src: "image/desc/portal.png",
         height: 184,
         width: 187,
     },

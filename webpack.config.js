@@ -8,18 +8,19 @@ module.exports = {
     entry: "./src/index.js",
     output: {
         path: isProduction ? `${__dirname}/dist` : `${__dirname}/examples`,
-        assetModuleFilename: "sve-card-asset/[contenthash][ext][query]",
         filename: "svecard.min.js",
         library: {
             name: "SVECard",
             type: "umd",
         },
+        globalObject: "this",
     },
     plugins: [
-        !isProduction && new CopyPlugin({
+        new CopyPlugin({
             patterns: [
-              {from: `${__dirname}/node_modules/kuromoji/dict`, to: `${__dirname}/examples/kuromoji/dict`},
-            ],
+                {from: `${__dirname}/src/asset`, to: isProduction ? `${__dirname}/dist/asset` : `${__dirname}/examples/asset`},
+                !isProduction && {from: `${__dirname}/node_modules/kuromoji/dict`, to: `${__dirname}/examples/kuromoji/dict`},
+            ].filter(Boolean),
           }),
     ].filter(Boolean),
     resolve: {
@@ -41,17 +42,6 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: ["babel-loader"],
-            },
-            {
-                test: /\.(jpe?g|png|gif|ico|ttf)$/i,
-                type: "asset",
-            },
-            {
-                test: /\.css$/i,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                ],
             },
         ],
     },

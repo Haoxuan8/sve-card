@@ -1,21 +1,19 @@
 import loadImageUtil from "./util/loadImage";
 import getFrame from "./util/getFrame";
-import DescBackgroundPng from "./asset/image/desc_background.png";
-import URDescBackgroundPng from "./asset/image/UR_desc_background.png";
-import "./asset/font/index.css";
 import FontFaceObserver from "fontfaceobserver";
-import BRPng from "./asset/image/rarity/BR.png";
-import GRPng from "./asset/image/rarity/GR.png";
-import SRPng from "./asset/image/rarity/SR.png";
-import LGPng from "./asset/image/rarity/LG.png";
-import URPng from "./asset/image/rarity/UR.png";
+import path from "path-browserify";
 
 const rarityImageMap = {
-    BR: BRPng,
-    GR: GRPng,
-    SR: SRPng,
-    LG: LGPng,
-    UR: URPng,
+    BR: "image/rarity/BR.png",
+    GR: "image/rarity/GR.png",
+    SR: "image/rarity/SR.png",
+    LG: "image/rarity/LG.png",
+    UR: "image/rarity/UR.png",
+};
+
+const fontMap = {
+    "sve-card-cn": "font/cn.ttf",
+    "sve-card-ja": "font/ja.otf",
 };
 
 const defaultOptions = {
@@ -24,11 +22,12 @@ const defaultOptions = {
 };
 
 export default class AssetManager {
-    constructor(data, options = {}) {
+    constructor(data, config, options = {}) {
         options = {
             ...defaultOptions,
             ...options,
         };
+        this.config = config;
         this.data = data;
         this.onLoadAll = options.onLoadAll; //
         this.onEachStepLoad = options.onEachStepLoad; //
@@ -36,12 +35,16 @@ export default class AssetManager {
         this.loadingMap = {};
     }
 
+    get assetPath() {
+        return this.config.assetPath;
+    }
+
     loadImage = (url, options) => {
         return loadImageUtil(url, {onLoad: this.onEachStepLoad, ...options});
     };
 
     loadRarityImage = (rarity) => {
-        const imageUrl = rarityImageMap[rarity];
+        const imageUrl = path.join(this.assetPath, rarityImageMap[rarity]);
         if (imageUrl) {
             return this.loadImage(imageUrl);
         }
@@ -49,7 +52,7 @@ export default class AssetManager {
 
     // load image frame
     loadFrame = () => {
-        const frameUrl = getFrame(this.data);
+        const frameUrl = getFrame(this.data, {assetPath: this.assetPath});
         if (frameUrl == null) {
             console.error("无法获取 frame, 请检查 craft, cardType, rarity 是否正确");
         } else {
@@ -62,13 +65,26 @@ export default class AssetManager {
     };
 
     loadDescBackground = (UR) => {
-        return this.loadImage(UR ? URDescBackgroundPng : DescBackgroundPng);
+        const backgroundPath = UR ? "image/UR_desc_background.png" : "image/desc_background.png";
+        return this.loadImage(path.join(this.assetPath, backgroundPath));
     };
 
     loadFont = async (name) => {
+        if (!fontMap[name]) return;
         const loadingKey = `font-loading-${name}`;
         if (this.loadingMap[loadingKey]) return;
         this.loadingMap[loadingKey] = true;
+        const css = document.createElement("style");
+        css.setAttribute("type", "text/css");
+        css.setAttribute("crossOrigin", "anonymous");
+        css.setAttribute("class", name);
+        const url = path.join(this.assetPath, fontMap[name]);
+        const data= `
+            @font-face {
+            font-family: '`+ name + `';
+            src: url('`+ url + `');
+        }`;
+        css.appendChild(document.createTextNode(data));
         const font = new FontFaceObserver(name);
         try {
             await font.load();
@@ -87,6 +103,15 @@ export default class AssetManager {
         //         this.onEachStepLoad?.();
         //     }
         // }
+    };
+
+    loadNumberSprite = (isUR) => {
+        const p = isUR ? "image/number/UR.png" : "image/number/normal.png";
+        return this.loadImage(path.join(this.assetPath, p));
+    };
+
+    loadImageAsset = (relativePath) => {
+        return this.loadImage(path.join(this.assetPath, relativePath));
     };
 
     loadAll = async () => {

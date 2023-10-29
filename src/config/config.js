@@ -113,6 +113,7 @@ const defaultConfig = {
     kuroshiro: {
         dictPath: "", // 注音词典路径
     },
+    assetPath: "./asset", // 素材地址
 };
 
 export const getConfig = (canvas, c = {}) => {

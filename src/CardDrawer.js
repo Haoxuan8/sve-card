@@ -1,7 +1,7 @@
 import splitText, {measureIconWidth, textIconMap, measureTextWidth} from "./util/splitText";
 import {compact, forEach, map, size, split, sumBy, min, isEmpty, remove, join} from "lodash";
 import {isNoStatus, isEvo, isLG, isLeader, isToken, isUR} from "./util/cardTypeUtil";
-import getNumberPosition, {getNumberSprite} from "./util/getNumberPosition";
+import getNumberPosition from "./util/getNumberPosition";
 import Annotator from "./Annotator";
 
 const DEFAULT_COPYRIGHT = "©Cygames,Inc.";
@@ -145,7 +145,7 @@ export default class CardDrawer {
     
                     const drawIcon = (item) => {
                         const iconItem = textIconMap[item.text];
-                        const icon = this.assetManager.loadImage(iconItem.src);
+                        const icon = this.assetManager.loadImageAsset(iconItem.src);
                         left += config.iconPaddingX;
                         const maxWidth = measureIconWidth(item, config.iconHeight) * scale;
                         this.drawImage(icon, left, top + config.iconTopOffset, maxWidth, config.iconHeight);
@@ -204,7 +204,7 @@ export default class CardDrawer {
     };
 
     drawAttackDefenseCost = () => {
-        const image = this.assetManager.loadImage(getNumberSprite(this.isUR));
+        const image = this.assetManager.loadNumberSprite(this.isUR);
         const drawNumber = (number, config, isCost) => {
             if (number != null && image) {
                 const numbers = split(number, "");
