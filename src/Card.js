@@ -16,6 +16,7 @@ export default class Card {
         console.assert(canvas != null, "canvas element is null.");
         this.data = data;
         this.canvas = canvas;
+        this.config = {...defaultConfig, config};
         this.setCanvasSize(height, width);
         this.originalConfig = config;
         this.config = getConfig(this.canvas, config);
@@ -27,7 +28,8 @@ export default class Card {
         this.canvas.height = height;
         if (width != null) this.canvas.width = width;
         else {
-            const ratio = 459 / 642;
+            const size = this.config.size;
+            const ratio = size[0] / size[1];
             this.canvas.width = ratio * height;
         }
     };
@@ -67,9 +69,5 @@ export default class Card {
         link.download = `${this.data.name}.png`;
         link.href = dataURL;
         link.click();
-    };
-
-    test = () => {
-        console.log("test");
     };
 }

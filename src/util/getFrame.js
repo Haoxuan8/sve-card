@@ -27,6 +27,7 @@ const frameMap = {
         AmuletToken: "image/dragon/dragon_amulet_token.png",
         SpellToken: "image/dragon/dragon_spell_token.png",
         FollowerToken: "image/dragon/dragon_token.png",
+        showcase: "image/dragon/dragon_showcase.png",
     },
     Forest: {
         Leader: "image/leader/forest.png",
@@ -53,6 +54,7 @@ const frameMap = {
         AmuletToken: "image/forest/forest_amulet_token.png",
         SpellToken: "image/forest/forest_spell_token.png",
         FollowerToken: "image/forest/forest_token.png",
+        showcase: "image/forest/forest_showcase.png",
     },
     Heaven: {
         Leader: "image/leader/heaven.png",
@@ -79,6 +81,7 @@ const frameMap = {
         AmuletToken: "image/heaven/heaven_amulet_token.png",
         SpellToken: "image/heaven/heaven_spell_token.png",
         FollowerToken: "image/heaven/heaven_token.png",
+        showcase: "image/heaven/heaven_showcase.png",
     },
     Neutral: {
         Leader: "image/leader/neutral.png",
@@ -105,6 +108,7 @@ const frameMap = {
         AmuletToken: "image/neutral/neutral_amulet_token.png",
         SpellToken: "image/neutral/neutral_spell_token.png",
         FollowerToken: "image/neutral/neutral_token.png",
+        showcase: "image/neutral/neutral_showcase.png",
     },
     Abyss: {
         Leader: "image/leader/abyss.png",
@@ -131,6 +135,7 @@ const frameMap = {
         AmuletToken: "image/abyss/abyss_amulet_token.png",
         SpellToken: "image/abyss/abyss_spell_token.png",
         FollowerToken: "image/abyss/abyss_token.png",
+        showcase: "image/abyss/abyss_showcase.png",
     },
     Rune: {
         Leader: "image/leader/rune.png",
@@ -157,6 +162,7 @@ const frameMap = {
         AmuletToken: "image/rune/rune_amulet_token.png",
         SpellToken: "image/rune/rune_spell_token.png",
         FollowerToken: "image/rune/rune_token.png",
+        showcase: "image/rune/rune_showcase.png",
     },
     Sword: {
         Leader: "image/leader/sword.png",
@@ -183,13 +189,42 @@ const frameMap = {
         AmuletToken: "image/sword/sword_amulet_token.png",
         SpellToken: "image/sword/sword_spell_token.png",
         FollowerToken: "image/sword/sword_token.png",
+        showcase: "image/sword/sword_showcase.png",
+    },
+};
+
+export const cardTypeMap = {
+    follower: {
+        src: "image/desc/follower.png",
+        height: 50,
+        width: 153,
+    },
+    spell: {
+        src: "image/desc/spell.png",
+        height: 50,
+        width: 155,
+    },
+    amulet: {
+        src: "image/desc/amulet.png",
+        height: 50,
+        width: 153,
+    },
+    evolve: {
+        src: "image/desc/evolve.png",
+        height: 43,
+        width: 124,
+    },
+    token: {
+        src: "image/desc/token.png",
+        height: 50,
+        width: 149,
     },
 };
 
 const defaultOptions = {
 };
 
-const getFrame = (data, options = {}) => {
+export const getFrame = (data, options = {}) => {
     defaultsDeep(options, defaultOptions);
     const getPath = p => path.join(options.assetPath, p);
 
@@ -207,4 +242,9 @@ const getFrame = (data, options = {}) => {
     }
 };
 
-export default getFrame;
+export const getShowcaseFrame = (data, options) => {
+    defaultsDeep(options, defaultOptions);
+    const getPath = p => path.join(options.assetPath, p);
+    const craft = frameMap[data.craft];
+    return getPath(craft["showcase"]);
+};

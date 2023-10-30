@@ -25,6 +25,7 @@ declare class Card {
         data: CardData,
         canvas: HTMLCanvasElement,
         height: number,
+        config: object,
     });
 
     draw();
@@ -35,11 +36,26 @@ declare class Card {
 }
 
 declare const version: string;
-declare const defaultConfig: object;
+
+declare class CardShowcase {
+    static defaultConfig: object;
+
+    constructor(params: {
+        cardData: CardData,
+        canvas: HTMLCanvasElement,
+        showcaseData: object,
+        height: number,
+        config: object,
+        showcaseConfig: object,
+    });
+
+    draw();
+}
 
 declare namespace SVECard {
     export {
         Card,
+        CardShowcase,
         version,
     }
 }

@@ -23,3 +23,15 @@ export const isLG = (card) => {
 export const isLeader = (card) => {
     return card.cardType === "Leader";
 };
+
+export const isFollower = (card) => {
+    return ["Follower", "FollowerEvo", "FollowerToken"].includes(card.cardType);
+};
+
+export const isSpell = (card) => {
+    return ["Spell", "SpellToken"].includes(card.cardType);
+};
+
+export const isAmulet = (card) => {
+    return ["Amulet", "AmuletToken"].includes(card.cardType);
+};

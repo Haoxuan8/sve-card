@@ -3,6 +3,9 @@ import getPosition from "../util/getPosition";
 
 const defaultConfig = {
     size: [459, 642], // 尺寸大小 width x height，位置大小以此尺寸计算
+    // [1920, 1080, 82, 68, 677] 画布大小width, height, 图片位置与大小, left, top, width。不设置时默认占满高度并在宽度居中。
+    // 设置时会根据设置位置渲染卡片位置。
+    canvasSize: null,
     // 卡图
     cardImage: {
         position: [0, 0, 459, 642], // 位置 left, top, width, height
@@ -76,18 +79,21 @@ const defaultConfig = {
         color: "#FFF",
         fontSize: 52,
         position: [54, 58, 64],
+        textAlign: "center",
     },
     // 攻击力
     attack: {
         color: "#FFF",
         fontSize: 36,
         position: [45, 572, 44],
+        textAlign: "center",
     },
     // 血量
     defense: {
         color: "#FFF",
         fontSize: 36,
         position: [414, 572, 44],
+        textAlign: "center",
     },
     // 卡牌编号
     cardNo: {
@@ -119,23 +125,46 @@ const defaultConfig = {
 export const getConfig = (canvas, c = {}) => {
     const config = cloneDeep(c);
     defaultsDeep(config, defaultConfig);
-    const _sizeRate = config.size[1] / config.size[0]; // height / width
+    const sizeRate = config.size[1] / config.size[0]; // height / width
 
     const clientWidth = canvas.width;
     const clientHeight = canvas.height;
-    let h = clientHeight; let w = clientWidth;
-    let left = 0; let top = 0;
 
-    let currentRate = h / w;
-    if (currentRate > _sizeRate) {
-        h = w * _sizeRate;
-        top = Math.round((clientHeight - h) / 2);
-    } else if (_sizeRate > currentRate) {
-        w = h / _sizeRate;
-        left = Math.round((clientWidth - w) / 2);
+    const currentRate = clientHeight / clientWidth;
+    let h, w, left, top, scale;
+    if (config.canvasSize == null) {
+        h = clientHeight; w = clientWidth;
+        left = 0; top = 0;
+    
+        if (currentRate > sizeRate) {
+            h = w * sizeRate;
+            top = Math.round((clientHeight - h) / 2);
+        } else if (sizeRate > currentRate) {
+            w = h / sizeRate;
+            left = Math.round((clientWidth - w) / 2);
+        }
+    
+        scale = h / config.size[1];
+    } else {
+        const [canvasSettingWidth, canvasSettingHeight, cardLeft, cardTop, cardWidth] = config.canvasSize;
+    
+        const canvasSizeRate = canvasSettingHeight / canvasSettingWidth;
+        let canvasHeight = clientHeight; let canvasWidth = clientWidth;
+        let canvasTop = 0; let canvasLeft = 0;
+        if (currentRate > canvasSizeRate) {
+            canvasHeight = clientWidth * canvasSizeRate;
+            canvasTop = Math.round((clientHeight - canvasHeight) / 2);
+        } else if (canvasSizeRate > currentRate) {
+            canvasWidth = canvasHeight / currentRate;
+            canvasLeft = Math.round((clientWidth - canvasWidth) / 2);
+        }
+        const canvasScale = canvasHeight / canvasSettingHeight;
+        scale = canvasScale * cardWidth / config.size[0];
+        left = canvasLeft + cardLeft * canvasScale;
+        top = canvasTop + cardTop * canvasScale;
+        h = config.size[1] * scale;
+        w = config.size[0] * scale;
     }
-
-    const scale = h / config.size[1];
 
     return {
         ...config,

@@ -7,31 +7,34 @@
 </head>
 <body>
     <canvas id="test" style="height: 500px;"></canvas>
+    <canvas id="test2" style="height: 540px;"></canvas>
     <button id="btn">changeconfig</button>
     <button id="download">download</button>
 </body>
 <script src="./svecard.min.js"></script>
 <script>
-    const {Card} = SVECard;
+    const {Card, CardShowcase} = SVECard;
     const canvas = document.getElementById("test");
-    const card = new Card({
-        data: {
+    const canvas2 = document.getElementById("test2");
+    const cardData = {
             desc: `/fanfare自分のデッキから元のコスト3のスペルカード1枚を探し、手札に加える。\n` +
             `/start/cost1これを/act手札のスペル1枚を捨てる：1枚引く、これは/attack+1//defense+1する。`,
-            craft: "Rune",
-            cardType: "Leader",
+            craft: "Abyss",
+            cardType: "FollowerEvo",
             speech: "test",
             imageSrc: "https://img.moegirl.org.cn/common/e/e1/%E3%81%8A%E3%81%97%E3%82%83%E3%81%BE%E3%81%AA%E5%A5%B3%E3%81%AE%E5%AD%90_%E5%91%A8%E9%98%B2%E6%A1%83%E5%AD%90%2B.png",
             cost: 1,
-            attack: 1,
-            defense: 1,
+            attack: 4,
+            defense: 4,
             rarity: "LG",
             race: "ミリマス·フェアリー",
             name: "周防 桃子",
-            cardNo: "CP03-011 2024 \n アイドルマスター ミリオンライブ",
+            cardNo: "CP03-011 2024 アイドルマスター ミリオンライブ",
             copyright: "THE IDOL@MASTER™& ©BNEI © Cygames,Inc.",
-            speech: "あーね、自然とかそういうの、知らない感じだ。\nいいよ？暑かったり冷たかったり。草。語彙ないかよ。草。語彙ないかよ。草。語彙ないかよ。草。語彙ないかよ。草。語彙ないかよ。草。語彙ないかよ。草。語彙ないかよ。"
-        },
+            speech: "あーね、自然とかそういうの、知らない感じだ。\nいいよ？暑かったり冷たかったり。"
+        }
+    const card = new Card({
+        data: cardData,
         height: 2000,
         canvas,
         config: {
@@ -44,6 +47,25 @@
         }
     });
     card.draw();
+
+    const cardShowcase = new CardShowcase({
+        cardData,
+        canvas: canvas2,
+        height: 1080 * 2,
+        cardConfig: {
+            copyright: {
+                URColor: "#000"
+            },
+            kuroshiro: {
+                dictPath: "/kuromoji/dict"
+            }
+        },
+        showcaseData: {
+            tip: CardShowcase.defaultTip
+        }
+    })
+
+    cardShowcase.draw();
 
     function refresh() {
         card.draw();

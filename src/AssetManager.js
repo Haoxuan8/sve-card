@@ -1,7 +1,9 @@
-import loadImageUtil from "./util/loadImage";
-import getFrame from "./util/getFrame";
+import ImageLoader from "./util/ImageLoader";
+import {getFrame, getShowcaseFrame} from "./util/getFrame";
+import {lowerCase} from "lodash";
 import FontFaceObserver from "fontfaceobserver";
 import path from "path-browserify";
+import {textIconMap} from "./util/splitText";
 
 const rarityImageMap = {
     BR: "image/rarity/BR.png",
@@ -33,6 +35,7 @@ export default class AssetManager {
         this.onEachStepLoad = options.onEachStepLoad; //
 
         this.loadingMap = {};
+        this.iamgeLoader = new ImageLoader();
     }
 
     get assetPath() {
@@ -40,7 +43,7 @@ export default class AssetManager {
     }
 
     loadImage = (url, options) => {
-        return loadImageUtil(url, {onLoad: this.onEachStepLoad, ...options});
+        return this.iamgeLoader.loadImage(url, {onLoad: this.onEachStepLoad, ...options});
     };
 
     loadRarityImage = (rarity) => {
@@ -53,6 +56,15 @@ export default class AssetManager {
     // load image frame
     loadFrame = () => {
         const frameUrl = getFrame(this.data, {assetPath: this.assetPath});
+        if (frameUrl == null) {
+            console.error("无法获取 frame, 请检查 craft, cardType, rarity 是否正确");
+        } else {
+            return this.loadImage(frameUrl);
+        }
+    };
+
+    loadShowcaseFrame = () => {
+        const frameUrl = getShowcaseFrame(this.data, {assetPath: this.assetPath});
         if (frameUrl == null) {
             console.error("无法获取 frame, 请检查 craft, cardType, rarity 是否正确");
         } else {
@@ -113,6 +125,11 @@ export default class AssetManager {
 
     loadImageAsset = (relativePath) => {
         return this.loadImage(path.join(this.assetPath, relativePath));
+    };
+
+    loadCraftIcon = () => {
+        const o = textIconMap[`/${lowerCase(this.data.craft)}`];
+        return [this.loadImageAsset(o.src), o];
     };
 
     loadAll = async () => {
