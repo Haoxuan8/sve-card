@@ -255,12 +255,12 @@ class ShowcaseDrawer extends Drawer {
     };
 
     drawTip = () => {
-        const tip = this.showcaseData?.tip ?? CardShowcase.defaultTip[this.isCN(this.showcaseConfig.tip) ? "CHS" : "JP"];
+        const tip = this.showcaseData?.tip ?? CardShowcase.defaultTip[this.isCN(this.showcaseConfig.tip.fontFamily) ? "CHS" : "JP"];
         this.drawText(tip, this.showcaseConfig.tip);
     };
 
     drawTokenTip = () => {
-        const tip = this.showcaseData?.tokenTip ?? CardShowcase.defalutTokenTip[this.isCN(this.showcaseConfig.tokenTip) ? "CHS" : "JP"];
+        const tip = this.showcaseData?.tokenTip ?? CardShowcase.defalutTokenTip[this.isCN(this.showcaseConfig.tokenTip.fontFamily) ? "CHS" : "JP"];
         this.drawText(tip, this.showcaseConfig.tokenTip);
     };
 
