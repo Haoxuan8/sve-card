@@ -1,6 +1,6 @@
 {
     "name": "sve-card",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "DIY Shadowverse EVOLVE card.",
     "main": "dist/svecard.min.js",
     "types": "types/index.d.ts",
