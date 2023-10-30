@@ -16,6 +16,19 @@ interface CardData {
     desc?: string;
     cardNo?: string;
     copyright?: string;
+    speech?: string;
+    race?: string;
+}
+
+interface FromImage {
+    src: string;
+    height: number;
+    width: number;
+}
+
+interface CardShowcaseData {
+    tip?: string;
+    fromImage?: FromImage;
 }
 
 declare class Card {
@@ -39,15 +52,22 @@ declare const version: string;
 
 declare class CardShowcase {
     static defaultConfig: object;
+    static defaultTip: string;
 
     constructor(params: {
         cardData: CardData,
         canvas: HTMLCanvasElement,
-        showcaseData: object,
+        showcaseData: CardShowcaseData,
         height: number,
         config: object,
         showcaseConfig: object,
     });
+
+    setShowcaseData(data: object);
+    setCardData(data: Partial<CardData>);
+    setCardConfig(config: object);
+    setShowcaseConfig(config: object);
+    setSize(size: number[]);
 
     draw();
 }

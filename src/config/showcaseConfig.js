@@ -116,6 +116,7 @@ export const getConfig = (canvas, c = {}) => {
 
     return {
         ...config,
+        scale,
         frame: {
             position: [left, top, Math.round(w), Math.round(h)],
         },

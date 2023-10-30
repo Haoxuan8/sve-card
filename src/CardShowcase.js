@@ -2,6 +2,7 @@ import defaultShowcaseConfig, {getConfig as getShowcaseConfig} from "./config/sh
 import {getConfig as getCardConfig} from "./config/config";
 import AssetManager  from "./AssetManager";
 import ShowcaseDrawer from "./ShowcaseDrawer";
+import {isArray, assign, some, has, defaultsDeep} from "lodash";
 
 class CardShowcase {
     static defaultConfig = defaultShowcaseConfig;
@@ -9,7 +10,7 @@ class CardShowcase {
 
     constructor({
         cardData,
-        showcaseData,
+        showcaseData = {},
         canvas,
         cardConfig,
         showcaseConfig,
@@ -21,6 +22,8 @@ class CardShowcase {
         this.canvas = canvas;
         this.showcaseConfig = {...defaultShowcaseConfig, ...showcaseConfig};
         this.setCanvasSize(height, width);
+        this.originalShowcaseConfig = showcaseConfig;
+        this.originalCardConfig = cardConfig;
         this.showcaseConfig = getShowcaseConfig(this.canvas, showcaseConfig);
         this.cardConfig = this.getCardConfig(cardConfig);
         this.assetManager = new AssetManager(cardData, this.cardConfig, {onEachStepLoad: this.draw});
@@ -46,8 +49,50 @@ class CardShowcase {
 
     getCardConfig = (cardConfig = {}) => {
         const canvasSize = [...this.showcaseConfig.size, ...this.showcaseConfig.card.position];
-        cardConfig.canvasSize = canvasSize;
-        return getCardConfig(this.canvas, cardConfig);
+        return getCardConfig(this.canvas, {...cardConfig, canvasSize});
+    };
+
+    download = () => {
+        let dataURL = this.canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.download = `${this.data.name}_showcase.png`;
+        link.href = dataURL;
+        link.click();
+    };
+
+    setSize = (size) => {
+        if (isArray(size)) {
+            this.setCanvasSize(size[0], size[1]);
+            const newConfig = getShowcaseConfig(this.canvas, this.originalShowcaseConfig);
+            assign(this.showcaseConfig, newConfig);
+            const newCardConfig = this.getCardConfig(this.originalCardConfig);
+            assign(this.cardConfig, newCardConfig);
+            this.draw();
+        }
+    };
+
+    setCardConfig = (config) => {
+        this.originalCardConfig = config;
+        assign(this.cardConfig, this.getCardConfig(config));
+        this.draw();
+    };
+
+    setShowcaseConfig = (config) => {
+        this.originalShowcaseConfig = config;
+        assign(this.showcaseConfig, getShowcaseConfig(this.canvas, config));
+        this.draw();
+    };
+
+    setCardData = (data, options) => {
+        const newData = defaultsDeep(data, this.cardData);
+        assign(this.cardData, newData);
+        this.draw();
+    };
+
+    setShowcaseData = (data, options) => {
+        const newData = defaultsDeep(data, this.showcaseData);
+        assign(this.showcaseData, newData);
+        this.draw();
     };
 
     draw = () => {

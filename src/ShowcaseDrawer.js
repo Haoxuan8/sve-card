@@ -122,6 +122,15 @@ class ShowcaseDrawer extends Drawer {
 
     drawFrom = () => {
         this.drawText(this.getText(this.showcaseConfig.from), this.showcaseConfig.from);
+        if (this.showcaseData.fromImage) {
+            let {width, height, src} = this.showcaseData.fromImage;
+            const position = [...this.showcaseConfig.from.contentPosition];
+            width = this.showcaseConfig.scale * width;
+            height = this.showcaseConfig.scale * height;
+            position[0] -= width / 2;
+            position[1] -= height / 2;
+            this.drawImage(this.assetManager.loadImage(src), position[0], position[1], width, height);
+        }
     };
 
     drawInformation = () => {
@@ -245,8 +254,7 @@ class ShowcaseDrawer extends Drawer {
     };
 
     drawTip = () => {
-        console.log(this.showcaseData);
-        if (this.showcaseData.tip) this.drawText(this.showcaseData.tip, this.showcaseConfig.tip);
+        if (this.showcaseData?.tip) this.drawText(this.showcaseData.tip, this.showcaseConfig.tip);
     };
 
     draw = () => {
@@ -255,7 +263,7 @@ class ShowcaseDrawer extends Drawer {
         this.drawName();
         this.drawInformation();
         this.drawCardType();
-        this.drawAttackAndDefense();
+        if (!this.isNoStatus) this.drawAttackAndDefense();
         this.drawDesc();
         this.drawCopyright();
         this.drawTip();
