@@ -6,7 +6,14 @@ import {isArray, assign, some, has, defaultsDeep} from "lodash";
 
 class CardShowcase {
     static defaultConfig = defaultShowcaseConfig;
-    static defaultTip = "※画像は開発中のものです。実際の商品とは一部異なる場合がございます。";
+    static defaultTip = {
+        JP: "※画像は開発中のものです。実際の商品とは一部異なる場合がございます。",
+        CHS: "※卡片能力为开发中内容。",
+    };
+    static defalutTokenTip = {
+        JP: "※このカードはトークンです。",
+        CHS: "※这张卡片为衍生物卡。",
+    };
 
     constructor({
         cardData,

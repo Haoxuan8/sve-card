@@ -28,6 +28,7 @@ interface FromImage {
 
 interface CardShowcaseData {
     tip?: string;
+    tokenTip?: string;
     fromImage?: FromImage;
 }
 

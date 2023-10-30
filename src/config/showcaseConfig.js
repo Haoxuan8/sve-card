@@ -79,7 +79,7 @@ const defaultConfig = {
     },
     copyright: {
         fontSize: 24,
-        position: [41, 1042, 1000],
+        position: [38, 1046, 1000],
         color: "#cac9b4",
         textBaseline: "top",
     },
@@ -87,6 +87,13 @@ const defaultConfig = {
         fontSize: 24,
         position: [1848, 980, 1000],
         color: "#FFF",
+        textBaseline: "top",
+        textAlign: "right",
+    },
+    tokenTip: {
+        position: [766, 1019, 440],
+        color: "#FFF",
+        fontSize: 24,
         textBaseline: "top",
         textAlign: "right",
     },
@@ -190,6 +197,12 @@ export const getConfig = (canvas, c = {}) => {
             ...config.tip,
             position: getPosition(config.tip.position, scale, left, top),
             fontSize: Math.round(config.tip.fontSize * scale),
+        },
+        tokenTip: {
+            fontFamily: config.textFontFamily,
+            ...config.tokenTip,
+            position: getPosition(config.tokenTip.position, scale, left, top),
+            fontSize: Math.round(config.tokenTip.fontSize * scale),
         },
     };
 };

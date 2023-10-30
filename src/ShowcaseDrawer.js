@@ -5,6 +5,7 @@ import {cardTypeMap} from "./util/getFrame";
 import {isEmpty, forEach, min, size, times} from "lodash";
 import {craftCHSMap, craftJPMap} from "./config/constant";
 import {splitText, measureTextWidth, textIconMap} from "./util/splitText";
+import CardShowcase from "./CardShowcase";
 
 const startKeywordCharToEndMap = {
     "【": "】",
@@ -254,7 +255,13 @@ class ShowcaseDrawer extends Drawer {
     };
 
     drawTip = () => {
-        if (this.showcaseData?.tip) this.drawText(this.showcaseData.tip, this.showcaseConfig.tip);
+        const tip = this.showcaseData?.tip ?? CardShowcase.defaultTip[this.isCN(this.showcaseConfig.tip) ? "CHS" : "JP"];
+        this.drawText(tip, this.showcaseConfig.tip);
+    };
+
+    drawTokenTip = () => {
+        const tip = this.showcaseData?.tokenTip ?? CardShowcase.defalutTokenTip[this.isCN(this.showcaseConfig.tokenTip) ? "CHS" : "JP"];
+        this.drawText(tip, this.showcaseConfig.tokenTip);
     };
 
     draw = () => {
@@ -267,6 +274,7 @@ class ShowcaseDrawer extends Drawer {
         this.drawDesc();
         this.drawCopyright();
         this.drawTip();
+        if (this.isToken) this.drawTokenTip();
     };
 }
 
