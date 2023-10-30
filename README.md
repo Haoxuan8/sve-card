@@ -10,6 +10,12 @@ DIY Shadowverse EVOLVE card in browser.
 
 [gh-pages](https://haoxuan8.github.io/sve-card/)
 
+### single card
+![](./examples//momoko.png)
+
+### with showcase
+![](./examples/momoko_showcase.png)
+
 ## Usage
 
 ```bash

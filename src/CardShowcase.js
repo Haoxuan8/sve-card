@@ -55,7 +55,7 @@ class CardShowcase {
     download = () => {
         let dataURL = this.canvas.toDataURL("image/png");
         const link = document.createElement("a");
-        link.download = `${this.data.name}_showcase.png`;
+        link.download = `${this.cardData.name}_showcase.png`;
         link.href = dataURL;
         link.click();
     };
