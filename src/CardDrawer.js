@@ -93,6 +93,7 @@ export default class CardDrawer extends Drawer {
     };
 
     drawDesc = () => {
+        if (this.isLeader) return;
         let speechList;
         if (!isEmpty(this.data.speech) && !this.isUR && !this.isLeader) {
             const result = this.getDescLines(this.data.speech,
@@ -163,7 +164,7 @@ export default class CardDrawer extends Drawer {
         if (this.isUR) {
             const height = this.config.desc.lineHeight * size(list);
             descPosition[0] += this.config.descBackground.URPaddingX;
-            descPosition[1] = descPosition[1] - height - this.config.descBackground.URPaddingY;
+            descPosition[1] = descPosition[1] - height - this.config.descBackground.URPaddingBottom;
             descPosition[2] -= 2 * this.config.descBackground.URPaddingX;
         }
         drawTextList(list, descPosition, this.config.desc);
@@ -174,19 +175,35 @@ export default class CardDrawer extends Drawer {
     };
 
     drawDescBackground = () => {
+        if (this.isLeader) return;
         const image = this.assetManager.loadDescBackground(this.isUR);
         const position =[...(this.isUR ? this.config.descBackground.URPosition : this.config.descBackground.position)];
         if (this.isUR) {
             const lines = size(this.getDescLines(this.data.desc,
                 this.config.desc.position[2], this.config.desc.URMaxLine, this.config.desc).list);
-            const height = this.config.descBackground.URLineHeight * lines + 2 * this.config.descBackground.URPaddingY;
+            const height = this.config.descBackground.URLineHeight * lines + this.config.descBackground.URPaddingTop + this.config.descBackground.URPaddingBottom;
             position[3] = height;
             position[1] -= height;
         }
-        this.drawImage(image, ...position);
+
+        if (this.config.descBackground.coverBlack) {
+            const blackCoverPosition = [...position];
+            if (this.isUR) {
+                const xOffset = 26 * this.config.scale;
+                blackCoverPosition[0] += xOffset;
+                blackCoverPosition[2] -= 2 * xOffset;
+            } else {
+                blackCoverPosition[3] = 140 * this.config.scale;
+            }
+            this.canvasContext.save();
+            this.canvasContext.fillStyle = "rgba(0, 0, 0, 1)";
+            this.canvasContext.fillRect(...blackCoverPosition);
+            this.canvasContext.restore();
+        } else this.drawImage(image, ...position);
     };
 
     drawAttackDefenseCost = () => {
+        if (this.isLeader) return;
         !this.isNoStatus && this.drawNumber(this.data.attack, this.config.attack);
         !this.isNoStatus && this.drawNumber(this.data.defense, this.config.defense);
         !this.isEvo && this.drawNumber(this.data.cost, this.config.cost, true);
@@ -242,6 +259,7 @@ export default class CardDrawer extends Drawer {
     };
 
     drawRace = () => {
+        if (this.isLeader) return;
         const [left, top, width] = this.config.race.position;
         let offset = 0;
         if (this.isNoStatus) offset += this.config.race.noStatusOffset;
@@ -254,7 +272,7 @@ export default class CardDrawer extends Drawer {
     };
 
     drawRarity = () => {
-        if (this.isToken) {}
+        if (this.isToken || this.isLeader) return;
         else {
             const image = this.assetManager.loadRarityImage(this.data.rarity);
             const [left, top, width, height] = this.config.rarity.position;
@@ -286,24 +304,34 @@ export default class CardDrawer extends Drawer {
         });
     };
 
-    drawSpeech = () => {
-        
-    };
-
     clearCanvas = () => {
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
-    draw = () => {
+    customDrawProcess = (fn) => {
+        this._customDraw = fn;
+    };
+    resetDrawProcess = () => {
+        this._customDraw = this._draw;
+    };
+
+    _draw = () => {
         this.drawCardImage();
-        if (!this.isLeader) this.drawDescBackground();
+        this.drawDescBackground();
         this.drawFrame();
-        if (!this.isLeader) this.drawAttackDefenseCost();
-        if (!this.isLeader) this.drawDesc();
-        if (!this.isLeader && !this.isUR) this.drawSpeech();
+        this.drawAttackDefenseCost();
+        this.drawDesc();
         this.drawName();
-        if (!this.isLeader) this.drawRace();
-        if (!this.isLeader) this.drawRarity();
+        this.drawRace();
+        this.drawRarity();
         this.drawFooter();
+    };
+
+    _customDraw = () => {
+        this._draw();
+    };
+
+    draw = () => {
+        this._customDraw();
     };
 }

@@ -73,7 +73,7 @@ export default class AssetManager {
     };
 
     loadCardImage = () => {
-        return this.loadImage(this.data.imageSrc, {cors: true});
+        return this.loadImage(this.data.imageSrc);
     };
 
     loadDescBackground = (UR) => {

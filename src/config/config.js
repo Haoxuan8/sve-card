@@ -17,13 +17,13 @@ const defaultConfig = {
     desc: {
         color: "#FFF",
         fontSize: 14,
-        maxLine: 7, // 普通稀有度最大行数。包含speech行数
+        maxLine: 6, // 普通稀有度最大行数。包含speech行数
         URMaxLine: 8, // UR稀有度最大行数
-        lineHeight: 18, // 行高
+        lineHeight: 16, // 行高
         iconPaddingX: 0, // 图标x轴间距
         iconHeight: 15, // 图标大小
         iconTopOffset: -1, // 图标y轴上方偏移
-        position: [28, 396, 394], // left, top, width, height
+        position: [28, 416, 394], // left, top, width, height
         textBaseline: "top",
     },
     // 台词 UR没有
@@ -41,10 +41,12 @@ const defaultConfig = {
     },
     // 卡牌描述背景
     descBackground: {
-        position: [0, 388, 459, 254],
+        position: [0, 408, 459, 254],
         URPosition: [0, 526, 459], // UR稀有度 left, top, width
-        URPaddingY: 6, // UR稀有度Y轴 padding
+        URPaddingBottom: 14, // UR稀有度Y轴 padding
+        URPaddingTop: 8, // UR稀有度Y轴 padding
         URPaddingX: 32, // UR稀有度X轴 padding
+        coverBlack: false, // 直接显示黑色背景
     },
     // 名称
     name: {
@@ -168,6 +170,7 @@ export const getConfig = (canvas, c = {}) => {
 
     return {
         ...config,
+        scale,
         frame: {
             position: [left, top, Math.round(w), Math.round(h)],
         },
@@ -198,10 +201,12 @@ export const getConfig = (canvas, c = {}) => {
             iconTopOffset: Math.round(config.speech.iconTopOffset * scale),
         },
         descBackground: {
+            ...config.descBackground,
             position: getPosition(config.descBackground.position, scale, left, top),
             URPosition: getPosition(config.descBackground.URPosition, scale, left, top),
-            URPaddingY: config.descBackground.URPaddingY * scale,
             URPaddingX: config.descBackground.URPaddingX * scale,
+            URPaddingTop: config.descBackground.URPaddingTop * scale,
+            URPaddingBottom: config.descBackground.URPaddingBottom * scale,
             URLineHeight: config.desc.lineHeight * scale,
         },
         name: {
