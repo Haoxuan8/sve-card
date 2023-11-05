@@ -109,6 +109,7 @@ const frameMap = {
         SpellToken: "image/neutral/neutral_spell_token.png",
         FollowerToken: "image/neutral/neutral_token.png",
         showcase: "image/neutral/neutral_showcase.png",
+        EP: "image/neutral/evolve_point.png",
     },
     Abyss: {
         Leader: "image/leader/abyss.png",
@@ -227,6 +228,10 @@ const defaultOptions = {
 export const getFrame = (data, options = {}) => {
     defaultsDeep(options, defaultOptions);
     const getPath = p => path.join(options.assetPath, p);
+
+    if (data.cardType === "EP") {
+        return getPath(frameMap["Neutral"]["EP"]);
+    }
 
     const craft = frameMap[data.craft];
     const isLG = data.rarity === "LG";

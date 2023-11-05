@@ -206,11 +206,12 @@ export default class CardDrawer extends Drawer {
         if (this.isLeader) return;
         !this.isNoStatus && this.drawNumber(this.data.attack, this.config.attack);
         !this.isNoStatus && this.drawNumber(this.data.defense, this.config.defense);
-        !this.isEvo && this.drawNumber(this.data.cost, this.config.cost, true);
+        !this.isEvo && !this.isEP && this.drawNumber(this.data.cost, this.config.cost, true);
     };
 
     drawName = () => {
         const config = {};
+        config.position = [...this.config.name.position];
         if (this.isUR || this.isLG || this.isLeader) {
             config.color = this.config.name.LGColor;
             config.shadowBlur = this.config.name.LGShadowBlur;
@@ -220,6 +221,10 @@ export default class CardDrawer extends Drawer {
         if (this.isLeader) {
             config.position = this.config.name.leaderPosition;
         }
+        if (this.isNoStatus) {
+            config.position[2] = this.config.name.leaderPosition[2];
+        }
+
 
         let needAnnotation = false;
         const nameConfig = {...this.config.name, ...config};
@@ -259,11 +264,11 @@ export default class CardDrawer extends Drawer {
     };
 
     drawRace = () => {
-        if (this.isLeader) return;
+        if (this.isLeader || this.isEP) return;
         const [left, top, width] = this.config.race.position;
         let offset = 0;
         if (this.isNoStatus) offset += this.config.race.noStatusOffset;
-        if (this.isToken) offset += this.config.race.tokenOffset;
+        if (this.isToken || this.isEP) offset += this.config.race.tokenOffset;
         if (this.isEvo && this.isUR) offset += this.config.race.evoOffset;
         this.drawText(this.data.race, {
             ...this.config.race,
@@ -272,7 +277,7 @@ export default class CardDrawer extends Drawer {
     };
 
     drawRarity = () => {
-        if (this.isToken || this.isLeader) return;
+        if (this.isToken || this.isLeader || this.isEP) return;
         else {
             const image = this.assetManager.loadRarityImage(this.data.rarity);
             const [left, top, width, height] = this.config.rarity.position;
@@ -284,7 +289,7 @@ export default class CardDrawer extends Drawer {
         const cardNoConfig = this.config.cardNo;
         const copyrightConfig = this.config.copyright;
         const getColor = (config) => {
-            if (this.isToken) return config.tokenColor;
+            if (this.isToken || this.isEP) return config.tokenColor;
             else if (this.isUR || this.isLeader) return config.URColor;
             else return config.color;
         };
@@ -302,6 +307,12 @@ export default class CardDrawer extends Drawer {
             () => {
             this.canvasContext.textAlign = "right";
         });
+    };
+
+    drawAlias = () => {
+        if (!isEmpty(this.data.alias)) {
+            this.drawText(this.data.alias, this.config.alias);
+        }
     };
 
     clearCanvas = () => {
@@ -322,6 +333,7 @@ export default class CardDrawer extends Drawer {
         this.drawAttackDefenseCost();
         this.drawDesc();
         this.drawName();
+        this.drawAlias();
         this.drawRace();
         this.drawRarity();
         this.drawFooter();

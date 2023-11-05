@@ -57,6 +57,7 @@ class Annotator {
     previousResult = null;
     // TODO: 目前每次渲染只能同时调用一次此任务
     annotate = (text, callback) => {
+        if (!text) return text;
         const hashCodeText = hashCode(text);
         if (hashCodeText === this.previousHashCode && this.previousResult != null) {
             return this.previousResult;

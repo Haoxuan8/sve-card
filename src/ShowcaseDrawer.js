@@ -118,7 +118,7 @@ class ShowcaseDrawer extends Drawer {
             position: [...this.showcaseConfig.race.contentPosition],
             color: this.showcaseConfig.race.contentColor,
         };
-        this.drawText(this.cardData.race, contentConfig);
+        this.drawText(this.isEP ? "EP" : this.cardData.race, contentConfig);
     };
 
     drawFrom = () => {

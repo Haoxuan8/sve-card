@@ -1,4 +1,4 @@
-import {isNoStatus, isEvo, isLG, isLeader, isToken, isUR, isFollower, isSpell, isAmulet} from "./util/cardTypeUtil";
+import {isNoStatus, isEvo, isLG, isLeader, isEP, isToken, isUR, isFollower, isSpell, isAmulet} from "./util/cardTypeUtil";
 import {compact, forEach, map, size, split, sumBy, min, isEmpty, remove, join} from "lodash";
 import getNumberPosition from "./util/getNumberPosition";
 
@@ -36,6 +36,9 @@ class Drawer {
     }
     get isAmulet() {
         return isAmulet(this.data);
+    }
+    get isEP() {
+        return isEP(this.data);
     }
 
     drawText = (text, config, setContext) => {

@@ -1,7 +1,7 @@
 import defaultConfig from "../src/config/config";
 
 type Craft = "Dragon" | "Forest" | "Heaven" | "Neutral" | "Abyss" | "Rune" | "Sword";
-type CardType = "Follower" | "FollowerEvo" | "Spell" | "Amulet" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken";
+type CardType = "Follower" | "FollowerEvo" | "Spell" | "Amulet" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken" | "EP";
 type Rarity = "BR" | "SR" | "GR" | "LG" | "UR";
 
 interface CardData {
@@ -34,6 +34,7 @@ interface CardShowcaseData {
 
 declare class Card {
     static defaultConfig: object;
+    static defaultEPData: object;
 
     constructor(params: {
         data: CardData,

@@ -62,6 +62,14 @@ const defaultConfig = {
         annotationFontSize: 10, // 注音字体大小
         annotationYOffset: -20, // 注音Y轴偏移 
     },
+    // 别名，目前只有EP有使用
+    alias: {
+        color: "#FFF",
+        position: [229, 525, 304],
+        fontSize: 10,
+        textBaseline: "middle",
+        textAlign: "center",
+    },
     // 卡牌类型
     race: {
         color: "#FFF",
@@ -217,6 +225,12 @@ export const getConfig = (canvas, c = {}) => {
             annotationYOffset: Math.round(config.name.annotationYOffset * scale),
             position: getPosition(config.name.position, scale, left, top),
             leaderPosition: getPosition(config.name.leaderPosition, scale, left, top),
+        },
+        alias: {
+            fontFamily: config.textFontFamily,
+            ...config.alias,
+            position: getPosition(config.alias.position, scale, left, top),
+            fontSize: Math.round(config.alias.fontSize * scale),
         },
         race: {
             fontFamily: config.textFontFamily,

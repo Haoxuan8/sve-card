@@ -16,23 +16,24 @@
     const {Card, CardShowcase} = SVECard;
     const canvas = document.getElementById("test");
     const canvas2 = document.getElementById("test2");
-    const cardData = {
-            desc: `/fanfare自分のデッキから元のコスト3のスペルカード1枚を探し、手札に加える。\n` +
-            `/start/cost1これを/act手札のスペル1枚を捨てる：1枚引く、これは/attack+1//defense+1する。`,
-            craft: "Abyss",
-            cardType: "FollowerEvo",
-            speech: "test",
-            imageSrc: "https://shadowverse-evolve.com/wordpress/wp-content/images/cardlist/BP07/bp07-u02.png",
-            cost: 1,
-            attack: 4,
-            defense: 4,
-            rarity: "UR",
-            race: "ミリマス·フェアリー",
-            name: "周防 桃子",
-            cardNo: "CP03-011 2024 アイドルマスター ミリオンライブ",
-            copyright: "THE IDOL@MASTER™& ©BNEI © Cygames,Inc.",
-            speech: "あーね、自然とかそういうの、知らない感じだ。\nいいよ？暑かったり冷たかったり。"
-        }
+    // const cardData = {
+    //         desc: `/fanfare自分のデッキから元のコスト3のスペルカード1枚を探し、手札に加える。\n` +
+    //         `/start/cost1これを/act手札のスペル1枚を捨てる：1枚引く、これは/attack+1//defense+1する。`,
+    //         craft: "Abyss",
+    //         cardType: "EP",
+    //         speech: "test",
+    //         imageSrc: "https://shadowverse-evolve.com/wordpress/wp-content/images/cardlist/BP07/bp07-u02.png",
+    //         cost: 1,
+    //         attack: 4,
+    //         defense: 4,
+    //         rarity: "UR",
+    //         race: "ミリマス·フェアリー",
+    //         name: "周防 桃子",
+    //         cardNo: "CP03-011 2024 アイドルマスター ミリオンライブ",
+    //         copyright: "THE IDOL@MASTER™& ©BNEI © Cygames,Inc.",
+    //         speech: "あーね、自然とかそういうの、知らない感じだ。\nいいよ？暑かったり冷たかったり。"
+    //     }
+    const cardData = Card.defaultEPData;
     const card = new Card({
         data: cardData,
         height: 2000,
@@ -62,9 +63,6 @@
             kuroshiro: {
                 dictPath: "/kuromoji/dict"
             }
-        },
-        showcaseConfig: {
-            textFontFamily: "sve-card-cn"
         },
         showcaseData: {
             fromImage: {

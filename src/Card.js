@@ -3,8 +3,20 @@ import CardDrawer from "./CardDrawer";
 import defaultConfig, {getConfig} from "./config/config";
 import {isArray, assign, some, has, defaultsDeep} from "lodash";
 
+const defaultEPData = {
+    cardType: "EP",
+    alias: "EP",
+    craft: "Neutral",
+    rarity: "BR",
+    speech: "",
+    race: "",
+    desc: "バトル開始時、後攻プレイヤーはEPを3つ持つ。\n"
+    + "自分が/evoか/eatのコストを払うとき、表向きのEPを1つ裏向きにすることで、1PPを払える。（1ターンに進化か食事はどちらか1回できる。1回につき使えるEPは1つ）",
+};
+
 export default class Card {
     static defaultConfig = defaultConfig;
+    static defaultEPData = defaultEPData;
 
     constructor({
         data,
