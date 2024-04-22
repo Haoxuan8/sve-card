@@ -99,13 +99,6 @@ yarn dev
 
 modify `examples/index.html` to see result.
 
-## TODO
-
-- [x] ~~replace`【`, `】`to image~~ render with half width
-- [ ] change name color
-- [ ] find new font
-- [ ] add token description area
-
 ## Thanks
 
 - [noteRE]() provides card resources.
