@@ -1,6 +1,6 @@
 import defaultConfig from "../src/config/config";
 
-type Craft = "Dragon" | "Forest" | "Heaven" | "Neutral" | "Abyss" | "Rune" | "Sword";
+type Craft = "Dragon" | "Forest" | "Haven" | "Neutral" | "Abyss" | "Rune" | "Sword";
 type CardType = "Follower" | "FollowerEvo" | "Spell" | "Amulet" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken" | "EP";
 type Rarity = "BR" | "SR" | "GR" | "LG" | "UR";
 

@@ -211,8 +211,8 @@ export const textIconMap = {
         JPText: "《ロイヤル》",
         CHSText: "《皇家》",
     },
-    "/heaven": {
-        src: "image/desc/heaven.png",
+    "/haven": {
+        src: "image/desc/haven.png",
         height: 184,
         width: 187,
         JPText: "《ビショップ》",

@@ -84,7 +84,7 @@ In order to provide ruby annotations for japanese, this project import [`kuroshi
 | /costx| コスト10 |  花费10   |
 | /forest | エルフ | 妖精 |
 | /sword | ロイヤル | 皇家 |
-| /heaven | ビショップ | 主教 |
+| /haven | ビショップ | 主教 |
 | /rune | ウィッチ | 巫师 |
 | /dragon | ドラゴン | 龙族 |
 | /abyss | ナイトメア | 梦魇 |
