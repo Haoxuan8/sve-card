@@ -1,11 +1,14 @@
 import defaultConfig from "../src/config/config";
 
 type Craft = "Dragon" | "Forest" | "Haven" | "Neutral" | "Abyss" | "Rune" | "Sword";
-type CardType = "Follower" | "FollowerEvo" | "Spell" | "Amulet" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken" | "EP";
+type CardType = "Follower" | "FollowerEvo" | "FollowerAdv" | "Spell" | "Amulet" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken" | "EP";
 type Rarity = "BR" | "SR" | "GR" | "LG" | "UR";
+type CardStyle = "Normal" | "Tarot" | "TarotReverse";
+
 
 interface CardData {
     name: string;
+    cardStyle: CardStyle;
     imageSrc: string;
     cardType: CardType;
     craft: Craft;

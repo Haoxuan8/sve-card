@@ -157,6 +157,9 @@ class ShowcaseDrawer extends Drawer {
         if (this.isToken) {
             cardTypes.push(cardTypeMap.token);
         }
+        if (this.isAdv) {
+            cardTypes.push(cardTypeMap.advance);
+        }
         const position = [...this.showcaseConfig.cardType.position];
         forEach(cardTypes, cardType => {
             const ratio = cardType.width / cardType.height;

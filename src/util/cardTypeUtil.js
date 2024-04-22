@@ -12,6 +12,10 @@ export const isEvo = (card) => {
     return ["FollowerEvo"].includes(card.cardType);
 };
 
+export const isAdv = (card) => {
+    return ["FollowerAdv"].includes(card.cardType);
+};
+
 export const isUR = (card) => {
     return card.rarity === "UR";
 };
@@ -25,7 +29,7 @@ export const isLeader = (card) => {
 };
 
 export const isFollower = (card) => {
-    return ["Follower", "FollowerEvo", "FollowerToken"].includes(card.cardType);
+    return ["Follower", "FollowerEvo", "FollowerAdv", "FollowerToken"].includes(card.cardType);
 };
 
 export const isSpell = (card) => {
