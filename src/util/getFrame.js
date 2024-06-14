@@ -2,6 +2,45 @@ import {defaultsDeep} from "lodash";
 import path from "path-browserify";
 
 const frameMap = {
+    Portal: {
+        Leader: "image/leader/portal.png",
+        Follower: {
+            normal: "image/portal/portal.png",
+            LG: "image/portal/portal_LG.png",
+            UR: "image/portal/portal_UR.png",
+            tarot: "image/portal/portal_tarot.png",
+        },
+        FollowerEvo: {
+            normal: "image/portal/portal_evo.png",
+            LG: "image/portal/portal_evo_LG.png",
+            UR: "image/portal/portal_evo_UR.png",
+            tarot: "image/portal/portal_evo_tarot.png",
+            tarotReverse: "image/portal/portal_evo_tarot_reverse.png",
+        },
+        FollowerAdv: {
+            normal: "image/portal/portal_adv.png",
+            LG: "image/portal/portal_adv.png",
+            UR: "image/portal/portal_adv.png",
+            tarot: "image/portal/portal_adv_tarot.png",
+        },
+        Spell: {
+            normal: "image/portal/portal_spell.png",
+            LG: "image/portal/portal_spell_LG.png",
+            UR: "image/portal/portal_spell_UR.png",
+            tarot: "image/portal/portal_spell_tarot.png",
+        },
+        Amulet: {
+            normal: "image/portal/portal_amulet.png",
+            LG: "image/portal/portal_amulet_LG.png",
+            UR: "image/portal/portal_amulet_UR.png",
+            tarot: "image/portal/portal_amulet_tarot.png",
+        },
+        AmuletToken: "image/portal/portal_amulet_token.png",
+        SpellToken: "image/portal/portal_spell_token.png",
+        FollowerToken: "image/portal/portal_token.png",
+        showcase: "image/portal/portal_showcase.png",
+    },
+
     Dragon: {
         Leader: "image/leader/dragon.png",
         Follower: {
