@@ -73,6 +73,7 @@ In order to provide ruby annotations for japanese, this project import [`kuroshi
 |------------|:-------:|:-------:|
 | /act       | アクト |   横置    |
 | /quick     | クイック |   快速    |
+| /qs        | Q |   快速    |
 | /start     | 起動 |   起动    |
 | /fanfare   | ファンファーレ |  入场曲   |
 | /lastword  | ラストワード |   谢幕曲   |
@@ -82,6 +83,7 @@ In order to provide ruby annotations for japanese, this project import [`kuroshi
 | /evo | 進化 |  进化    |
 | /cost{0-9} | コスト{0-9} | 花费{0-9} |  
 | /costx| コスト10 |  花费10   |
+| /costc | コストX |  花费X   |
 | /forest | エルフ | 妖精 |
 | /sword | ロイヤル | 皇家 |
 | /haven | ビショップ | 主教 |

@@ -71,6 +71,13 @@ export const textIconMap = {
         JPText: "《クイック》",
         CHSText: "《快速》",
     },
+    "/qs": {
+        src: "image/desc/qs.png",
+        height: 184,
+        width: 187,
+        JPText: "《Q》",
+        CHSText: "《快速》",
+    },
     "/start": {
         src: "image/desc/start.png",
         height: 184,
@@ -196,6 +203,13 @@ export const textIconMap = {
         width: 187,
         JPText: "《コスト10》",
         CHSText: "《花费10》",
+    },
+    "/costc": {
+        src: "image/desc/costc.png",
+        height: 184,
+        width: 187,
+        JPText: "《コストX》",
+        CHSText: "《花费X》",
     },
     "/forest": {
         src: "image/desc/forest.png",
