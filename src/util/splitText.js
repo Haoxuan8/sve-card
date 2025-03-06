@@ -17,10 +17,10 @@ import {
     defaultsDeep,
 } from "lodash";
 
-const defalutLeftPunctutations = ["。", "，", "：", "』", "、", "】", "」"];
-const defaultRightPunctutations = ["【", "『", "「"];
+const defaultLeftPunctuations = ["。", "，", "：", "』", "、", "】", "」"];
+const defaultRightPunctuations = ["【", "『", "「"];
 
-const fontFamilyPunctutationMap = {
+const fontFamilyPunctuationMap = {
     "sve-card-ja": {
         left: ["。", "，", "、", "』", "】", "」"],
         right: ["【", "『", "「"],
@@ -30,28 +30,28 @@ const fontFamilyPunctutationMap = {
 
 
 const isPunctuation = (char, fontFamily) => {
-    const map = fontFamilyPunctutationMap[fontFamily] ?? {};
-    const left = map.left ?? defalutLeftPunctutations;
-    const right = map.right ?? defaultRightPunctutations;
+    const map = fontFamilyPunctuationMap[fontFamily] ?? {};
+    const left = map.left ?? defaultLeftPunctuations;
+    const right = map.right ?? defaultRightPunctuations;
     const center = map.center ?? [];
-    const puctutations = [...left, ...right, ...center];
-    return puctutations.includes(char);
+    const punctuations = [...left, ...right, ...center];
+    return punctuations.includes(char);
 };
 
 const isLeftPunctuation = (char, fontFamily) => {
-    const map = fontFamilyPunctutationMap[fontFamily] ?? {};
-    const left = map.left ?? defalutLeftPunctutations;
+    const map = fontFamilyPunctuationMap[fontFamily] ?? {};
+    const left = map.left ?? defaultLeftPunctuations;
     return left.includes(char);
 };
 
 const isRightPunctuation = (char, fontFamily) => {
-    const map = fontFamilyPunctutationMap[fontFamily] ?? {};
-    const right = map.right ?? defaultRightPunctutations;
+    const map = fontFamilyPunctuationMap[fontFamily] ?? {};
+    const right = map.right ?? defaultRightPunctuations;
     return right.includes(char);
 };
 
 const isCenterPunctuation = (char, fontFamily) => {
-    const map = fontFamilyPunctutationMap[fontFamily] ?? {};
+    const map = fontFamilyPunctuationMap[fontFamily] ?? {};
     const center = map.center ?? [];
     return center.includes(char);
 };

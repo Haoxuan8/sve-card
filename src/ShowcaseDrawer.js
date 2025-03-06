@@ -18,6 +18,7 @@ const startKeywordCharToEndMap = {
 class ShowcaseDrawer extends Drawer {
     constructor({
         cardData,
+        cardImgSrc,
         showcaseData,
         cardConfig,
         showcaseConfig,
@@ -26,6 +27,7 @@ class ShowcaseDrawer extends Drawer {
     }) {
         super(cardData, canvas, assetManager);
         this.cardData = cardData;
+        this.cardImgSrc = cardImgSrc;
         this.showcaseData = showcaseData;
         this.cardConfig = cardConfig;
         this.showcaseConfig = showcaseConfig;
@@ -115,15 +117,31 @@ class ShowcaseDrawer extends Drawer {
         this.drawText(this.getText(this.showcaseConfig.race), this.showcaseConfig.race);
         const contentConfig = {
             ...this.showcaseConfig.race,
+            maxLine: this.showcaseConfig.race.contentMaxLine,
+            lineHeight: this.showcaseConfig.race.contentLineHeight,
             position: [...this.showcaseConfig.race.contentPosition],
             color: this.showcaseConfig.race.contentColor,
         };
-        this.drawText(this.isEP ? "EP" : this.cardData.race, contentConfig);
+        const {list} = this.getTextLines(this.isEP ? "EP" : this.cardData.race, contentConfig.position[2], contentConfig.maxLine, contentConfig);
+        this.drawLines(list, contentConfig);
+        // this.drawText(this.isEP ? "EP" : this.cardData.race, contentConfig);
     };
 
     drawFrom = () => {
         this.drawText(this.getText(this.showcaseConfig.from), this.showcaseConfig.from);
-        if (this.showcaseData.fromImage) {
+        if (this.showcaseData.fromText) {
+            const contentConfig = {
+                ...this.showcaseConfig.from,
+                position: [...this.showcaseConfig.from.contentTextPosition],
+                color: this.showcaseConfig.from.contentTextColor,
+                maxLine: this.showcaseConfig.from.contentTextMaxLine,
+                lineHeight: this.showcaseConfig.from.contentTextLineHeight,
+                fontSize: this.showcaseConfig.from.contentTextFontSize,
+                textAlign: this.showcaseConfig.from.contentTextAlign,
+            };
+            const {list} = this.getTextLines(this.showcaseData.fromText, contentConfig.position[2], contentConfig.maxLine, contentConfig);
+            this.drawLines(list, contentConfig);
+        } else if (this.showcaseData.fromImage) {
             let {width, height, src} = this.showcaseData.fromImage;
             const position = [...this.showcaseConfig.from.contentPosition];
             width = this.showcaseConfig.scale * width;
@@ -187,14 +205,15 @@ class ShowcaseDrawer extends Drawer {
         this.drawStatus(false);
     };
 
-    getDescLines = (text, maxWidth, maxLine, config) => {
+    getTextLines = (text, maxWidth, maxLine, config, replaceKeyword) => {
         this.assetManager.loadFont(config.fontFamily);
         this.canvasContext.save();
         this.canvasContext.fillStyle = config.color;
         this.canvasContext.font = `${config.fontSize}px ${config.fontFamily}`;
         this.canvasContext.textBaseline = config.textBaseline;
         const result = splitText(text, maxWidth,
-            maxLine, config.fontFamily, {replaceKeyword: true, isCHS: config.fontFamily === "sve-card-cn"},
+            maxLine, config.fontFamily, {replaceKeyword,
+                 isCHS: config.fontFamily === "sve-card-cn"},
              (t) => measureTextWidth(t, this.ctxMeasureTextWidth));
         this.canvasContext.restore();
         return result;
@@ -209,16 +228,12 @@ class ShowcaseDrawer extends Drawer {
         });
     };
 
-    drawDesc = () => {
-        const config = this.showcaseConfig.desc;
-        const {list} = this.getDescLines(this.cardData.desc, config.position[2], config.maxLine, config);
-        if (size(list) > 5) {
-            this.drawDescLine(size(list) - 5);
-        }
+    drawLines = (list, config) => {
         this.canvasContext.save();
         this.canvasContext.font = `${config.fontSize}px ${config.fontFamily}`;
         this.canvasContext.textBaseline = config.textBaseline;
-        const position = [...this.showcaseConfig.desc.position];
+        this.canvasContext.textAlign = config.textAlign;
+        const position = [...config.position];
         let endChar = null;
         forEach(list, (line, i) => {
             let left = position[0];
@@ -236,10 +251,10 @@ class ShowcaseDrawer extends Drawer {
             };
             forEach(line, it => {
                 if (it.type === "char") {
-                    const hasKeywordStarChar = startKeywordCharToEndMap[it.text];
-                    if (hasKeywordStarChar) {
+                    const hasKeywordStartChar = startKeywordCharToEndMap[it.text];
+                    if (hasKeywordStartChar) {
                         flashText();
-                        endChar = hasKeywordStarChar;
+                        endChar = hasKeywordStartChar;
                         currentText += it.text;
                     } else if (endChar === it.text) {
                         currentText += it.text;
@@ -253,6 +268,29 @@ class ShowcaseDrawer extends Drawer {
         this.canvasContext.restore();
     };
 
+    drawDesc = () => {
+        const config = this.showcaseConfig.desc;
+        const tokenDescConfig = {...this.showcaseConfig.tokenDesc};
+        let tokenDescList;
+        if (!isEmpty(this.data.tokenDesc)) {
+            const result = this.getTextLines(this.data.tokenDesc,tokenDescConfig.position[2], tokenDescConfig.maxLine,tokenDescConfig);
+                tokenDescList = result.list;
+        }
+        const {list} = this.getTextLines(this.cardData.desc, config.position[2], config.maxLine - size(tokenDescList), config, true);
+        if (!isEmpty(tokenDescConfig)) {
+            this.drawDescLine(4);
+        } else if (size(list) > 5) {
+            this.drawDescLine(size(list) - 5);
+        }
+        if (!isEmpty(tokenDescList)) {
+            const tokenDescPosition = [...tokenDescConfig.position];
+            tokenDescPosition[1] -= tokenDescConfig.lineHeight * (size(tokenDescList) - 1);
+            tokenDescConfig.position = tokenDescPosition;
+            this.drawLines(tokenDescList, tokenDescConfig);
+        }
+        this.drawLines(list, config);
+    };
+
     drawCopyright = () => {
         this.drawText(this.cardData.copyright, this.showcaseConfig.copyright);
     };
@@ -263,13 +301,21 @@ class ShowcaseDrawer extends Drawer {
     };
 
     drawTokenTip = () => {
-        const tip = this.showcaseData?.tokenTip ?? CardShowcase.defalutTokenTip[this.isCN(this.showcaseConfig.tokenTip.fontFamily) ? "CHS" : "JP"];
+        const tip = this.showcaseData?.tokenTip ?? CardShowcase.defaultTokenTip[this.isCN(this.showcaseConfig.tokenTip.fontFamily) ? "CHS" : "JP"];
         this.drawText(tip, this.showcaseConfig.tokenTip);
+    };
+
+    drawCardImg = () => {
+        this.drawImage(this.assetManager.loadImage(this.cardImgSrc), ...this.cardConfig.cardImage.position);
     };
 
     draw = () => {
         this.drawShowcaseFrame();
-        this.cardDrawer.draw();
+        if (this.cardImgSrc) {
+            this.drawCardImg();
+        } else {
+            this.cardDrawer.draw();
+        }
         this.drawName();
         this.drawInformation();
         this.drawCardType();

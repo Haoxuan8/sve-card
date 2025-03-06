@@ -26,9 +26,9 @@ const defaultConfig = {
         CHSText: "职 业", // 中文
         fontSize: 34,
         textBaseline: "middle", // 文字基线
-        iconPosition: [956, 256], // 图标位置
+        iconPosition: [994, 256], // 图标位置
         iconHeight: 40, // 图标大小
-        contentPosition: [1002, 258, 292], // 内容位置
+        contentPosition: [1042, 258, 292], // 内容位置
         contentColor: "#FFF", // 内容颜色
     },
     race: {
@@ -37,18 +37,26 @@ const defaultConfig = {
         JPText: "タイプ", // 日文
         CHSText: "类 型", // 中文
         fontSize: 34,
+        contentMaxLine: 3,
+        contentLineHeight: 72,
         textBaseline: "middle", // 文字基线
-        contentPosition: [1002, 310, 400], // 内容位置
+        contentPosition: [994, 310, 400], // 内容位置
         contentColor: "#FFF", // 内容颜色
     },
     from: {
         position: [1316, 258, 160],
         color: "#c2c9b7", // 颜色
         JPText: "収録商品", // 日文
-        CHSText: "收录商品", // 中文
+        CHSText: "收录于", // 中文
         fontSize: 34,
         textBaseline: "middle", // 文字基线
         contentPosition: [1616, 328],
+        contentTextPosition: [1604, 258, 330],
+        contentTextAlign: "center",
+        contentTextMaxLine: 3,
+        contentTextFontSize: 44,
+        contentTextLineHeight: 100,
+        contentTextColor: "#FFF",
     },
     cardType: {
         position: [900, 452],
@@ -76,6 +84,15 @@ const defaultConfig = {
         color: "#FFF",
         keywordColor: "#ffd64f",
         linePosition: [849, 764, 955, 3],
+    },
+    tokenDesc: {
+        color: "#CEC1AF",
+        keywordColor: "#CEC1AF",
+        fontSize: 26,
+        maxLine: 5,
+        position: [876, 882, 914],
+        lineHeight: 41,
+        textBaseline: "bottom",
     },
     copyright: {
         fontSize: 24,
@@ -156,7 +173,9 @@ export const getConfig = (canvas, c = {}) => {
             ...config.from,
             position: getPosition(config.from.position, scale, left, top),
             fontSize: Math.round(config.from.fontSize * scale),
+            contentTextFontSize: Math.round(config.from.contentTextFontSize * scale),
             contentPosition: getPosition(config.from.contentPosition, scale, left, top),
+            contentTextPosition: getPosition(config.from.contentTextPosition, scale, left, top),
         },
         cardType: {
             ...config.cardType,
@@ -185,6 +204,13 @@ export const getConfig = (canvas, c = {}) => {
             fontSize: Math.round(config.desc.fontSize * scale),
             lineHeight: Math.round(config.desc.lineHeight * scale),
             linePosition: getPosition(config.desc.linePosition, scale, left, top),
+        },
+        tokenDesc: {
+            fontFamily: config.textFontFamily,
+            ...config.tokenDesc,
+            position: getPosition(config.tokenDesc.position, scale, left, top),
+            fontSize: Math.round(config.tokenDesc.fontSize * scale),
+            lineHeight: Math.round(config.tokenDesc.lineHeight * scale),
         },
         copyright: {
             fontFamily: config.textFontFamily,

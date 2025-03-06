@@ -10,13 +10,14 @@ class CardShowcase {
         JP: "※画像は開発中のものです。実際の商品とは一部異なる場合がございます。",
         CHS: "※卡片能力为开发中内容。",
     };
-    static defalutTokenTip = {
+    static defaultTokenTip = {
         JP: "※このカードはトークンです。",
         CHS: "※这张卡片为衍生物卡。",
     };
 
     constructor({
         cardData,
+        cardImgSrc,
         showcaseData = {},
         canvas,
         cardConfig,
@@ -26,6 +27,7 @@ class CardShowcase {
     }) {
         this.cardData = cardData;
         this.showcaseData = showcaseData;
+        this.cardImgSrc = cardImgSrc;
         this.canvas = canvas;
         this.showcaseConfig = {...defaultShowcaseConfig, ...showcaseConfig};
         this.setCanvasSize(height, width);
@@ -36,6 +38,7 @@ class CardShowcase {
         this.assetManager = new AssetManager(cardData, this.cardConfig, {onEachStepLoad: this.draw});
         this.showcaseDrawer = new ShowcaseDrawer({
             cardData: this.cardData,
+            cardImgSrc: this.cardImgSrc,
             showcaseData: this.showcaseData,
             cardConfig: this.cardConfig,
             showcaseConfig: this.showcaseConfig,
