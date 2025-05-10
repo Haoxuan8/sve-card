@@ -17,22 +17,20 @@
     const canvas = document.getElementById("test");
     const canvas2 = document.getElementById("test2");
     const cardData = {
-            desc: `/evo/cost1:是这张卡进化。\n/fanfare将一个「召来狐」召唤到场上。/act/cost2`,
-            tokenDesc: `*[召来狐]\n消费1/攻击力0`,
-            craft: "Sword",
-            cardType: "FollowerEvo",
-            speech: "test",
-            imageSrc: "https://svgdb.me/assets/fullart/1238240100.png",
-            cost: 1,
-            attack: 4,
-            defense: 4,
-            rarity: "LG",
-            race: "指挥官*星神",
-            name: "周防 桃子",
-            cardNo: "CP03-011 2024 アイドルマスター ミリオンライブ",
-            copyright: "THE IDOL@MASTER™& ©BNEI © Cygames,Inc.",
-            speech: "あーね、自然とかそういうの、知らない感じだ。\nいいよ？暑かったり冷たかったり。"
-        }
+        desc: `/evo/cost1:是这张卡进化。\n/fanfare将一个『召来狐』召唤到场上。\n/start/cost2将墓场中的这张卡消失：将一个『召来狐』召唤到场上。使自己场上的全体『召来狐』各《攻击力》+2/《生命值》+1。`,
+        tokenDesc: `*『召来狐』 主教职业·衍生物·从者 宴乐·狂信·野兽类型\n消费1/攻击力0/生命值1\n【守护】\n/fanfare使自己的主战者《生命值》+1。`,
+        craft: "Haven",
+        cardType: "Follower",
+        imageSrc: "",
+        cost: 1,
+        attack: 3,
+        defense: 3,
+        race: "宴乐·狂信·偶像",
+        name: "千箔百面之邪神",
+        cardNo: "CP03-011 2024 アイドルマスター ミリオンライブ",
+        copyright: "© Cygames,Inc.",
+        cardStyle: "Normal",
+    }
     const card = new Card({
         data: cardData,
         height: 2000,
@@ -44,11 +42,9 @@
             textFontFamily: "sve-card-cn"
         }
     });
-    card.draw();
 
     const cardShowcase = new CardShowcase({
         cardData,
-        cardImgSrc: "https://shadowverse-evolve.com/wordpress/wp-content/images/cardlist/BP14/bp14-001.png",
         canvas: canvas2,
         height: 1080 * 2,
         cardConfig: {
@@ -64,13 +60,9 @@
             textFontFamily: "sve-card-cn",
         },
         showcaseData: {
-            fromImage: {
-                src: "https://millionlive-theaterdays.idolmaster-official.jp/assets/data/webp/common/logo_official.png.webp",
-                height: 128,
-                width: 336,
-            },
-            fromText: "日文补充包BP14\n「梦幻飨宴」"
-        }
+            fromText: "日文补充包BP14\n「梦幻飨宴」",
+            cardImgSrc: "https://svgdb.me/assets/fullart/1238240100.png",
+        },
     })
 
     cardShowcase.draw();

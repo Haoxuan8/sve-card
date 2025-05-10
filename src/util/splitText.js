@@ -83,7 +83,7 @@ export const textIconMap = {
         height: 184,
         width: 187,
         JPText: "《起動》",
-        CHSText: "《启动》",
+        CHSText: "《起动》",
     },
     "/fanfare": {
         src: "image/desc/fanfare.png",

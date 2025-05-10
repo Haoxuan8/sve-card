@@ -18,7 +18,6 @@ const startKeywordCharToEndMap = {
 class ShowcaseDrawer extends Drawer {
     constructor({
         cardData,
-        cardImgSrc,
         showcaseData,
         cardConfig,
         showcaseConfig,
@@ -27,7 +26,6 @@ class ShowcaseDrawer extends Drawer {
     }) {
         super(cardData, canvas, assetManager);
         this.cardData = cardData;
-        this.cardImgSrc = cardImgSrc;
         this.showcaseData = showcaseData;
         this.cardConfig = cardConfig;
         this.showcaseConfig = showcaseConfig;
@@ -306,12 +304,28 @@ class ShowcaseDrawer extends Drawer {
     };
 
     drawCardImg = () => {
-        this.drawImage(this.assetManager.loadImage(this.cardImgSrc), ...this.cardConfig.cardImage.position);
+        const radius = this.cardConfig.cardImage.radius;
+        const [x, y, width, height] = this.cardConfig.cardImage.position;
+        this.canvasContext.save();
+        this.canvasContext.beginPath();
+        this.canvasContext.moveTo(x + radius, y);
+        this.canvasContext.lineTo(x + width - radius, y);
+        this.canvasContext.quadraticCurveTo(x + width, y, x + width, y + radius);
+        this.canvasContext.lineTo(x + width, y + height - radius);
+        this.canvasContext.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        this.canvasContext.lineTo(x + radius, y + height);
+        this.canvasContext.quadraticCurveTo(x, y + height, x, y + height - radius);
+        this.canvasContext.lineTo(x, y + radius);
+        this.canvasContext.quadraticCurveTo(x, y, x + radius, y);
+        this.canvasContext.closePath();
+        this.canvasContext.clip();
+        this.drawImage(this.assetManager.loadImage(this.showcaseData.cardImgSrc), x, y, width, height);
+        this.canvasContext.restore();
     };
 
     draw = () => {
         this.drawShowcaseFrame();
-        if (this.cardImgSrc) {
+        if (this.showcaseData.cardImgSrc) {
             this.drawCardImg();
         } else {
             this.cardDrawer.draw();

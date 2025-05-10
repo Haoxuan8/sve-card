@@ -1,9 +1,15 @@
-import defaultConfig from "../src/config/config";
-
 type Craft = "Dragon" | "Forest" | "Haven" | "Neutral" | "Abyss" | "Rune" | "Sword";
-type CardType = "Follower" | "FollowerEvo" | "FollowerAdv" | "Spell" | "Amulet" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken" | "EP";
+type CardType = "Follower" | "FollowerEvo" | "FollowerAdv" | "Spell" | "SpellEvo" | "SpellAdv" | "Amulet" | "AmuletEvo" | "AmuletAdv" | "Leader" | "AmuletToken" | "SpellToken" | "FollowerToken" | "EP";
 type Rarity = "BR" | "SR" | "GR" | "LG" | "UR";
 type CardStyle = "Normal" | "Tarot" | "TarotReverse";
+
+
+interface IConstant {
+    craftCHSOptions: {value: Craft, label: string}[],
+    cardTypeCHSOptions: {value: CardType, label: string}[],
+}
+
+const Constant: IConstant;
 
 
 interface CardData {
@@ -33,6 +39,7 @@ interface CardShowcaseData {
     tip?: string;
     tokenTip?: string;
     fromImage?: FromImage;
+    cardImgSrc?: string;
 }
 
 declare class Card {
@@ -57,15 +64,16 @@ declare const version: string;
 
 declare class CardShowcase {
     static defaultConfig: object;
-    static defaultTip: string;
+    static defaultTip: {JP: string, CHS: string};
 
     constructor(params: {
         cardData: CardData,
         canvas: HTMLCanvasElement,
         showcaseData: CardShowcaseData,
         height: number,
-        config: object,
+        cardConfig: object,
         showcaseConfig: object,
+        cardImgSrc?: string,
     });
 
     setShowcaseData(data: object);
@@ -82,6 +90,7 @@ declare namespace SVECard {
         Card,
         CardShowcase,
         version,
+        Constant,
     }
 }
 

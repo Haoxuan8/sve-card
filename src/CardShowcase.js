@@ -17,7 +17,6 @@ class CardShowcase {
 
     constructor({
         cardData,
-        cardImgSrc,
         showcaseData = {},
         canvas,
         cardConfig,
@@ -27,7 +26,6 @@ class CardShowcase {
     }) {
         this.cardData = cardData;
         this.showcaseData = showcaseData;
-        this.cardImgSrc = cardImgSrc;
         this.canvas = canvas;
         this.showcaseConfig = {...defaultShowcaseConfig, ...showcaseConfig};
         this.setCanvasSize(height, width);
@@ -38,7 +36,6 @@ class CardShowcase {
         this.assetManager = new AssetManager(cardData, this.cardConfig, {onEachStepLoad: this.draw});
         this.showcaseDrawer = new ShowcaseDrawer({
             cardData: this.cardData,
-            cardImgSrc: this.cardImgSrc,
             showcaseData: this.showcaseData,
             cardConfig: this.cardConfig,
             showcaseConfig: this.showcaseConfig,

@@ -1,7 +1,7 @@
 
 // 无攻击与防御
 export const isNoStatus = (card) => {
-    return ["Spell", "Amulet", "SpellToken", "AmuletToken", "EP"].includes(card.cardType);
+    return ["Leader", "Spell", "SpellEvo", "SpellAdv", "Amulet", "AmuletEvo", "AmuletAdv", "SpellToken", "AmuletToken", "EP"].includes(card.cardType);
 };
 
 export const isToken = (card) => {
@@ -9,11 +9,11 @@ export const isToken = (card) => {
 };
 
 export const isEvo = (card) => {
-    return ["FollowerEvo"].includes(card.cardType);
+    return ["FollowerEvo", "SpellEvo", "AmuletEvo"].includes(card.cardType);
 };
 
 export const isAdv = (card) => {
-    return ["FollowerAdv"].includes(card.cardType);
+    return ["FollowerAdv", "SpellAdv", "AmuletAdv"].includes(card.cardType);
 };
 
 export const isUR = (card) => {
@@ -33,11 +33,11 @@ export const isFollower = (card) => {
 };
 
 export const isSpell = (card) => {
-    return ["Spell", "SpellToken"].includes(card.cardType);
+    return ["Spell", "SpellEvo", "SpellAdv", "SpellToken"].includes(card.cardType);
 };
 
 export const isAmulet = (card) => {
-    return ["Amulet", "AmuletToken"].includes(card.cardType);
+    return ["Amulet", "AmuletEvo", "AmuletAdv", "AmuletToken"].includes(card.cardType);
 };
 
 export const isEP = (card) => {
